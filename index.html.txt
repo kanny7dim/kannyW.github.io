@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Kanny Wu — Visual Artist</title>
+  <style>
+    body {
+      font-family: Helvetica, sans-serif;
+      background-color: #ffffff;
+      color: #222;
+      max-width: 800px;
+      margin: 40px auto;
+      line-height: 1.6;
+    }
+    h1 { font-weight: 400; }
+  </style>
+</head>
+<body>
+  <h1>Kanny Wu</h1>
+  <p>Queer visual and sound artist of Chinese and Japanese heritage, based in Helsinki.</p>
+  <p>Exploring fragility, perception, and transformation through photography, sound, and material installation.</p>
+  <p>Email: <a href="mailto:kannywu@email.com">kannywu@email.com</a></p>
+</body>
+</html>
