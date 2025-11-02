@@ -22,6 +22,7 @@ body {
   background: rgba(255,255,255,0.1);
   border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
   animation: floatUp 12s linear infinite;
+  z-index: 0;
 }
 
 @keyframes floatUp {
@@ -44,34 +45,49 @@ header {
   box-sizing: border-box;
 }
 
-/* 名字动画 */
+/* 名字 Glitch */
 .site-name {
   font-weight: 700;
   font-size: 1.8rem;
   color: #222;
+  position: relative;
   display: inline-block;
-  letter-spacing: 1px;
   overflow: hidden;
 }
 
-.site-name span {
-  display: inline-block;
-  animation: disperse 1.5s ease-in-out infinite alternate;
+.site-name::before,
+.site-name::after {
+  content: 'Kanny Wu';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  color: #222;
+  overflow: hidden;
 }
 
-.site-name span:nth-child(1) { animation-delay: 0s; }
-.site-name span:nth-child(2) { animation-delay: 0.1s; }
-.site-name span:nth-child(3) { animation-delay: 0.2s; }
-.site-name span:nth-child(4) { animation-delay: 0.3s; }
-.site-name span:nth-child(5) { animation-delay: 0.4s; }
-.site-name span:nth-child(6) { animation-delay: 0.5s; }
-.site-name span:nth-child(7) { animation-delay: 0.6s; }
-.site-name span:nth-child(8) { animation-delay: 0.7s; }
+.site-name::before {
+  animation: glitchTop 3s infinite linear alternate-reverse;
+  clip: rect(2px, 9999px, 12px, 0);
+}
 
-@keyframes disperse {
-  0% { transform: translate(0,0) rotate(0deg); opacity: 1; }
-  50% { transform: translate(-8px,-15px) rotate(-20deg); opacity: 0; }
-  100% { transform: translate(0,0) rotate(0deg); opacity: 1; }
+.site-name::after {
+  animation: glitchBottom 3s infinite linear alternate-reverse;
+  clip: rect(15px, 9999px, 25px, 0);
+}
+
+@keyframes glitchTop {
+  0%,100% { transform: translate(0px,0px); }
+  25% { transform: translate(-1px,-1px); }
+  50% { transform: translate(-0.5px,0.5px); }
+  75% { transform: translate(0.5px,-0.5px); }
+}
+
+@keyframes glitchBottom {
+  0%,100% { transform: translate(0px,0px); }
+  25% { transform: translate(0.5px,0.5px); }
+  50% { transform: translate(1px,-0.5px); }
+  75% { transform: translate(-0.5px,0.5px); }
 }
 
 /* 折叠按钮 */
@@ -98,11 +114,20 @@ header {
   right: 20px;
   width: 220px;
   background: #dcdcdc;
-  display: none;
+  display: flex;
   flex-direction: column;
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
   z-index: 1001;
   padding: 10px 0;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.3s ease, max-height 0.4s ease;
+}
+
+.menu.show {
+  opacity: 1;
+  max-height: 500px;
 }
 
 .menu a {
@@ -135,11 +160,7 @@ section {
 <body>
 
 <header>
-  <div class="site-name" id="siteName">
-    <span>K</span><span>a</span><span>n</span><span>n</span><span>y</span>
-    <span> </span>
-    <span>W</span><span>u</span>
-  </div>
+  <div class="site-name" id="siteName"></div>
   <button class="menu-toggle" onclick="toggleMenu()">☰</button>
   <div class="menu" id="dropdownMenu">
     <a href="#findme">Find Me</a>
@@ -154,40 +175,46 @@ section {
   <section id="artwork"></section>
 </div>
 
-<!-- 脚印元素 -->
 <script>
-const numFootprints = 15;
-for(let i=0; i<numFootprints; i++){
-  const f = document.createElement('div');
-  f.className = 'footprint';
-  f.style.left = Math.random() * window.innerWidth + 'px';
-  f.style.top = (Math.random() * window.innerHeight) + 'px';
-  f.style.width = 30 + Math.random()*20 + 'px';
-  f.style.height = 30 + Math.random()*20 + 'px';
-  f.style.animationDuration = 8 + Math.random()*6 + 's';
-  f.style.opacity = 0.05 + Math.random()*0.1;
-  document.body.appendChild(f);
-}
+// 生成脚印
+window.onload = function() {
+  const numFootprints = 15;
+  for(let i=0; i<numFootprints; i++){
+    const f = document.createElement('div');
+    f.className = 'footprint';
+    f.style.left = Math.random() * window.innerWidth + 'px';
+    f.style.top = Math.random() * window.innerHeight + 'px';
+    f.style.width = 30 + Math.random()*20 + 'px';
+    f.style.height = 30 + Math.random()*20 + 'px';
+    f.style.animationDuration = 8 + Math.random()*6 + 's';
+    f.style.opacity = 0.05 + Math.random()*0.1;
+    document.body.appendChild(f);
+  }
 
-// 菜单折叠功能
+  // 添加名字文字
+  const siteNameDiv = document.getElementById('siteName');
+  const nameText = 'Kanny Wu';
+  for(let char of nameText) {
+    const span = document.createElement('span');
+    span.textContent = char;
+    siteNameDiv.appendChild(span);
+  }
+};
+
+// 折叠菜单功能
 function toggleMenu() {
   const menu = document.getElementById('dropdownMenu');
-  if (menu.style.display === 'flex' || menu.style.display === 'block') {
-    menu.style.display = 'none';
-  } else {
-    menu.style.display = 'flex';
-    menu.style.flexDirection = 'column';
-  }
+  menu.classList.toggle('show');
 }
 
 // 点击空白处关闭菜单
 window.onclick = function(event) {
   const menu = document.getElementById('dropdownMenu');
   const button = document.querySelector('.menu-toggle');
-  if (menu.style.display === 'flex' && !button.contains(event.target) && !menu.contains(event.target)) {
-    menu.style.display = 'none';
+  if (menu.classList.contains('show') && !button.contains(event.target) && !menu.contains(event.target)) {
+    menu.classList.remove('show');
   }
-}
+};
 </script>
 
 </body>
