@@ -1,24 +1,78 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Kanny Wu — Visual Artist</title>
+  <meta charset="UTF-8">
+  <title>Kanny Wu</title>
   <style>
     body {
-      font-family: Helvetica, sans-serif;
-      background-color: #ffffff;
-      color: #222;
-      max-width: 800px;
-      margin: 40px auto;
-      line-height: 1.6;
+      margin: 0;
+      font-family: "Helvetica Neue", sans-serif;
+      background: #fdf6f0;
+      color: #111;
     }
-    h1 { font-weight: 400; }
+
+    /* 顶部导航栏 */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 1em 0;
+      background: #fff;
+      border-bottom: 1px solid #ccc;
+      z-index: 100;
+    }
+
+    /* 魔法棒按钮 */
+    nav a {
+      position: relative;
+      display: inline-block;
+      padding: 12px 28px;
+      background: linear-gradient(135deg, #ffb6c1, #8a2be2);
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 50px;
+      box-shadow: 0 0 10px rgba(138,43,226,0.5);
+      transition: all 0.3s ease;
+    }
+
+    /* 发光动画（悬停） */
+    nav a:hover {
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 0 20px rgba(138,43,226,0.8), 0 0 30px rgba(255,182,193,0.6);
+    }
+
+    /* 内容容器 */
+    .container {
+      max-width: 800px;
+      margin: 100px auto 50px;
+      padding: 0 20px;
+    }
+
+    section {
+      margin-bottom: 100px;
+      min-height: 400px; /* 暂空内容 */
+      border-bottom: 1px dashed #eee; /* 可选分隔线 */
+    }
   </style>
 </head>
 <body>
-  <h1>Kanny Wu</h1>
-  <p>Queer visual and sound artist of Chinese and Japanese heritage, based in Helsinki.</p>
-  <p>Exploring fragility, perception, and transformation through photography, sound, and material installation.</p>
-  <p>Email: <a href="mailto:kannywu@email.com">kannywu@email.com</a></p>
+
+  <nav>
+    <a href="#contact">Contact / Find Me</a>
+    <a href="#bio">Bio</a>
+    <a href="#artwork">Art Work</a>
+  </nav>
+
+  <div class="container">
+    <section id="contact"></section>
+    <section id="bio"></section>
+    <section id="artwork"></section>
+  </div>
+
 </body>
 </html>
