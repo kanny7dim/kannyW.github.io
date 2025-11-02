@@ -45,49 +45,28 @@ header {
   box-sizing: border-box;
 }
 
-/* 名字 Glitch */
+/* 名字 Glitch 马赛克风格 */
 .site-name {
   font-weight: 700;
   font-size: 1.8rem;
   color: #222;
   position: relative;
   display: inline-block;
-  overflow: hidden;
 }
 
-.site-name::before,
-.site-name::after {
-  content: 'Kanny Wu';
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  color: #222;
-  overflow: hidden;
+.site-name span {
+  display: inline-block;
+  position: relative;
+  mix-blend-mode: difference;
+  animation: mosaic 2s infinite alternate;
 }
 
-.site-name::before {
-  animation: glitchTop 3s infinite linear alternate-reverse;
-  clip: rect(2px, 9999px, 12px, 0);
-}
-
-.site-name::after {
-  animation: glitchBottom 3s infinite linear alternate-reverse;
-  clip: rect(15px, 9999px, 25px, 0);
-}
-
-@keyframes glitchTop {
-  0%,100% { transform: translate(0px,0px); }
-  25% { transform: translate(-1px,-1px); }
-  50% { transform: translate(-0.5px,0.5px); }
-  75% { transform: translate(0.5px,-0.5px); }
-}
-
-@keyframes glitchBottom {
-  0%,100% { transform: translate(0px,0px); }
-  25% { transform: translate(0.5px,0.5px); }
-  50% { transform: translate(1px,-0.5px); }
-  75% { transform: translate(-0.5px,0.5px); }
+@keyframes mosaic {
+  0% { clip-path: inset(0% 0% 0% 0%); }
+  25% { clip-path: inset(10% 5% 20% 0%); }
+  50% { clip-path: inset(20% 10% 5% 5%); }
+  75% { clip-path: inset(5% 15% 10% 10%); }
+  100% { clip-path: inset(0% 0% 0% 0%); }
 }
 
 /* 折叠按钮 */
@@ -122,7 +101,7 @@ header {
   opacity: 0;
   max-height: 0;
   overflow: hidden;
-  transition: opacity 0.3s ease, max-height 0.4s ease;
+  transition: opacity 0.8s ease, max-height 1s ease; /* 慢一些 */
 }
 
 .menu.show {
