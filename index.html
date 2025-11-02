@@ -2,101 +2,129 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Kanny Wu</title>
+  <title>Kanny Wu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      font-family: "Helvetica Neue", sans-serif;
-      background: #e6e6e6; /* 浅灰背景 */
-      color: #222; /* 深灰文字 */
+      font-family: 'Roboto', sans-serif;
+      background: #f5f5f5; /* 背景灰 */
+      color: #222; /* 文字黑灰色 */
     }
+
+    /* 顶部导航栏 */
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 40px;
-      background: #fff;
-      border-bottom: 1px solid #ccc;
+      padding: 20px 50px;
+      background: #ffffff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       position: fixed;
       width: 100%;
       top: 0;
-      z-index: 100;
+      z-index: 1000;
     }
+
+    /* 名字左侧 */
     .site-name {
+      font-weight: 700;
       font-size: 1.8rem;
-      font-weight: bold;
-      color: #333; /* 黑灰色名字 */
+      color: #ff6600; /* 橙色 */
+      letter-spacing: 1px;
     }
-    nav {
-      position: relative;
-    }
-    nav .menu-toggle {
-      cursor: pointer;
-      font-size: 1rem;
-      color: #333;
+
+    /* 折叠按钮右侧 */
+    .menu-toggle {
+      font-size: 1.2rem;
       background: none;
-      border: none;
+      border: 2px solid #222;
       padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      color: #222;
+      transition: all 0.3s ease;
     }
-    nav ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: none; /* 初始隐藏 */
-      position: absolute;
-      right: 0;
-      top: 40px;
+
+    .menu-toggle:hover {
+      background: #222;
+      color: #fff;
+    }
+
+    /* 折叠菜单 */
+    .menu {
+      position: fixed;
+      top: 70px;
+      right: 50px;
+      width: 200px;
       background: #fff;
       border: 1px solid #ccc;
+      border-radius: 6px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
     }
-    nav ul li {
-      padding: 10px 20px;
-    }
-    nav ul li a {
+
+    .menu a {
+      padding: 12px 20px;
       text-decoration: none;
       color: #222;
       font-weight: 600;
+      transition: background 0.2s;
     }
-    nav ul li a:hover {
-      color: #555;
+
+    .menu a:hover {
+      background: #f0f0f0;
     }
+
+    /* 页面内容 */
     .container {
       max-width: 900px;
-      margin: 100px auto 50px;
+      margin: 120px auto 50px;
       padding: 0 20px;
     }
+
     section {
-      margin-bottom: 100px;
       min-height: 400px;
       border-bottom: 1px solid #eee;
+      margin-bottom: 80px;
     }
   </style>
-  <script>
-    function toggleMenu() {
-      const ul = document.querySelector('nav ul');
-      ul.style.display = (ul.style.display === 'block') ? 'none' : 'block';
-    }
-  </script>
 </head>
 <body>
 
-  <header>
-    <div class="site-name">Kanny Wu</div>
-    <nav>
-      <button class="menu-toggle" onclick="toggleMenu()">Menu ▼</button>
-      <ul>
-        <li><a href="#findme">Find Me</a></li>
-        <li><a href="#bio">Bio</a></li>
-        <li><a href="#artwork">Art Work</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <div class="container">
-    <section id="findme"></section>
-    <section id="bio"></section>
-    <section id="artwork"></section>
+<header>
+  <div class="site-name">Kanny Wu</div>
+  <button class="menu-toggle" onclick="toggleMenu()">☰ Menu</button>
+  <div class="menu" id="dropdownMenu">
+    <a href="#findme">Find Me</a>
+    <a href="#bio">Bio</a>
+    <a href="#artwork">Art Work</a>
   </div>
+</header>
+
+<div class="container">
+  <section id="findme"></section>
+  <section id="bio"></section>
+  <section id="artwork"></section>
+</div>
+
+<script>
+function toggleMenu() {
+  const menu = document.getElementById('dropdownMenu');
+  menu.style.display = (menu.style.display === 'flex' || menu.style.display === 'block') ? 'none' : 'flex';
+}
+
+// 点击页面空白处关闭菜单
+window.onclick = function(event) {
+  const menu = document.getElementById('dropdownMenu');
+  const button = document.querySelector('.menu-toggle');
+  if (menu.style.display === 'flex' && !button.contains(event.target) && !menu.contains(event.target)) {
+    menu.style.display = 'none';
+  }
+}
+</script>
 
 </body>
 </html>
