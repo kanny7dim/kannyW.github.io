@@ -8,8 +8,26 @@
 body {
   margin: 0;
   font-family: 'Roboto', sans-serif;
-  background: #dcdcdc; /* 页面灰色背景 */
+  background: #dcdcdc;
   color: #222;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* 背景脚印动画 */
+.footprint {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  animation: floatUp 12s linear infinite;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0px) rotate(0deg); opacity: 0.1; }
+  50% { transform: translateY(-50px) rotate(15deg); opacity: 0.2; }
+  100% { transform: translateY(0px) rotate(0deg); opacity: 0.1; }
 }
 
 /* 顶部导航 */
@@ -18,18 +36,19 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 20px 50px;
-  background: #dcdcdc; /* 顶部灰色 */
+  background: #dcdcdc;
   position: fixed;
   width: 100%;
   top: 0;
   z-index: 1000;
+  box-sizing: border-box;
 }
 
 /* 名字动画 */
 .site-name {
   font-weight: 700;
   font-size: 1.8rem;
-  color: #222; /* 名字黑色 */
+  color: #222;
   display: inline-block;
   letter-spacing: 1px;
   overflow: hidden;
@@ -40,7 +59,6 @@ header {
   animation: disperse 1.5s ease-in-out infinite alternate;
 }
 
-/* 每个字母间隔动画 */
 .site-name span:nth-child(1) { animation-delay: 0s; }
 .site-name span:nth-child(2) { animation-delay: 0.1s; }
 .site-name span:nth-child(3) { animation-delay: 0.2s; }
@@ -58,20 +76,19 @@ header {
 
 /* 折叠按钮 */
 .menu-toggle {
-  font-size: 1.4rem;
-  background: #222;       /* 黑色背景 */
-  color: #fff;            /* 白色文字 */
+  font-size: 1.6rem;
+  background: #222;
+  color: #fff;
   border: none;
-  padding: 10px 15px;
+  padding: 12px 18px;
   border-radius: 5px;
   cursor: pointer;
-  z-index: 1001;
-  transition: all 0.3s ease;
+  z-index: 1002;
   position: relative;
 }
 
 .menu-toggle:hover {
-  background: #ff6600;    /* 橙色悬停 */
+  background: #ff6600;
 }
 
 /* 折叠菜单 */
@@ -79,25 +96,26 @@ header {
   position: fixed;
   top: 70px;
   right: 20px;
-  width: 200px;
-  background: #dcdcdc; /* 灰色背景 */
+  width: 220px;
+  background: #dcdcdc;
   display: none;
   flex-direction: column;
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
   z-index: 1001;
+  padding: 10px 0;
 }
 
 .menu a {
   padding: 12px 20px;
   text-decoration: none;
-  color: #222; /* 黑灰文字 */
+  color: #222;
   font-weight: 600;
   white-space: nowrap;
   display: block;
 }
 
 .menu a:hover {
-  background: #c0c0c0; /* 浅灰hover */
+  background: #c0c0c0;
 }
 
 /* 页面内容 */
@@ -122,7 +140,7 @@ section {
     <span> </span>
     <span>W</span><span>u</span>
   </div>
-  <button class="menu-toggle" onclick="toggleMenu()">☰ Menu</button>
+  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
   <div class="menu" id="dropdownMenu">
     <a href="#findme">Find Me</a>
     <a href="#bio">Bio</a>
@@ -136,7 +154,22 @@ section {
   <section id="artwork"></section>
 </div>
 
+<!-- 脚印元素 -->
 <script>
+const numFootprints = 15;
+for(let i=0; i<numFootprints; i++){
+  const f = document.createElement('div');
+  f.className = 'footprint';
+  f.style.left = Math.random() * window.innerWidth + 'px';
+  f.style.top = (Math.random() * window.innerHeight) + 'px';
+  f.style.width = 30 + Math.random()*20 + 'px';
+  f.style.height = 30 + Math.random()*20 + 'px';
+  f.style.animationDuration = 8 + Math.random()*6 + 's';
+  f.style.opacity = 0.05 + Math.random()*0.1;
+  document.body.appendChild(f);
+}
+
+// 菜单折叠功能
 function toggleMenu() {
   const menu = document.getElementById('dropdownMenu');
   if (menu.style.display === 'flex' || menu.style.display === 'block') {
