@@ -7,7 +7,7 @@
     body {
       margin: 0;
       font-family: "Helvetica Neue", sans-serif;
-      background: #fdf6f0;
+      background: #fdfdfd;
       color: #111;
     }
 
@@ -19,57 +19,54 @@
       width: 100%;
       display: flex;
       justify-content: center;
-      gap: 20px;
+      gap: 30px;
       padding: 1em 0;
       background: #fff;
-      border-bottom: 1px solid #ccc;
+      border-bottom: 1px solid #ddd;
       z-index: 100;
     }
 
-    /* 魔法棒按钮 */
+    /* 按钮样式 */
     nav a {
-      position: relative;
       display: inline-block;
-      padding: 12px 28px;
-      background: linear-gradient(135deg, #ffb6c1, #8a2be2);
-      color: #fff;
+      padding: 10px 20px;
+      color: #111;
       text-decoration: none;
-      font-weight: bold;
-      border-radius: 50px;
-      box-shadow: 0 0 10px rgba(138,43,226,0.5);
-      transition: all 0.3s ease;
+      font-weight: 600;
+      font-size: 1rem;
+      border-radius: 4px;
+      transition: all 0.2s ease;
     }
 
-    /* 发光动画（悬停） */
     nav a:hover {
-      transform: translateY(-4px) scale(1.05);
-      box-shadow: 0 0 20px rgba(138,43,226,0.8), 0 0 30px rgba(255,182,193,0.6);
+      background-color: #eee;
+      transform: translateY(-2px);
     }
 
-    /* 内容容器 */
+    /* 页面内容容器 */
     .container {
-      max-width: 800px;
-      margin: 100px auto 50px;
+      max-width: 900px;
+      margin: 80px auto 50px; /* 顶部留空给导航 */
       padding: 0 20px;
     }
 
     section {
       margin-bottom: 100px;
-      min-height: 400px; /* 暂空内容 */
-      border-bottom: 1px dashed #eee; /* 可选分隔线 */
+      min-height: 400px; /* 占位空白区 */
+      border-bottom: 1px solid #eee; /* 可选分隔线 */
     }
   </style>
 </head>
 <body>
 
   <nav>
-    <a href="#contact">Contact / Find Me</a>
+    <a href="#findme">Find Me</a>
     <a href="#bio">Bio</a>
     <a href="#artwork">Art Work</a>
   </nav>
 
   <div class="container">
-    <section id="contact"></section>
+    <section id="findme"></section>
     <section id="bio"></section>
     <section id="artwork"></section>
   </div>
