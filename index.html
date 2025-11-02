@@ -58,24 +58,24 @@ header {
   display: inline-block;
   position: relative;
   mix-blend-mode: difference;
-  animation: mosaic 2s infinite alternate;
+  animation: mosaic 1.5s infinite alternate;
 }
 
 @keyframes mosaic {
   0% { clip-path: inset(0% 0% 0% 0%); }
-  25% { clip-path: inset(10% 5% 20% 0%); }
-  50% { clip-path: inset(20% 10% 5% 5%); }
-  75% { clip-path: inset(5% 15% 10% 10%); }
+  25% { clip-path: inset(15% 5% 20% 0%); }
+  50% { clip-path: inset(20% 10% 10% 5%); }
+  75% { clip-path: inset(5% 15% 15% 10%); }
   100% { clip-path: inset(0% 0% 0% 0%); }
 }
 
 /* 折叠按钮 */
 .menu-toggle {
-  font-size: 1.6rem;
+  font-size: 1.2rem; /* 小一点 */
   background: #222;
-  color: #fff;
+  color: #ffa066; /* 橙色柔和 */
   border: none;
-  padding: 12px 18px;
+  padding: 8px 12px;
   border-radius: 5px;
   cursor: pointer;
   z-index: 1002;
@@ -83,7 +83,7 @@ header {
 }
 
 .menu-toggle:hover {
-  background: #ff6600;
+  background: #333;
 }
 
 /* 折叠菜单 */
@@ -101,7 +101,7 @@ header {
   opacity: 0;
   max-height: 0;
   overflow: hidden;
-  transition: opacity 0.8s ease, max-height 1s ease; /* 慢一些 */
+  transition: opacity 1.5s ease, max-height 2s ease; /* 特别慢 */
 }
 
 .menu.show {
