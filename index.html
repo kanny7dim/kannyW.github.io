@@ -13,6 +13,7 @@
     background-size: cover;
     color: #111;
     overflow-x: hidden;
+    position: relative;
   }
 
   /* 名字动画 */
@@ -21,7 +22,6 @@
     50% { opacity: 0.5; filter: blur(4px); letter-spacing: 5px; }
     100% { opacity: 1; filter: blur(0); letter-spacing: normal; }
   }
-
   .name {
     font-size: 2.2em;
     font-weight: 600;
@@ -33,10 +33,10 @@
     letter-spacing: 2px;
   }
 
-  /* 耳机播放音乐按钮 */
+  /* 音乐按钮左上角 */
   .music-btn {
     position: absolute;
-    top: 90px;
+    top: 90px; /* 名字下面 */
     left: 40px;
     width: 40px;
     height: 40px;
@@ -52,21 +52,17 @@
     opacity: 0.6;
     transition: opacity 0.3s;
   }
-  .music-btn:hover {
-    opacity: 1;
-  }
+  .music-btn:hover { opacity: 1; }
 
-  /* 菜单容器 */
+  /* 菜单 */
   .menu {
     position: fixed;
     top: 30px;
     right: 40px;
     z-index: 1000;
   }
-
-  /* 菜单按钮 */
   .menu-btn {
-    background-color: rgba(255, 140, 0, 0.7);
+    background-color: rgba(255,140,0,0.7);
     border: none;
     padding: 10px 14px;
     cursor: pointer;
@@ -76,30 +72,16 @@
     font-weight: bold;
     transition: background-color 0.3s;
   }
+  .menu-btn:hover { background-color: rgba(255,140,0,0.9); }
 
-  .menu-btn:hover {
-    background-color: rgba(255, 140, 0, 0.9);
-  }
-
-  /* 菜单内容 */
   .menu-content {
     display: none;
     position: absolute;
     right: 0;
     background-color: transparent;
-    border-radius: 0;
-    padding: 0;
     text-align: right;
-    box-shadow: none;
-    animation: fadeIn 1.5s ease forwards;
+    padding: 0;
   }
-
-  @keyframes fadeIn {
-    from {opacity: 0; transform: translateY(-10px);}
-    to {opacity: 1; transform: translateY(0);}
-  }
-
-  /* 导航链接样式 */
   .menu-content a {
     display: block;
     white-space: nowrap;
@@ -108,15 +90,13 @@
     margin: 40px 0;
     font-size: 20px;
     font-weight: 600;
-    letter-spacing: 1px;
     border-bottom: 1px solid #111;
     padding-bottom: 5px;
     transition: color 0.3s;
   }
-  .menu-content a:hover {
-    color: #ff8800;
-  }
+  .menu-content a:hover { color: #ff8800; }
   .show { display: block; animation: fadeIn 1.5s ease forwards; }
+  @keyframes fadeIn { from {opacity:0; transform:translateY(-10px);} to {opacity:1; transform:translateY(0);} }
 
   /* Bio 容器 */
   #bioContent {
@@ -126,15 +106,15 @@
     left: 50%;
     transform: translate(-50%, -50%);
     max-width: 800px;
-    background: rgba(255,255,255,0); /* 保持透明 */
     color: #111;
-    font-family: 'Playfair Display', Helvetica, Arial, sans-serif;
+    font-family: 'Playfair Display', serif;
     text-align: center;
     padding: 40px 20px;
     line-height: 1.8;
     font-size: 1.2em;
     z-index: 500;
-    animation: fadeIn 1.5s ease forwards;
+    opacity: 0;
+    transition: opacity 2s ease-in;
   }
 </style>
 </head>
@@ -142,7 +122,7 @@
 
 <div class="name">KannyWu</div>
 
-<!-- 耳机按钮 -->
+<!-- 音乐按钮 -->
 <button class="music-btn" id="playMusicBtn">🎧</button>
 
 <!-- Bio 内容 -->
@@ -156,8 +136,8 @@
   <button class="menu-btn" onclick="toggleMenu()">☰</button>
   <div id="menuItems" class="menu-content">
     <a href="#" onclick="showBio()">Bio</a>
-    <a href="#">Art Work</a>
-    <a href="#">Find Me</a>
+    <a href="#" onclick="stopMusic()">Art Work</a>
+    <a href="#" onclick="stopMusic()">Find Me</a>
   </div>
 </div>
 
@@ -179,17 +159,25 @@
 
   // 显示 Bio
   function showBio() {
-    document.getElementById('bioContent').style.display = 'block';
-    document.getElementById('bioContent').scrollIntoView({behavior:"smooth"});
+    const bio = document.getElementById('bioContent');
+    bio.style.display = 'block';
+    setTimeout(()=>{ bio.style.opacity = 1; }, 50); // 淡入效果
+    stopMusic(); // 点击 Bio 停止音乐
   }
 
   // 背景音乐
   const audio = new Audio('https://kanny7dim.github.io/kannyW.github.io/JS1.mp3');
   audio.loop = true;
 
+  // 点击音乐按钮播放音乐
   document.getElementById('playMusicBtn').addEventListener('click', () => {
-    audio.play().catch(() => console.log("Autoplay blocked, user interaction needed"));
+    audio.play().catch(()=>console.log("Autoplay blocked, user interaction needed"));
   });
+
+  // 停止音乐
+  function stopMusic() {
+    audio.pause();
+  }
 </script>
 
 </body>
