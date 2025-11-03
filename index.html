@@ -8,7 +8,7 @@
   body {
     margin: 0;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    /* 背景图，使用你的 GitHub Pages JPG 链接 */
+    /* 背景图，确认这个链接能直接打开 JPG */
     background: url('https://kannyw.github.io/IMG_9403.jpeg') no-repeat center center fixed;
     background-size: cover;
     color: #111;
@@ -78,17 +78,18 @@
 
   /* 导航链接样式 */
   .menu-content a {
-    display: block;           /* 每个链接独占一行 */
-    color: #111;              /* 文字颜色 */
+    display: block;          /* 每个名字独占一行 */
+    white-space: nowrap;     /* 保持 Art Work 一行显示 */
+    color: #111;
     text-decoration: none;
-    margin: 12px 0;           /* 上下间距，让文字分开 */
-    font-size: 18px;          /* 字体大小适中 */
-    font-weight: 500;         /* 字体粗细 */
+    margin: 12px 0;          /* 上下间距 */
+    font-size: 18px;         
+    font-weight: 500;        
     transition: color 0.3s;
   }
 
   .menu-content a:hover {
-    color: #ff8800;           /* hover 变橙色 */
+    color: #ff8800;
   }
 
   .show { display: block; animation: fadeIn 1.5s ease forwards; }
@@ -97,16 +98,14 @@
 </head>
 <body>
 
-<!-- 名字动画 -->
 <div class="name">KannyWu</div>
 
-<!-- 菜单 -->
 <div class="menu">
   <button class="menu-btn" onclick="toggleMenu()">☰</button>
   <div id="menuItems" class="menu-content">
-    <a href="#">Find Me</a>
     <a href="#">Bio</a>
     <a href="#">Art Work</a>
+    <a href="#">Find Me</a>
   </div>
 </div>
 
