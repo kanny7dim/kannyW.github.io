@@ -20,6 +20,7 @@
     50% { opacity: 0.5; filter: blur(4px); letter-spacing: 5px; }
     100% { opacity: 1; filter: blur(0); letter-spacing: normal; }
   }
+
   .name {
     font-size: 2.2em;
     font-weight: 600;
@@ -29,101 +30,118 @@
     top: 30px;
     left: 40px;
     letter-spacing: 2px;
+    z-index: 1000;
   }
 
-  /* 菜单容器 */
+  /* 菜单 */
   .menu {
     position: fixed;
     top: 30px;
     right: 40px;
     z-index: 1000;
   }
-  /* 折叠菜单按钮 */
+
   .menu-btn {
-    background-color: rgba(0,255,0,0.3); /* 荧光绿，透明 */
+    background-color: rgba(0,255,128,0.5); /* 荧光绿半透明 */
     border: none;
     padding: 10px 14px;
     cursor: pointer;
     border-radius: 5px;
     font-size: 18px;
-    color: #111;
     font-weight: bold;
-    transition: all 0.3s;
-  }
-  .menu-btn:hover {
-    transform: translateY(-2px) rotate(-1deg); /* 幽灵轻微晃动 */
+    color: #111;
+    transition: transform 0.3s ease;
   }
 
-  /* 菜单内容 */
+  /* 幽灵晃动 */
+  .menu-btn:hover {
+    animation: ghostMove 0.6s ease-in-out infinite alternate;
+  }
+
+  @keyframes ghostMove {
+    0% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-3px) rotate(-1deg); }
+    50% { transform: translateY(2px) rotate(1deg); }
+    75% { transform: translateY(-2px) rotate(-1deg); }
+    100% { transform: translateY(0) rotate(0deg); }
+  }
+
   .menu-content {
     display: none;
     position: absolute;
     right: 0;
-    background-color: rgba(0,255,0,0.1); /* 半透明绿色 */
-    border-radius: 5px;
-    padding: 10px 20px;
+    background-color: transparent;
+    padding: 0;
     text-align: right;
-    box-shadow: none;
-    animation: fadeIn 0.5s ease forwards;
+    z-index: 1000;
   }
-  @keyframes fadeIn {
-    from {opacity: 0; transform: translateY(-10px);}
-    to {opacity: 1; transform: translateY(0);}
-  }
+
   .menu-content a {
     display: block;
     white-space: nowrap;
     color: #111;
     text-decoration: none;
-    margin: 25px 0;
-    font-size: 18px;
+    margin: 40px 0;
+    font-size: 20px;
     font-weight: 600;
+    letter-spacing: 1px;
     border-bottom: 1px solid #111;
-    padding-bottom: 3px;
-    transition: transform 0.3s, opacity 0.3s;
+    padding-bottom: 5px;
+    transition: transform 0.3s ease;
   }
+
   .menu-content a:hover {
-    transform: translateY(-2px) rotate(-1deg); /* 幽灵效果 */
+    animation: ghostMove 0.6s ease-in-out infinite alternate;
   }
+
   .show { display: block; }
 
-  /* 中央内容 */
-  .centerContent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    max-width: 600px;
-    opacity: 0;
-    transition: opacity 1.5s ease;
-  }
-  .centerContent.showContent {
-    opacity: 1;
-  }
-
-  /* Instagram 幽灵按钮 */
-  .ghostBtn {
-    color: #111;
-    text-decoration: none;
-    font-weight: 600;
-    border-bottom: 1px solid #111;
-    padding-bottom: 2px;
-    display: inline-block;
-    transition: transform 0.4s ease, opacity 0.4s ease;
-  }
-  .ghostBtn:hover {
-    transform: translateY(-3px) rotate(-1deg);
-    opacity: 0.8;
-  }
-
-  /* Home 游戏 */
+  /* Home 游戏画布 */
   #homeGame {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    z-index: 0;
   }
+
+  /* Bio 和 Find Me 内容 */
+  .content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 600px;
+    text-align: center;
+    font-size: 18px;
+    color: #111;
+    display: none;
+    opacity: 0;
+  }
+
+  .content.show {
+    display: block;
+    animation: fadeInText 3s forwards;
+  }
+
+  @keyframes fadeInText {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  /* Instagram 按钮 */
+  .insta-btn {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    animation: ghostMove 0.6s ease-in-out infinite alternate;
+  }
+
 </style>
 </head>
 <body>
@@ -135,35 +153,33 @@
   <div id="menuItems" class="menu-content">
     <a href="#" onclick="showHome()">Home</a>
     <a href="#" onclick="showBio()">Bio</a>
-    <a href="#" onclick="showArt()">Art Work</a>
+    <a href="#" onclick="showArtWork()">Art Work</a>
     <a href="#" onclick="showFindMe()">Find Me</a>
   </div>
 </div>
 
-<!-- 中央内容 -->
-<div id="homeContent" class="centerContent">
-  <canvas id="homeGame" width="300" height="300"></canvas>
-</div>
+<!-- Home 游戏 -->
+<canvas id="homeGame" width="600" height="400"></canvas>
 
-<div id="bioContent" class="centerContent">
+<!-- Bio 内容 -->
+<div id="bioContent" class="content">
   <p>Kanny Wu</p>
   <p>Drawing from a background as a classical pianist, Kanny Wu works through sound, image, and sculpture as media to explore perception, fragility, and the position of materials, bodies, and memories in time. Each work creates a dialogue between sensory experience and the world, emphasizing vulnerability, identity, and coexistence.</p>
 </div>
 
-<div id="artContent" class="centerContent">
-  <p>Art Work Placeholder</p>
-</div>
-
-<div id="findMeContent" class="centerContent">
-  <p>Email: kannywu227@gmail.com</p>
-  <p>Instagram: <a href="https://www.instagram.com/kanny7dim?igsh=M2N4MTNqdm5rajM1&utm_source=qr" target="_blank" class="ghostBtn">@kanny7dim</a></p>
+<!-- Find Me 内容 -->
+<div id="findContent" class="content">
+  <p>Email: <a href="mailto:kannywu227@gmail.com">kannywu227@gmail.com</a></p>
+  <button class="insta-btn" onclick="window.open('https://www.instagram.com/kanny7dim?igsh=M2N4MTNqdm5rajM1&utm_source=qr', '_blank')">Instagram</button>
 </div>
 
 <script>
   // 菜单折叠
   function toggleMenu() {
-    document.getElementById("menuItems").classList.toggle("show");
+    const menu = document.getElementById("menuItems");
+    menu.classList.toggle("show");
   }
+
   document.addEventListener('click', function(e) {
     const menu = document.getElementById("menuItems");
     const btn = document.querySelector('.menu-btn');
@@ -172,83 +188,81 @@
     }
   });
 
-  // 中央内容显示控制
+  // 内容显示控制
+  const bio = document.getElementById('bioContent');
+  const find = document.getElementById('findContent');
+  const canvas = document.getElementById('homeGame');
+
   function hideAllContents() {
-    document.getElementById("homeContent").classList.remove("showContent");
-    document.getElementById("bioContent").classList.remove("showContent");
-    document.getElementById("artContent").classList.remove("showContent");
-    document.getElementById("findMeContent").classList.remove("showContent");
+    bio.classList.remove('show');
+    find.classList.remove('show');
+    canvas.style.display = 'none';
   }
 
   function showHome() {
     hideAllContents();
-    document.getElementById("homeContent").classList.add("showContent");
-    // 音乐播放控制
+    canvas.style.display = 'block';
     audio.play();
   }
 
   function showBio() {
     hideAllContents();
-    document.getElementById("bioContent").classList.add("showContent");
-    audio.pause();
-  }
-
-  function showArt() {
-    hideAllContents();
-    document.getElementById("artContent").classList.add("showContent");
+    bio.classList.add('show');
     audio.pause();
   }
 
   function showFindMe() {
     hideAllContents();
-    document.getElementById("findMeContent").classList.add("showContent");
+    find.classList.add('show');
     audio.pause();
+  }
+
+  function showArtWork() {
+    hideAllContents();
+    audio.pause();
+    // Art Work 功能可以在这里扩展
+    alert("Art Work 页面内容待添加");
   }
 
   // 背景音乐
   const audio = new Audio('https://kanny7dim.github.io/kannyW.github.io/JS1.mp3');
   audio.loop = true;
 
-  // Home 默认显示
-  showHome();
+  // Home 页面音乐控制
+  showHome(); // 默认显示 Home 并播放音乐
 
-  // 简单 Home 游戏
-  const canvas = document.getElementById("homeGame");
-  const ctx = canvas.getContext("2d");
-  let snow = [];
-  for(let i=0;i<100;i++){
-    snow.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, r:Math.random()*3+1, d:Math.random()*1});
+  // 简单游戏：可移动方块 + 雪
+  const ctx = canvas.getContext('2d');
+  const player = { x: 300, y: 200, size: 20, color: 'red' };
+  const snowflakes = [];
+  for (let i=0;i<100;i++){
+    snowflakes.push({x: Math.random()*600, y: Math.random()*400, r: Math.random()*2+1});
   }
-  function drawSnow(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle="white";
-    ctx.beginPath();
-    for(let i=0;i<snow.length;i++){
-      let s = snow[i];
-      ctx.moveTo(s.x, s.y);
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
-    }
-    ctx.fill();
-    moveSnow();
-    requestAnimationFrame(drawSnow);
-  }
-  function moveSnow(){
-    for(let i=0;i<snow.length;i++){
-      let s = snow[i];
-      s.y += Math.sin(s.d)+0.5;
-      s.x += Math.sin(s.d/2);
-      if(s.y>canvas.height){ s.y=0; s.x=Math.random()*canvas.width;}
-    }
-  }
-  canvas.addEventListener('mousemove', function(e){
-    for(let i=0;i<snow.length;i++){
-      snow[i].x += (e.movementX)/2;
-      snow[i].y += (e.movementY)/2;
-    }
+
+  canvas.addEventListener('mousemove', (e)=>{
+    const rect = canvas.getBoundingClientRect();
+    player.x = e.clientX - rect.left;
+    player.y = e.clientY - rect.top;
   });
-  drawSnow();
+
+  function draw() {
+    ctx.clearRect(0,0,600,400);
+    // 雪
+    for (let flake of snowflakes){
+      ctx.beginPath();
+      ctx.arc(flake.x, flake.y, flake.r,0,Math.PI*2);
+      ctx.fillStyle='white';
+      ctx.fill();
+      flake.y += 1;
+      if (flake.y>400) flake.y=0;
+    }
+    // 玩家方块
+    ctx.fillStyle = player.color;
+    ctx.fillRect(player.x-player.size/2, player.y-player.size/2, player.size, player.size);
+    requestAnimationFrame(draw);
+  }
+  draw();
 
 </script>
-
 </body>
 </html>
