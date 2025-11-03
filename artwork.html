@@ -18,7 +18,7 @@ html, body {
   color: var(--fg);
   overflow: hidden;
 }
-canvas#bgCanvas, canvas#starMap {
+canvas#bgCanvas, canvas#lineCanvas {
   position: absolute;
   top:0; left:0;
   width: 100%; height: 100%;
@@ -54,6 +54,32 @@ canvas#bgCanvas, canvas#starMap {
 .title-wrap div:hover {
   text-shadow: 0 0 25px rgba(255,255,255,1);
 }
+.series-wrap {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 16px; /* 系列标题更小 */
+  font-weight: 600;
+  color: var(--fg);
+  text-shadow: 0 0 10px rgba(255,255,255,0.8);
+  display: none; /* 初始隐藏 */
+}
+.series-wrap div {
+  cursor: pointer;
+  position: relative;
+}
+.series-wrap div:hover {
+  text-shadow: 0 0 20px rgba(255,255,255,1);
+}
+.line-canvas {
+  position: absolute;
+  top:0; left:0;
+  width: 100%; height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
 .footer-text {
   position: fixed;
   bottom: 30px;
@@ -68,30 +94,17 @@ canvas#bgCanvas, canvas#starMap {
   line-height: 1.5;
   word-wrap: break-word;
 }
-.photography-series {
-  position: absolute;
-  z-index: 2;
-  font-size: 18px;
-  font-weight: 600;
-  color: #fff;
-  text-shadow: 0 0 12px #fff;
-  display: none;
-}
-.photography-series div {
-  margin: 8px 0;
-  cursor: pointer;
-}
 @media(max-width:768px){
   .title-wrap { font-size: 24px; gap: 20px; }
+  .series-wrap { font-size: 14px; gap: 8px; }
   .footer-text { font-size: 14px; }
-  .photography-series { font-size: 14px; }
 }
 </style>
 </head>
 <body>
 
 <canvas id="bgCanvas"></canvas>
-<canvas id="starMap"></canvas>
+<canvas id="lineCanvas" class="line-canvas"></canvas>
 
 <a href="index.html" class="back-btn">←</a>
 
@@ -101,7 +114,7 @@ canvas#bgCanvas, canvas#starMap {
   <div onclick="location.href='sculpture.html'">Sculpture</div>
 </div>
 
-<div class="photography-series" id="photographySeries">
+<div class="series-wrap" id="photographySeries">
   <div>Endless World</div>
   <div>Time Line</div>
   <div>Perception</div>
@@ -115,8 +128,17 @@ perceiving fragility, grace, and resilience; all is inscribed, all is traceable.
 <script>
 const canvas = document.getElementById('bgCanvas');
 const ctx = canvas.getContext('2d');
+const lineCanvas = document.getElementById('lineCanvas');
+const lineCtx = lineCanvas.getContext('2d');
 let W=0,H=0;
-function resize(){ W=canvas.clientWidth; H=canvas.clientHeight; canvas.width=W; canvas.height=H; starMap.width=W; starMap.height=H; }
+function resize(){ 
+  W=canvas.clientWidth; 
+  H=canvas.clientHeight; 
+  canvas.width=W; 
+  canvas.height=H;
+  lineCanvas.width=W;
+  lineCanvas.height=H;
+}
 window.addEventListener('resize',resize);
 resize();
 
@@ -125,7 +147,7 @@ const stars = Array.from({length:150},()=>({
   x:Math.random(), y:Math.random(), r:Math.random()*1.5+0.2,
   vx:(Math.random()-0.5)*0.0005, vy:(Math.random()-0.5)*0.0005
 }));
-function drawStars(){
+function draw(){
   ctx.clearRect(0,0,W,H);
   ctx.fillStyle='rgba(8,9,12,0.9)';
   ctx.fillRect(0,0,W,H);
@@ -138,9 +160,9 @@ function drawStars(){
     ctx.arc(s.x*W, s.y*H, s.r,0,Math.PI*2);
     ctx.fill();
   }
-  requestAnimationFrame(drawStars);
+  requestAnimationFrame(draw);
 }
-drawStars();
+draw();
 
 // 中间三个单词漂浮动画
 const titles = document.querySelectorAll('.title-wrap div');
@@ -155,39 +177,44 @@ titles.forEach(t=>{
   floatAnim();
 });
 
-// Photography 系列显示
-const photoBtn = document.getElementById('photographyBtn');
-const photoSeries = document.getElementById('photographySeries');
-const starMap = document.getElementById('starMap');
-const smCtx = starMap.getContext('2d');
+// 点击 Photography 显示系列
+const photographyBtn = document.getElementById('photographyBtn');
+const photographySeries = document.getElementById('photographySeries');
 
-photoBtn.addEventListener('click', ()=>{
-  photoSeries.style.display = (photoSeries.style.display==='block') ? 'none':'block';
-  drawStarLines();
+photographyBtn.addEventListener('click',()=>{
+  if(photographySeries.style.display==='flex'){
+    photographySeries.style.display='none';
+  } else {
+    photographySeries.style.display='flex';
+    // 对齐 Photography 左下方
+    const rect = photographyBtn.getBoundingClientRect();
+    photographySeries.style.left = `${rect.left + rect.width/2 - photographySeries.offsetWidth/2}px`;
+    photographySeries.style.top = `${rect.bottom + 15}px`;
+  }
 });
 
-function drawStarLines(){
-  const rect = photoBtn.getBoundingClientRect();
-  const x0 = rect.left + rect.width/2;
-  const y0 = rect.bottom + 10;
-  const items = Array.from(photoSeries.children);
-  const positions = items.map(el=>{
-    const r = el.getBoundingClientRect();
-    const x = r.left + r.width/2;
-    const y = r.top + r.height/2;
-    return {x,y};
-  });
-
-  smCtx.clearRect(0,0,starMap.width, starMap.height);
-  smCtx.strokeStyle='rgba(255,255,255,0.8)';
-  smCtx.lineWidth=1.5;
-  for(const p of positions){
-    smCtx.beginPath();
-    smCtx.moveTo(x0,y0);
-    smCtx.lineTo(p.x,p.y);
-    smCtx.stroke();
+// 绘制星图线条连接系列
+function drawLines(){
+  lineCtx.clearRect(0,0,W,H);
+  if(photographySeries.style.display==='flex'){
+    const rects = Array.from(photographySeries.children).map(div=>div.getBoundingClientRect());
+    const photRect = photographyBtn.getBoundingClientRect();
+    const x0 = photRect.left + photRect.width/2;
+    const y0 = photRect.bottom;
+    for(const r of rects){
+      const x1 = r.left + r.width/2;
+      const y1 = r.top + r.height/2;
+      lineCtx.beginPath();
+      lineCtx.strokeStyle='rgba(255,255,255,0.6)';
+      lineCtx.lineWidth=1.5;
+      lineCtx.moveTo(x0,y0);
+      lineCtx.lineTo(x1,y1);
+      lineCtx.stroke();
+    }
   }
+  requestAnimationFrame(drawLines);
 }
+drawLines();
 </script>
 
 </body>
