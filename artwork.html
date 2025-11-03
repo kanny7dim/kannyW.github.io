@@ -8,7 +8,7 @@
 :root {
   --bg: #0b0b0f;
   --fg: #ffffff;
-  --accent: #00ff99;
+  --cursor: #00ff9f;
 }
 html, body {
   margin: 0;
@@ -18,11 +18,11 @@ html, body {
   background: var(--bg);
   color: var(--fg);
   overflow: hidden;
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><circle cx="8" cy="8" r="4" fill="%2300ff99"/></svg>') 8 8, auto;
+  cursor: none;
 }
 canvas#bgCanvas {
   position: absolute;
-  top:0; left:0;
+  top: 0; left: 0;
   width: 100%; height: 100%;
   z-index: 0;
 }
@@ -43,7 +43,7 @@ canvas#bgCanvas {
   transform: translate(-50%, -50%);
   z-index: 2;
   display: flex;
-  gap: 30px;
+  gap: 40px;
   font-size: 32px;
   font-weight: 700;
   color: var(--fg);
@@ -52,44 +52,32 @@ canvas#bgCanvas {
 .title-wrap div {
   cursor: pointer;
   position: relative;
-  transition: text-shadow 0.3s;
 }
 .title-wrap div:hover {
-  text-shadow: 0 0 25px var(--accent);
+  text-shadow: 0 0 25px rgba(255,255,255,1);
 }
-
-/* 系列 */
 .series-wrap {
   position: absolute;
-  top: 52%;
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: flex-start;
-  gap: 14px;
-  font-size: 18px;
+  gap: 12px;
+  font-size: 20px;
   font-weight: 600;
   color: var(--fg);
   opacity: 0;
-  text-shadow: 0 0 8px rgba(255,255,255,0.9);
-  pointer-events: none;
-  transition: opacity 1.8s ease;
-}
-.series-wrap.visible {
-  opacity: 1;
-  pointer-events: auto;
+  transition: opacity 2s ease;
+  text-shadow: 0 0 12px rgba(255,255,255,1);
 }
 .series-wrap div {
   cursor: pointer;
-  transition: text-shadow 0.3s, transform 0.3s;
 }
 .series-wrap div:hover {
-  text-shadow: 0 0 25px var(--accent);
-  transform: scale(1.03);
+  text-shadow: 0 0 25px rgba(255,255,255,1);
 }
-
 .footer-text {
   position: fixed;
   bottom: 30px;
@@ -103,9 +91,20 @@ canvas#bgCanvas {
   z-index: 2;
   line-height: 1.5;
 }
+.custom-cursor {
+  position: fixed;
+  top: 0; left: 0;
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  background: var(--cursor);
+  box-shadow: 0 0 15px var(--cursor);
+  pointer-events: none;
+  z-index: 10;
+  transform: translate(-50%, -50%);
+}
 @media(max-width:768px){
-  .title-wrap { font-size: 24px; gap: 20px; }
-  .series-wrap { font-size: 15px; gap: 10px; top: 54%; }
+  .title-wrap { font-size: 24px; gap: 25px; }
+  .series-wrap { font-size: 16px; gap: 8px; }
   .footer-text { font-size: 14px; }
 }
 </style>
@@ -121,23 +120,20 @@ canvas#bgCanvas {
   <div id="sculptureBtn">Sculpture</div>
 </div>
 
-<!-- Photography 系列 -->
-<div class="series-wrap" id="photographySeries">
+<!-- 各系列 -->
+<div class="series-wrap" id="photoSeries" style="top:55%;">
   <div>Endless World</div>
   <div>Time Line</div>
   <div>Perception</div>
 </div>
 
-<!-- Sound 系列 -->
-<div class="series-wrap" id="soundSeries">
+<div class="series-wrap" id="soundSeries" style="top:55%;">
   <div>Soundscape</div>
   <div>Deep Listening</div>
 </div>
 
-<!-- Sculpture 系列 -->
-<div class="series-wrap" id="sculptureSeries">
+<div class="series-wrap" id="sculptureSeries" style="top:55%;">
   <div>Reshaping</div>
-  <div>Dialogue</div>
 </div>
 
 <div class="footer-text">
@@ -145,66 +141,92 @@ By means of sound, photography, and sculpture, they probe the unknown,<br>
 perceiving fragility, grace, and resilience; all is inscribed, all is traceable.
 </div>
 
+<div class="custom-cursor" id="cursor"></div>
+
 <script>
 const canvas = document.getElementById('bgCanvas');
 const ctx = canvas.getContext('2d');
-let W=0,H=0;
-function resize(){ W=canvas.clientWidth; H=canvas.clientHeight; canvas.width=W; canvas.height=H; }
-window.addEventListener('resize',resize);
+let W, H;
+function resize() {
+  W = canvas.clientWidth;
+  H = canvas.clientHeight;
+  canvas.width = W;
+  canvas.height = H;
+}
+window.addEventListener('resize', resize);
 resize();
 
 // 星空背景
-const stars = Array.from({length:150},()=>({
-  x:Math.random(), y:Math.random(), r:Math.random()*1.5+0.2,
-  vx:(Math.random()-0.5)*0.0005, vy:(Math.random()-0.5)*0.0005
+const stars = Array.from({length:150}, () => ({
+  x: Math.random(), y: Math.random(), r: Math.random()*1.5+0.2,
+  vx: (Math.random()-0.5)*0.0005, vy: (Math.random()-0.5)*0.0005
 }));
-function draw(){
+function drawStars(){
   ctx.clearRect(0,0,W,H);
-  ctx.fillStyle='rgba(8,9,12,0.9)';
+  ctx.fillStyle = 'rgba(8,9,12,0.9)';
   ctx.fillRect(0,0,W,H);
-  for(const s of stars){
+  for (const s of stars){
     s.x += s.vx; s.y += s.vy;
-    if(s.x<0)s.x=1;if(s.x>1)s.x=0;
-    if(s.y<0)s.y=1;if(s.y>1)s.y=0;
+    if (s.x<0)s.x=1; if (s.x>1)s.x=0;
+    if (s.y<0)s.y=1; if (s.y>1)s.y=0;
     ctx.beginPath();
     ctx.fillStyle='rgba(255,255,255,'+(0.6*Math.random()+0.2)+')';
-    ctx.arc(s.x*W, s.y*H, s.r,0,Math.PI*2);
+    ctx.arc(s.x*W, s.y*H, s.r, 0, Math.PI*2);
     ctx.fill();
   }
-  requestAnimationFrame(draw);
+  requestAnimationFrame(drawStars);
 }
-draw();
+drawStars();
 
-// 漂浮动画
-const titles = document.querySelectorAll('.title-wrap div');
-titles.forEach(t=>{
-  let posX=0, posY=0;
-  function floatAnim(){
-    posX += (Math.random()-0.5)*0.3;
-    posY += (Math.random()-0.5)*0.3;
-    t.style.transform=`translate(${posX}px, ${posY}px)`;
-    requestAnimationFrame(floatAnim);
+// 定位系列（与类别对齐）
+function alignSeries() {
+  const photoBtn = document.getElementById('photographyBtn').getBoundingClientRect();
+  const soundBtn = document.getElementById('soundBtn').getBoundingClientRect();
+  const sculptureBtn = document.getElementById('sculptureBtn').getBoundingClientRect();
+  document.getElementById('photoSeries').style.left = photoBtn.left + "px";
+  document.getElementById('soundSeries').style.left = soundBtn.left + "px";
+  document.getElementById('sculptureSeries').style.left = sculptureBtn.left + "px";
+}
+window.addEventListener('resize', alignSeries);
+alignSeries();
+
+// 点击显示系列
+const seriesMap = {
+  photographyBtn: 'photoSeries',
+  soundBtn: 'soundSeries',
+  sculptureBtn: 'sculptureSeries'
+};
+document.addEventListener('click', (e)=>{
+  let clickedSeries = false;
+  for (let key in seriesMap){
+    const btn = document.getElementById(key);
+    const series = document.getElementById(seriesMap[key]);
+    if (btn.contains(e.target)) {
+      clickedSeries = true;
+      const isVisible = series.style.display === 'flex';
+      document.querySelectorAll('.series-wrap').forEach(s=>{
+        s.style.display = 'none';
+        s.style.opacity = 0;
+      });
+      if (!isVisible) {
+        series.style.display = 'flex';
+        requestAnimationFrame(()=>{ series.style.opacity = 1; });
+      }
+    }
   }
-  floatAnim();
+  if (!clickedSeries && !document.querySelector('.series-wrap:hover')) {
+    document.querySelectorAll('.series-wrap').forEach(s=>{
+      s.style.display = 'none';
+      s.style.opacity = 0;
+    });
+  }
 });
 
-// 点击显示对应系列
-const allSeries = document.querySelectorAll('.series-wrap');
-document.addEventListener('click', e => {
-  allSeries.forEach(s => s.classList.remove('visible'));
-
-  if (e.target.id === 'photographyBtn') {
-    document.getElementById('photographySeries').classList.add('visible');
-    document.getElementById('photographySeries').style.left = "calc(50% - 240px)";
-  } 
-  else if (e.target.id === 'soundBtn') {
-    document.getElementById('soundSeries').classList.add('visible');
-    document.getElementById('soundSeries').style.left = "calc(50% - 70px)";
-  } 
-  else if (e.target.id === 'sculptureBtn') {
-    document.getElementById('sculptureSeries').classList.add('visible');
-    document.getElementById('sculptureSeries').style.left = "calc(50% + 110px)";
-  }
+// 光标荧光绿效果
+const cursor = document.getElementById('cursor');
+document.addEventListener('mousemove', (e)=>{
+  cursor.style.top = e.clientY + 'px';
+  cursor.style.left = e.clientX + 'px';
 });
 </script>
 
