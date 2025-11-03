@@ -8,7 +8,6 @@
 :root {
   --bg: #0b0b0f;
   --fg: #ffffff;
-  --cursor: #00ff9f;
 }
 html, body {
   margin: 0;
@@ -18,7 +17,7 @@ html, body {
   background: var(--bg);
   color: var(--fg);
   overflow: hidden;
-  cursor: none;
+  cursor: url('https://cur.cursors-4u.net/cursors/cur-2/cur116.cur'), auto;
 }
 canvas#bgCanvas {
   position: absolute;
@@ -43,7 +42,7 @@ canvas#bgCanvas {
   transform: translate(-50%, -50%);
   z-index: 2;
   display: flex;
-  gap: 80px;
+  gap: 40px;
   font-size: 32px;
   font-weight: 700;
   color: var(--fg);
@@ -52,30 +51,34 @@ canvas#bgCanvas {
 .title-wrap div {
   cursor: pointer;
   position: relative;
+  transition: text-shadow 0.3s ease;
 }
 .title-wrap div:hover {
-  text-shadow: 0 0 25px rgba(255,255,255,1);
+  text-shadow: 0 0 25px #00ff7f; /* 荧光绿光标效果 */
 }
 .series-wrap {
   position: absolute;
-  top: 55%;
   z-index: 2;
   display: none;
   flex-direction: column;
   align-items: flex-start;
-  gap: 12px;
+  gap: 10px;
   font-size: 20px;
   font-weight: 600;
   color: var(--fg);
-  opacity: 0;
-  transition: opacity 2s ease;
-  text-shadow: 0 0 14px rgba(255,255,255,1);
+  text-shadow: 0 0 12px rgba(255,255,255,1);
+  animation: fadeIn 1.5s ease forwards;
 }
 .series-wrap div {
   cursor: pointer;
+  transition: text-shadow 0.3s ease;
 }
 .series-wrap div:hover {
-  text-shadow: 0 0 25px rgba(255,255,255,1);
+  text-shadow: 0 0 25px #00ff7f;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 .footer-text {
   position: fixed;
@@ -89,22 +92,16 @@ canvas#bgCanvas {
   text-shadow: 0 0 12px #fff;
   z-index: 2;
   line-height: 1.5;
+  word-wrap: break-word;
 }
-.custom-cursor {
-  position: fixed;
-  top: 0; left: 0;
-  width: 15px; height: 15px;
-  border-radius: 50%;
-  background: var(--cursor);
-  box-shadow: 0 0 15px var(--cursor);
-  pointer-events: none;
-  z-index: 10;
-  transform: translate(-50%, -50%);
+@media(max-width:1024px){
+  .title-wrap { font-size: 26px; gap: 25px; }
+  .series-wrap { font-size: 18px; gap: 8px; }
 }
 @media(max-width:768px){
-  .title-wrap { font-size: 24px; gap: 30px; }
-  .series-wrap { font-size: 16px; gap: 8px; }
-  .footer-text { font-size: 14px; }
+  .title-wrap { flex-direction: column; align-items: center; top: 40%; }
+  .series-wrap { align-items: center; left: 50%!important; transform: translateX(-50%)!important; }
+  .footer-text { font-size: 14px; bottom: 20px; }
 }
 </style>
 </head>
@@ -119,19 +116,21 @@ canvas#bgCanvas {
   <div id="sculptureBtn">Sculpture</div>
 </div>
 
-<!-- 系列 -->
-<div class="series-wrap" id="photoSeries">
-  <div onclick="location.href='endless-world.html'">Endless World</div>
+<!-- Photography 系列 -->
+<div class="series-wrap" id="photographySeries" style="top:55%; left:calc(50% - 180px);">
+  <div onclick="location.href='endlessworld.html'">Endless World</div>
   <div onclick="location.href='timeline.html'">Time Line</div>
   <div onclick="location.href='perception.html'">Perception</div>
 </div>
 
-<div class="series-wrap" id="soundSeries">
+<!-- Sound 系列 -->
+<div class="series-wrap" id="soundSeries" style="top:55%; left:calc(50% - 10px);">
   <div onclick="location.href='soundscape.html'">Soundscape</div>
-  <div onclick="location.href='deep-listening.html'">Deep Listening</div>
+  <div onclick="location.href='deeplistening.html'">Deep Listening</div>
 </div>
 
-<div class="series-wrap" id="sculptureSeries">
+<!-- Sculpture 系列 -->
+<div class="series-wrap" id="sculptureSeries" style="top:55%; left:calc(50% + 180px);">
   <div onclick="location.href='reshaping.html'">Reshaping</div>
 </div>
 
@@ -140,102 +139,58 @@ By means of sound, photography, and sculpture, they probe the unknown,<br>
 perceiving fragility, grace, and resilience; all is inscribed, all is traceable.
 </div>
 
-<div class="custom-cursor" id="cursor"></div>
-
 <script>
 const canvas = document.getElementById('bgCanvas');
 const ctx = canvas.getContext('2d');
-let W, H;
-function resize() {
-  W = canvas.clientWidth;
-  H = canvas.clientHeight;
-  canvas.width = W;
-  canvas.height = H;
+let W=0,H=0;
+function resize(){
+  W=canvas.clientWidth; 
+  H=canvas.clientHeight; 
+  canvas.width=W; 
+  canvas.height=H;
 }
-window.addEventListener('resize', resize);
+window.addEventListener('resize',resize);
 resize();
 
 // 星空背景
-const stars = Array.from({length:150}, () => ({
-  x: Math.random(), y: Math.random(), r: Math.random()*1.5+0.2,
-  vx: (Math.random()-0.5)*0.0005, vy: (Math.random()-0.5)*0.0005
+const stars = Array.from({length:150},()=>({
+  x:Math.random(), y:Math.random(), r:Math.random()*1.5+0.2,
+  vx:(Math.random()-0.5)*0.0005, vy:(Math.random()-0.5)*0.0005
 }));
-function drawStars(){
+function draw(){
   ctx.clearRect(0,0,W,H);
-  ctx.fillStyle = 'rgba(8,9,12,0.9)';
+  ctx.fillStyle='rgba(8,9,12,0.9)';
   ctx.fillRect(0,0,W,H);
-  for (const s of stars){
+  for(const s of stars){
     s.x += s.vx; s.y += s.vy;
-    if (s.x<0)s.x=1; if (s.x>1)s.x=0;
-    if (s.y<0)s.y=1; if (s.y>1)s.y=0;
+    if(s.x<0)s.x=1;if(s.x>1)s.x=0;
+    if(s.y<0)s.y=1;if(s.y>1)s.y=0;
     ctx.beginPath();
     ctx.fillStyle='rgba(255,255,255,'+(0.6*Math.random()+0.2)+')';
-    ctx.arc(s.x*W, s.y*H, s.r, 0, Math.PI*2);
+    ctx.arc(s.x*W, s.y*H, s.r,0,Math.PI*2);
     ctx.fill();
   }
-  requestAnimationFrame(drawStars);
+  requestAnimationFrame(draw);
 }
-drawStars();
+draw();
 
-// 对齐系列与类别首字母
-function alignSeries() {
-  const photoBtn = document.getElementById('photographyBtn').getBoundingClientRect();
-  const soundBtn = document.getElementById('soundBtn').getBoundingClientRect();
-  const sculptureBtn = document.getElementById('sculptureBtn').getBoundingClientRect();
-  const offsetY = window.innerHeight * 0.55;
-
-  const photoSeries = document.getElementById('photoSeries');
-  photoSeries.style.left = photoBtn.left + "px";
-  photoSeries.style.top = offsetY + "px";
-
-  const soundSeries = document.getElementById('soundSeries');
-  soundSeries.style.left = soundBtn.left + "px";
-  soundSeries.style.top = offsetY + "px";
-
-  const sculptureSeries = document.getElementById('sculptureSeries');
-  sculptureSeries.style.left = sculptureBtn.left + "px";
-  sculptureSeries.style.top = offsetY + "px";
-}
-window.addEventListener('resize', alignSeries);
-window.addEventListener('load', alignSeries);
-
-// 点击类别显示系列
+// 系列显示逻辑
 const seriesMap = {
-  photographyBtn: 'photoSeries',
-  soundBtn: 'soundSeries',
-  sculptureBtn: 'sculptureSeries'
+  photographyBtn: document.getElementById('photographySeries'),
+  soundBtn: document.getElementById('soundSeries'),
+  sculptureBtn: document.getElementById('sculptureSeries')
 };
-document.addEventListener('click', (e)=>{
-  let clickedSeries = false;
-  for (let key in seriesMap){
-    const btn = document.getElementById(key);
-    const series = document.getElementById(seriesMap[key]);
-    if (btn.contains(e.target)) {
-      clickedSeries = true;
-      const isVisible = series.style.display === 'flex';
-      document.querySelectorAll('.series-wrap').forEach(s=>{
-        s.style.display = 'none';
-        s.style.opacity = 0;
-      });
-      if (!isVisible) {
-        series.style.display = 'flex';
-        requestAnimationFrame(()=>{ series.style.opacity = 1; });
-      }
-    }
-  }
-  if (!clickedSeries && !document.querySelector('.series-wrap:hover')) {
-    document.querySelectorAll('.series-wrap').forEach(s=>{
-      s.style.display = 'none';
-      s.style.opacity = 0;
-    });
-  }
-});
 
-// 光标荧光绿效果
-const cursor = document.getElementById('cursor');
-document.addEventListener('mousemove', (e)=>{
-  cursor.style.top = e.clientY + 'px';
-  cursor.style.left = e.clientX + 'px';
+document.addEventListener('click', (e)=>{
+  const clicked = e.target.id;
+  Object.keys(seriesMap).forEach(id=>{
+    if(id===clicked){
+      const el = seriesMap[id];
+      el.style.display = (el.style.display==='flex') ? 'none' : 'flex';
+    } else {
+      seriesMap[id].style.display = 'none';
+    }
+  });
 });
 </script>
 
