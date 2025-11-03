@@ -8,6 +8,7 @@
 :root {
   --bg: #0b0b0f;
   --fg: #ffffff;
+  --cursor: #00ff00;
 }
 html, body {
   margin: 0;
@@ -17,6 +18,7 @@ html, body {
   background: var(--bg);
   color: var(--fg);
   overflow: hidden;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="32" width="32"><circle cx="16" cy="16" r="6" fill="lime"/></svg>') 16 16, auto;
 }
 canvas#bgCanvas {
   position: absolute;
@@ -52,22 +54,33 @@ canvas#bgCanvas {
   position: relative;
 }
 .title-wrap div:hover {
-  text-shadow: 0 0 25px rgba(255,255,255,1);
+  text-shadow: 0 0 25px var(--cursor);
 }
 .series-wrap {
   position: absolute;
+  top: 60%;
   z-index: 2;
-  display: none;
+  display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
   font-size: 20px;
   font-weight: 600;
   color: var(--fg);
-  text-shadow: 0 0 15px rgba(255,255,255,0.9);
+  text-shadow: 0 0 15px rgba(255,255,255,0.8);
   opacity: 0;
+  transition: opacity 1.5s;
+  pointer-events: none;
+}
+.series-wrap.show {
+  opacity: 1;
+  pointer-events: auto;
 }
 .series-wrap div {
-  white-space: nowrap;
+  cursor: pointer;
+  position: relative;
+}
+.series-wrap div:hover {
+  text-shadow: 0 0 25px rgba(0,255,0,1);
 }
 .footer-text {
   position: fixed;
@@ -85,7 +98,7 @@ canvas#bgCanvas {
 }
 @media(max-width:768px){
   .title-wrap { font-size: 24px; gap: 20px; }
-  .series-wrap { font-size: 16px; gap: 8px; }
+  .series-wrap { font-size: 16px; gap: 10px; }
   .footer-text { font-size: 14px; }
 }
 </style>
@@ -102,20 +115,20 @@ canvas#bgCanvas {
   <div id="sculptureBtn">Sculpture</div>
 </div>
 
-<div class="series-wrap" id="photographySeries">
-  <div>Endless World</div>
-  <div>Time Line</div>
-  <div>Perception</div>
+<div class="series-wrap" id="photographySeries" style="left:50%; transform: translateX(-50%);">
+  <div onclick="location.href='photography/EndlessWorld.html'">Endless World</div>
+  <div onclick="location.href='photography/TimeLine.html'">Time Line</div>
+  <div onclick="location.href='photography/Perception.html'">Perception</div>
 </div>
 
-<div class="series-wrap" id="soundSeries">
-  <div>SoundScape</div>
-  <div>Deep Listening</div>
+<div class="series-wrap" id="soundSeries" style="left:50%; transform: translateX(-50%);">
+  <div onclick="location.href='sound/SoundScape.html'">SoundScape</div>
+  <div onclick="location.href='sound/DeepListening.html'">Deep Listening</div>
 </div>
 
-<div class="series-wrap" id="sculptureSeries">
-  <div>Endless Form</div>
-  <div>Material Trace</div>
+<div class="series-wrap" id="sculptureSeries" style="left:50%; transform: translateX(-50%);">
+  <div onclick="location.href='sculpture/Sculpture1.html'">Sculpture Series 1</div>
+  <div onclick="location.href='sculpture/Sculpture2.html'">Sculpture Series 2</div>
 </div>
 
 <div class="footer-text">
@@ -172,52 +185,33 @@ titles.forEach(t=>{
 });
 
 // 显示对应系列
-function showSeries(btn, series){
-  btn.addEventListener('click', ()=>{
-    const allSeries = [photographySeries, soundSeries, sculptureSeries];
-    allSeries.forEach(s=>{
-      if(s!==series){
-        s.style.display='none';
-        s.style.opacity=0;
-      }
-    });
-    if(series.style.display==='flex'){
-      series.style.display='none';
-      series.style.opacity=0;
-    } else {
-      series.style.display='flex';
-      series.style.opacity=0;
-      let opacity=0;
-      function fadeIn(){
-        opacity +=0.01;
-        if(opacity>1) opacity=1;
-        series.style.opacity=opacity;
-        if(opacity<1) requestAnimationFrame(fadeIn);
-      }
-      fadeIn();
-      // 对齐首字母
-      const btnRect = btn.getBoundingClientRect();
-      Array.from(series.children).forEach((div,i)=>{
-        const divRect = div.getBoundingClientRect();
-        div.style.position='absolute';
-        div.style.top = (btnRect.bottom + i*30) + 'px';
-        div.style.left = btnRect.left + 'px';
-      });
-    }
-  });
-}
-
 const photographyBtn = document.getElementById('photographyBtn');
-const photographySeries = document.getElementById('photographySeries');
 const soundBtn = document.getElementById('soundBtn');
-const soundSeries = document.getElementById('soundSeries');
 const sculptureBtn = document.getElementById('sculptureBtn');
+
+const photographySeries = document.getElementById('photographySeries');
+const soundSeries = document.getElementById('soundSeries');
 const sculptureSeries = document.getElementById('sculptureSeries');
 
-showSeries(photographyBtn, photographySeries);
-showSeries(soundBtn, soundSeries);
-showSeries(sculptureBtn, sculptureSeries);
+function hideAllSeries(){
+  photographySeries.classList.remove('show');
+  soundSeries.classList.remove('show');
+  sculptureSeries.classList.remove('show');
+}
 
+// 鼠标悬停显示系列
+photographyBtn.addEventListener('mouseenter', ()=>{
+  hideAllSeries();
+  photographySeries.classList.add('show');
+});
+soundBtn.addEventListener('mouseenter', ()=>{
+  hideAllSeries();
+  soundSeries.classList.add('show');
+});
+sculptureBtn.addEventListener('mouseenter', ()=>{
+  hideAllSeries();
+  sculptureSeries.classList.add('show');
+});
 </script>
 
 </body>
