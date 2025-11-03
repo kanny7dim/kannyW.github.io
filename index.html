@@ -35,11 +35,11 @@
   /* 耳朵播放音乐按钮 */
   .music-btn {
     position: absolute;
-    top: 90px; 
+    top: 90px; /* 在名字下面 */
     left: 40px;
     width: 40px;
     height: 40px;
-    background: transparent;
+    background: transparent; /* 透明背景 */
     border: none;
     cursor: pointer;
     font-size: 24px;
@@ -48,9 +48,10 @@
     align-items: center;
     justify-content: center;
     z-index: 1000;
-    opacity: 0.6;
+    opacity: 0.6; /* 半透明 */
     transition: opacity 0.3s;
   }
+
   .music-btn:hover {
     opacity: 1;
   }
@@ -63,6 +64,7 @@
     z-index: 1000;
   }
 
+  /* 菜单按钮 */
   .menu-btn {
     background-color: rgba(255, 140, 0, 0.7);
     border: none;
@@ -74,6 +76,7 @@
     font-weight: bold;
     transition: background-color 0.3s;
   }
+
   .menu-btn:hover {
     background-color: rgba(255, 140, 0, 0.9);
   }
@@ -83,9 +86,11 @@
     display: none;
     position: absolute;
     right: 0;
-    background-color: transparent;
+    background-color: transparent; /* 去掉白色框 */
+    border-radius: 0;
     padding: 0;
     text-align: right;
+    box-shadow: none;
     animation: fadeIn 1.5s ease forwards;
   }
 
@@ -97,17 +102,18 @@
   /* 导航链接样式 */
   .menu-content a {
     display: block;
-    white-space: nowrap;
+    white-space: nowrap; /* 保证 Art Work 不拆行 */
     color: #111;
     text-decoration: none;
-    margin: 40px 0;
+    margin: 40px 0; /* 上下间隔更大 */
     font-size: 20px;
     font-weight: 600;
     letter-spacing: 1px;
-    border-bottom: 1px solid #111;
-    padding-bottom: 5px;
+    border-bottom: 1px solid #111; /* 每条名字下方横线 */
+    padding-bottom: 5px; /* 横线和文字稍微分开 */
     transition: color 0.3s;
   }
+
   .menu-content a:hover {
     color: #ff8800;
   }
@@ -148,11 +154,11 @@
     }
   });
 
-  // 音乐播放
-  const audio = new Audio('https://kanny7dim.github.io/kannyW.github.io/JSbach.mp3');
+  // 背景音乐
+  const audio = new Audio('https://kanny7dim.github.io/kannyW.github.io/JS1.mp3');
   audio.loop = true;
 
-  // 点击耳朵按钮播放音乐
+  // 点击耳朵按钮播放音乐（浏览器允许）
   document.getElementById('playMusicBtn').addEventListener('click', () => {
       audio.play().catch(() => console.log("Autoplay blocked, user interaction needed"));
   });
