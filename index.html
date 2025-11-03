@@ -11,9 +11,10 @@
     background: url('https://kanny7dim.github.io/kannyW.github.io/IMG_9403.jpeg') no-repeat center center fixed;
     background-size: cover;
     color: #111;
-    overflow-x: hidden;
+    overflow: hidden;
   }
 
+  /* 名字动画 */
   @keyframes dissolveIn {
     0% { opacity: 0; filter: blur(10px); letter-spacing: 10px; }
     50% { opacity: 0.5; filter: blur(4px); letter-spacing: 5px; }
@@ -91,6 +92,7 @@
 
   .show { display: block; }
 
+  /* 中央内容 */
   #content {
     position: absolute;
     top: 50%;
@@ -128,8 +130,11 @@
 
   /* 游戏画布 */
   #gameCanvas {
-    display: block;
-    margin: 0 auto;
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background: rgba(255,255,255,0.1);
   }
 </style>
@@ -149,10 +154,10 @@
 </div>
 
 <div id="content"></div>
-<canvas id="gameCanvas" width="400" height="400" style="display:none;"></canvas>
+<canvas id="gameCanvas" width="400" height="400"></canvas>
 
 <script>
-  // 菜单折叠逻辑
+  // 菜单折叠
   function toggleMenu() {
     const menu = document.getElementById("menuItems");
     menu.classList.toggle("show");
@@ -170,7 +175,7 @@
   const canvas = document.getElementById('gameCanvas');
   let gameRunning = false;
 
-  // 背景音乐 (Home键控制)
+  // 音乐
   const audio = new Audio('https://kanny7dim.github.io/kannyW.github.io/JS1.mp3');
   audio.loop = true;
 
@@ -180,32 +185,21 @@
     content.innerHTML = '';
     content.style.opacity = 0;
 
-    // Home
     if(section === 'home') {
       canvas.style.display = 'block';
+      audio.play().catch(() => console.log("需要用户操作允许播放"));
       if(!gameRunning) startGame();
-      audio.play().catch(()=>console.log('Autoplay blocked'));
     } else {
-      audio.pause(); // 点击其他菜单音乐停止
-    }
-
-    // Bio
-    if(section === 'bio') {
-      content.innerHTML = `<p>Kanny Wu</p>
-      <p>Drawing from a background as a classical pianist, Kanny Wu works through sound, image, and sculpture as media to explore perception, fragility, and the position of materials, bodies, and memories in time. Each work creates a dialogue between sensory experience and the world, emphasizing vulnerability, identity, and coexistence.</p>`;
-      fadeIn(content);
-    }
-
-    // Find Me
-    if(section === 'findme') {
-      content.innerHTML = `Email: kannywu227@gmail.com<br>
-      <a href="https://www.instagram.com/kanny7dim?igsh=M2N4MTNqdm5rajM1&utm_source=qr" target="_blank" class="insta-btn">Instagram</a>`;
-      fadeIn(content);
-    }
-
-    // Artwork placeholder
-    if(section === 'artwork') {
-      content.innerHTML = `<p>Art Work Section</p>`;
+      audio.pause();
+      audio.currentTime = 0;
+      if(section === 'bio') {
+        content.innerHTML = `<p>Kanny Wu</p>
+        <p>Drawing from a background as a classical pianist, Kanny Wu works through sound, image, and sculpture as media to explore perception, fragility, and the position of materials, bodies, and memories in time. Each work creates a dialogue between sensory experience and the world, emphasizing vulnerability, identity, and coexistence.</p>`;
+      } else if(section === 'findme') {
+        content.innerHTML = `<a href="https://www.instagram.com/kanny7dim?igsh=M2N4MTNqdm5rajM1&utm_source=qr" target="_blank" class="insta-btn">Instagram</a>`;
+      } else if(section === 'artwork') {
+        content.innerHTML = `<p>Art Work Section</p>`;
+      }
       fadeIn(content);
     }
   }
@@ -215,7 +209,6 @@
     element.style.animation = 'fadeInContent 2s forwards';
   }
 
-  // 简单扫雪小游戏
   function startGame() {
     const ctx = canvas.getContext('2d');
     const width = canvas.width;
@@ -225,14 +218,14 @@
     gameRunning = true;
 
     for(let i=0;i<50;i++){
-      snowflakes.push({x:Math.random()*width, y:Math.random()*height, r:Math.random()*3+2});
+      snowflakes.push({x:Math.random()*width, y:Math.random()*height, r:Math.random()*3+2, dx:0});
     }
-
-    let playerX = width/2;
 
     canvas.addEventListener('mousemove', e=>{
       playerX = e.offsetX;
     });
+
+    let playerX = width/2;
 
     function draw() {
       ctx.clearRect(0,0,width,height);
@@ -248,7 +241,7 @@
         ctx.arc(flake.x, flake.y, flake.r,0,Math.PI*2);
         ctx.fill();
 
-        flake.y += 0.7; // 下落慢
+        flake.y += 0.5; // 下落慢
         if(Math.abs(flake.x - playerX)<20 && flake.y>height-20){
           score++;
           flake.y=0;
