@@ -15,22 +15,6 @@ body {
   position: relative;
 }
 
-/* 脚印动画 */
-.footprint {
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  background: rgba(255,255,255,0.3);
-  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-  animation: floatUp 12s linear infinite;
-  z-index: 0;
-}
-@keyframes floatUp {
-  0% { transform: translateY(0px) rotate(0deg); opacity: 0.1; }
-  50% { transform: translateY(-50px) rotate(15deg); opacity: 0.2; }
-  100% { transform: translateY(0px) rotate(0deg); opacity: 0.1; }
-}
-
 /* 顶部导航 */
 header {
   display: flex;
@@ -49,7 +33,7 @@ header {
 .site-name {
   font-weight: 700;
   font-size: 1.8rem;
-  color: #111; /* 深色 */
+  color: #000; /* 黑色 */
   position: relative;
   display: inline-block;
 }
@@ -72,7 +56,7 @@ header {
 /* 折叠按钮 */
 .menu-toggle {
   font-size: 1.2rem;
-  background: #222;
+  background: rgba(34,34,34,0.5); /* 半透明 */
   color: #e09050;
   border: none;
   padding: 8px 12px;
@@ -83,7 +67,7 @@ header {
 }
 
 .menu-toggle:hover {
-  background: #333;
+  background: rgba(51,51,51,0.5);
 }
 
 /* 折叠菜单 */
@@ -101,7 +85,7 @@ header {
   opacity: 0;
   max-height: 0;
   overflow: hidden;
-  transition: opacity 2s ease, max-height 3s ease; /* 更慢 */
+  transition: opacity 2s ease, max-height 3s ease;
 }
 
 .menu.show {
@@ -125,7 +109,7 @@ header {
 /* 页面内容 */
 .container {
   max-width: 900px;
-  margin: 120px auto 150px;
+  margin: 120px auto 80px;
   padding: 0 20px;
 }
 
@@ -135,15 +119,24 @@ section {
   margin-bottom: 80px;
 }
 
-/* 底部声波 */
-canvas#audioWave {
+/* 底部黑色脚印 */
+.footprint {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100px;
-  pointer-events: none;
-  z-index: 1; /* 在脚印上方 */
+  bottom: 20px;
+  width: 30px;
+  height: 30px;
+  background: #000;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  animation: walk 10s linear infinite;
+  z-index: 0;
+}
+
+@keyframes walk {
+  0% { left: -40px; opacity: 0; }
+  10% { opacity: 0.3; }
+  50% { opacity: 0.5; }
+  90% { opacity: 0.3; }
+  100% { left: 100%; opacity: 0; }
 }
 </style>
 </head>
@@ -165,25 +158,13 @@ canvas#audioWave {
   <section id="artwork"></section>
 </div>
 
-<canvas id="audioWave"></canvas>
+<!-- 脚印 -->
+<div class="footprint"></div>
+<div class="footprint" style="animation-delay:3s; width:35px; height:35px;"></div>
 
 <script>
-// 脚印生成
+// 名字 Glitch
 window.onload = function() {
-  const numFootprints = 15;
-  for(let i=0; i<numFootprints; i++){
-    const f = document.createElement('div');
-    f.className = 'footprint';
-    f.style.left = Math.random() * window.innerWidth + 'px';
-    f.style.top = (Math.random() * (window.innerHeight - 150)) + 'px';
-    f.style.width = 30 + Math.random()*20 + 'px';
-    f.style.height = 30 + Math.random()*20 + 'px';
-    f.style.animationDuration = 8 + Math.random()*6 + 's';
-    f.style.opacity = 0.1 + Math.random()*0.2;
-    document.body.appendChild(f);
-  }
-
-  // 名字
   const siteNameDiv = document.getElementById('siteName');
   const nameText = 'Kanny Wu';
   for(let char of nameText) {
@@ -199,7 +180,7 @@ function toggleMenu() {
   menu.classList.toggle('show');
 }
 
-// 点击空白关闭
+// 点击空白关闭菜单
 window.onclick = function(event) {
   const menu = document.getElementById('dropdownMenu');
   const button = document.querySelector('.menu-toggle');
@@ -207,33 +188,6 @@ window.onclick = function(event) {
     menu.classList.remove('show');
   }
 };
-
-// 底部声波
-const canvas = document.getElementById('audioWave');
-const ctx = canvas.getContext('2d');
-
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = 100;
-}
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
-
-let waveData = [];
-for(let i=0;i<100;i++) waveData[i]=Math.random();
-
-function drawWave() {
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  const barWidth = canvas.width / waveData.length;
-  for(let i=0;i<waveData.length;i++){
-    const barHeight = waveData[i]*50;
-    ctx.fillStyle = 'rgba(0,0,0,0.2)';
-    ctx.fillRect(i*barWidth, canvas.height - barHeight, barWidth*0.8, barHeight);
-    waveData[i] = 0.9*waveData[i] + 0.1*Math.random();
-  }
-  requestAnimationFrame(drawWave);
-}
-drawWave();
 </script>
 
 </body>
