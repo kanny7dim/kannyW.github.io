@@ -42,7 +42,7 @@ canvas#bgCanvas {
   z-index: 2;
   display: flex;
   gap: 30px;
-  font-size: 32px; 
+  font-size: 32px;
   font-weight: 700;
   color: var(--fg);
   text-shadow: 0 0 12px rgba(255,255,255,0.8);
@@ -59,25 +59,16 @@ canvas#bgCanvas {
   z-index: 2;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  font-size: 18px;
-  font-weight: 700;
-  color: #fff;
-  text-shadow: 0 0 15px rgba(255,255,255,0.9);
+  gap: 15px;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--fg);
+  text-shadow: 0 0 8px rgba(255,255,255,0.8);
   opacity: 0;
-  transition: opacity 1s ease;
-  display: none;
-}
-.series-wrap.show {
-  display: flex;
-  opacity: 1;
-}
-.series-wrap div {
-  cursor: pointer;
-  position: relative;
+  transition: opacity 1.5s;
 }
 .series-wrap div:hover {
-  text-shadow: 0 0 30px rgba(255,255,255,1);
+  text-shadow: 0 0 20px rgba(255,255,255,1);
 }
 .footer-text {
   position: fixed;
@@ -95,7 +86,7 @@ canvas#bgCanvas {
 }
 @media(max-width:768px){
   .title-wrap { font-size: 24px; gap: 20px; }
-  .series-wrap { font-size: 14px; gap: 8px; }
+  .series-wrap { font-size: 16px; gap: 10px; }
   .footer-text { font-size: 14px; }
 }
 </style>
@@ -109,20 +100,23 @@ canvas#bgCanvas {
 <div class="title-wrap">
   <div id="photographyBtn">Photography</div>
   <div id="soundBtn">Sound</div>
-  <div onclick="location.href='sculpture.html'">Sculpture</div>
+  <div id="sculptureBtn">Sculpture</div>
 </div>
 
-<!-- Photography 系列 -->
-<div class="series-wrap" id="photographySeries">
+<div class="series-wrap" id="photographySeries" style="top:60%; left:40%;">
   <div>Endless World</div>
   <div>Time Line</div>
   <div>Perception</div>
 </div>
 
-<!-- Sound 系列 -->
-<div class="series-wrap" id="soundSeries">
+<div class="series-wrap" id="soundSeries" style="top:60%; left:50%;">
   <div>SoundScape</div>
   <div>Deep Listening</div>
+</div>
+
+<div class="series-wrap" id="sculptureSeries" style="top:60%; left:60%;">
+  <div>Fragile Form</div>
+  <div>Material Dialogues</div>
 </div>
 
 <div class="footer-text">
@@ -148,7 +142,7 @@ const stars = Array.from({length:150},()=>({
   x:Math.random(), y:Math.random(), r:Math.random()*1.5+0.2,
   vx:(Math.random()-0.5)*0.0005, vy:(Math.random()-0.5)*0.0005
 }));
-function drawStars(){
+function draw(){
   ctx.clearRect(0,0,W,H);
   ctx.fillStyle='rgba(8,9,12,0.9)';
   ctx.fillRect(0,0,W,H);
@@ -161,14 +155,14 @@ function drawStars(){
     ctx.arc(s.x*W, s.y*H, s.r,0,Math.PI*2);
     ctx.fill();
   }
-  requestAnimationFrame(drawStars);
+  requestAnimationFrame(draw);
 }
-drawStars();
+draw();
 
-// 中间三个标题漂浮
+// 中间三个单词漂浮动画
 const titles = document.querySelectorAll('.title-wrap div');
 titles.forEach(t=>{
-  let posX=0,posY=0;
+  let posX=0, posY=0;
   function floatAnim(){
     posX += (Math.random()-0.5)*0.3;
     posY += (Math.random()-0.5)*0.3;
@@ -178,18 +172,28 @@ titles.forEach(t=>{
   floatAnim();
 });
 
-// 系列显示效果
-const photographyBtn = document.getElementById('photographyBtn');
-const photographySeries = document.getElementById('photographySeries');
-photographyBtn.addEventListener('click',()=>{
-  photographySeries.classList.toggle('show');
-});
+// 显示系列函数
+function showSeries(series){
+  const allSeries = [photographySeries, soundSeries, sculptureSeries];
+  allSeries.forEach(s=>{
+    if(s===series){
+      s.style.opacity=1;
+      s.style.display='flex';
+    }else{
+      s.style.opacity=0;
+      s.style.display='none';
+    }
+  });
+}
 
-const soundBtn = document.getElementById('soundBtn');
+// 点击事件
+const photographySeries = document.getElementById('photographySeries');
 const soundSeries = document.getElementById('soundSeries');
-soundBtn.addEventListener('click',()=>{
-  soundSeries.classList.toggle('show');
-});
+const sculptureSeries = document.getElementById('sculptureSeries');
+
+document.getElementById('photographyBtn').addEventListener('click',()=>showSeries(photographySeries));
+document.getElementById('soundBtn').addEventListener('click',()=>showSeries(soundSeries));
+document.getElementById('sculptureBtn').addEventListener('click',()=>showSeries(sculptureSeries));
 </script>
 
 </body>
