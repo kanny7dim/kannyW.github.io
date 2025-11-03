@@ -59,16 +59,14 @@ canvas#bgCanvas {
   z-index: 2;
   display: none;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--fg);
+  text-shadow: 0 0 15px rgba(255,255,255,0.9);
+  opacity: 0;
 }
 .series-wrap div {
-  cursor: pointer;
-  color: var(--fg);
-  font-size: 18px;
-  font-weight: 600;
-  text-shadow: 0 0 8px rgba(255,255,255,0.8);
-  opacity: 0;
-  transition: opacity 2s;
   white-space: nowrap;
 }
 .footer-text {
@@ -87,7 +85,7 @@ canvas#bgCanvas {
 }
 @media(max-width:768px){
   .title-wrap { font-size: 24px; gap: 20px; }
-  .series-wrap div { font-size: 16px; }
+  .series-wrap { font-size: 16px; gap: 8px; }
   .footer-text { font-size: 14px; }
 }
 </style>
@@ -104,23 +102,20 @@ canvas#bgCanvas {
   <div id="sculptureBtn">Sculpture</div>
 </div>
 
-<!-- Photography 系列 -->
 <div class="series-wrap" id="photographySeries">
   <div>Endless World</div>
   <div>Time Line</div>
   <div>Perception</div>
 </div>
 
-<!-- Sound 系列 -->
 <div class="series-wrap" id="soundSeries">
   <div>SoundScape</div>
   <div>Deep Listening</div>
 </div>
 
-<!-- Sculpture 系列 -->
 <div class="series-wrap" id="sculptureSeries">
-  <div>Fragile Form</div>
-  <div>Material Echo</div>
+  <div>Endless Form</div>
+  <div>Material Trace</div>
 </div>
 
 <div class="footer-text">
@@ -176,29 +171,53 @@ titles.forEach(t=>{
   floatAnim();
 });
 
-// 点击显示系列
-function setupCategory(btnId, seriesId){
-  const btn = document.getElementById(btnId);
-  const series = document.getElementById(seriesId);
+// 显示对应系列
+function showSeries(btn, series){
   btn.addEventListener('click', ()=>{
-    // 隐藏其他类别
-    document.querySelectorAll('.series-wrap').forEach(s=>{
+    const allSeries = [photographySeries, soundSeries, sculptureSeries];
+    allSeries.forEach(s=>{
       if(s!==series){
         s.style.display='none';
-        s.querySelectorAll('div').forEach(d=>d.style.opacity=0);
+        s.style.opacity=0;
       }
     });
-    // 显示当前系列
-    series.style.display='flex';
-    const items = series.querySelectorAll('div');
-    items.forEach((d,i)=>{
-      setTimeout(()=>{ d.style.opacity=1; }, i*500); // 慢慢淡入
-    });
+    if(series.style.display==='flex'){
+      series.style.display='none';
+      series.style.opacity=0;
+    } else {
+      series.style.display='flex';
+      series.style.opacity=0;
+      let opacity=0;
+      function fadeIn(){
+        opacity +=0.01;
+        if(opacity>1) opacity=1;
+        series.style.opacity=opacity;
+        if(opacity<1) requestAnimationFrame(fadeIn);
+      }
+      fadeIn();
+      // 对齐首字母
+      const btnRect = btn.getBoundingClientRect();
+      Array.from(series.children).forEach((div,i)=>{
+        const divRect = div.getBoundingClientRect();
+        div.style.position='absolute';
+        div.style.top = (btnRect.bottom + i*30) + 'px';
+        div.style.left = btnRect.left + 'px';
+      });
+    }
   });
 }
-setupCategory('photographyBtn','photographySeries');
-setupCategory('soundBtn','soundSeries');
-setupCategory('sculptureBtn','sculptureSeries');
+
+const photographyBtn = document.getElementById('photographyBtn');
+const photographySeries = document.getElementById('photographySeries');
+const soundBtn = document.getElementById('soundBtn');
+const soundSeries = document.getElementById('soundSeries');
+const sculptureBtn = document.getElementById('sculptureBtn');
+const sculptureSeries = document.getElementById('sculptureSeries');
+
+showSeries(photographyBtn, photographySeries);
+showSeries(soundBtn, soundSeries);
+showSeries(sculptureBtn, sculptureSeries);
+
 </script>
 
 </body>
