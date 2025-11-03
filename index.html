@@ -20,7 +20,6 @@
     50% { opacity: 0.5; filter: blur(4px); letter-spacing: 5px; }
     100% { opacity: 1; filter: blur(0); letter-spacing: normal; }
   }
-
   .name {
     font-size: 2.2em;
     font-weight: 600;
@@ -32,37 +31,16 @@
     letter-spacing: 2px;
   }
 
-  /* 中央内容 */
-  .centerContent {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    max-width: 800px;
-    max-height: 80%;
-    overflow-y: auto;
-    color: #111;
-    text-align: center;
-    padding: 40px 20px;
-    line-height: 1.8;
-    font-size: 1.2em;
-    z-index: 500;
-    opacity: 0;
-    transition: opacity 2s ease;
-  }
-
-  /* 菜单 */
+  /* 菜单容器 */
   .menu {
     position: fixed;
     top: 30px;
     right: 40px;
     z-index: 1000;
   }
-
+  /* 折叠菜单按钮 */
   .menu-btn {
-    background-color: rgba(57, 255, 20, 0.3); /* 荧光绿，低透明 */
+    background-color: rgba(0,255,0,0.3); /* 荧光绿，透明 */
     border: none;
     padding: 10px 14px;
     cursor: pointer;
@@ -70,58 +48,81 @@
     font-size: 18px;
     color: #111;
     font-weight: bold;
-    transition: all 0.4s;
+    transition: all 0.3s;
   }
-
-  /* 幽灵柔动特效 */
   .menu-btn:hover {
-    box-shadow: 0 0 25px rgba(57, 255, 20, 0.7);
-    transform: scale(1.05);
+    transform: translateY(-2px) rotate(-1deg); /* 幽灵轻微晃动 */
   }
 
+  /* 菜单内容 */
   .menu-content {
     display: none;
     position: absolute;
     right: 0;
-    background-color: rgba(57, 255, 20, 0.15); /* 半透明背景 */
-    border-radius: 6px;
+    background-color: rgba(0,255,0,0.1); /* 半透明绿色 */
+    border-radius: 5px;
     padding: 10px 20px;
     text-align: right;
-    box-shadow: 0 0 20px rgba(57, 255, 20, 0.4);
-    animation: fadeIn 1s ease forwards;
+    box-shadow: none;
+    animation: fadeIn 0.5s ease forwards;
   }
-
   @keyframes fadeIn {
     from {opacity: 0; transform: translateY(-10px);}
     to {opacity: 1; transform: translateY(0);}
   }
-
   .menu-content a {
     display: block;
     white-space: nowrap;
     color: #111;
     text-decoration: none;
-    margin: 30px 0;
-    font-size: 20px;
+    margin: 25px 0;
+    font-size: 18px;
     font-weight: 600;
-    letter-spacing: 1px;
     border-bottom: 1px solid #111;
-    padding-bottom: 5px;
-    transition: all 0.3s;
+    padding-bottom: 3px;
+    transition: transform 0.3s, opacity 0.3s;
   }
-
   .menu-content a:hover {
-    transform: scale(1.05);
+    transform: translateY(-2px) rotate(-1deg); /* 幽灵效果 */
+  }
+  .show { display: block; }
+
+  /* 中央内容 */
+  .centerContent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    max-width: 600px;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+  }
+  .centerContent.showContent {
+    opacity: 1;
   }
 
-  .show { display: block; animation: fadeIn 1s ease forwards; }
+  /* Instagram 幽灵按钮 */
+  .ghostBtn {
+    color: #111;
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 1px solid #111;
+    padding-bottom: 2px;
+    display: inline-block;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+  }
+  .ghostBtn:hover {
+    transform: translateY(-3px) rotate(-1deg);
+    opacity: 0.8;
+  }
 
-  /* 游戏canvas */
-  #snowGame {
-    display: block;
-    margin: 20px auto 0 auto;
-    border:1px solid #fff;
-    background: rgba(0,0,0,0.2);
+  /* Home 游戏 */
+  #homeGame {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 </style>
 </head>
@@ -129,9 +130,19 @@
 
 <div class="name">KannyWu</div>
 
+<div class="menu">
+  <button class="menu-btn" onclick="toggleMenu()">☰</button>
+  <div id="menuItems" class="menu-content">
+    <a href="#" onclick="showHome()">Home</a>
+    <a href="#" onclick="showBio()">Bio</a>
+    <a href="#" onclick="showArt()">Art Work</a>
+    <a href="#" onclick="showFindMe()">Find Me</a>
+  </div>
+</div>
+
+<!-- 中央内容 -->
 <div id="homeContent" class="centerContent">
-  <p>Welcome to Kanny Wu's Homepage!</p>
-  <canvas id="snowGame" width="400" height="300"></canvas>
+  <canvas id="homeGame" width="300" height="300"></canvas>
 </div>
 
 <div id="bioContent" class="centerContent">
@@ -139,120 +150,105 @@
   <p>Drawing from a background as a classical pianist, Kanny Wu works through sound, image, and sculpture as media to explore perception, fragility, and the position of materials, bodies, and memories in time. Each work creates a dialogue between sensory experience and the world, emphasizing vulnerability, identity, and coexistence.</p>
 </div>
 
+<div id="artContent" class="centerContent">
+  <p>Art Work Placeholder</p>
+</div>
+
 <div id="findMeContent" class="centerContent">
   <p>Email: kannywu227@gmail.com</p>
-  <p>Phone: +358 417216296</p>
-</div>
-
-<div id="artWorkContent" class="centerContent">
-  <p>Art Work gallery placeholder</p>
-</div>
-
-<div class="menu">
-  <button class="menu-btn" onclick="toggleMenu()">☰</button>
-  <div id="menuItems" class="menu-content">
-    <a onclick="showHome()">Home</a>
-    <a onclick="showBio()">Bio</a>
-    <a onclick="showFindMe()">Find Me</a>
-    <a onclick="showArtWork()">Art Work</a>
-  </div>
+  <p>Instagram: <a href="https://www.instagram.com/kanny7dim?igsh=M2N4MTNqdm5rajM1&utm_source=qr" target="_blank" class="ghostBtn">@kanny7dim</a></p>
 </div>
 
 <script>
-const bio = document.getElementById('bioContent');
-const findMe = document.getElementById('findMeContent');
-const home = document.getElementById('homeContent');
-const artWork = document.getElementById('artWorkContent');
-const menu = document.getElementById('menuItems');
-
-// 背景音乐
-const audio = new Audio('https://kanny7dim.github.io/kannyW.github.io/JS1.mp3');
-audio.loop = true;
-
-// 菜单折叠
-function toggleMenu() { menu.classList.toggle('show'); }
-document.addEventListener('click', function(e){
-  const btn = document.querySelector('.menu-btn');
-  if(!menu.contains(e.target) && !btn.contains(e.target)){
-    menu.classList.remove('show');
+  // 菜单折叠
+  function toggleMenu() {
+    document.getElementById("menuItems").classList.toggle("show");
   }
-});
-
-// 显示内容函数
-function hideAllContent(){
-  [bio, findMe, home, artWork].forEach(el=>{
-    el.style.opacity = 0;
-    el.style.display='none';
+  document.addEventListener('click', function(e) {
+    const menu = document.getElementById("menuItems");
+    const btn = document.querySelector('.menu-btn');
+    if (!menu.contains(e.target) && !btn.contains(e.target)) {
+      menu.classList.remove('show');
+    }
   });
-}
 
-function fadeIn(el){
-  el.style.display='block';
-  setTimeout(()=>{ el.style.opacity=1; }, 50);
-}
+  // 中央内容显示控制
+  function hideAllContents() {
+    document.getElementById("homeContent").classList.remove("showContent");
+    document.getElementById("bioContent").classList.remove("showContent");
+    document.getElementById("artContent").classList.remove("showContent");
+    document.getElementById("findMeContent").classList.remove("showContent");
+  }
 
-function showHome(){ 
-  hideAllContent(); 
-  fadeIn(home);
-  audio.play(); 
-}
-function showBio(){ 
-  hideAllContent(); 
-  fadeIn(bio);
-  audio.pause(); 
-}
-function showFindMe(){ 
-  hideAllContent(); 
-  fadeIn(findMe);
-  audio.pause(); 
-}
-function showArtWork(){ 
-  hideAllContent(); 
-  fadeIn(artWork);
-  audio.pause(); 
-}
+  function showHome() {
+    hideAllContents();
+    document.getElementById("homeContent").classList.add("showContent");
+    // 音乐播放控制
+    audio.play();
+  }
 
-// Home 游戏
-const canvas = document.getElementById('snowGame');
-const ctx = canvas.getContext('2d');
-const player = { x: 180, y: 260, width: 40, height: 10, color:'#0ff' };
-const snowflakes = [];
-let score = 0;
+  function showBio() {
+    hideAllContents();
+    document.getElementById("bioContent").classList.add("showContent");
+    audio.pause();
+  }
 
-canvas.addEventListener('mousemove', (e)=>{
-  const rect = canvas.getBoundingClientRect();
-  let mouseX = e.clientX - rect.left;
-  if(mouseX < 0) mouseX = 0;
-  if(mouseX + player.width > canvas.width) mouseX = canvas.width - player.width;
-  player.x = mouseX;
-});
+  function showArt() {
+    hideAllContents();
+    document.getElementById("artContent").classList.add("showContent");
+    audio.pause();
+  }
 
-function createSnowflake() {
-  const x = Math.random() * (canvas.width - 5);
-  snowflakes.push({x: x, y:0, size: 5+Math.random()*5});
-}
-function drawPlayer() { ctx.fillStyle=player.color; ctx.fillRect(player.x,player.y,player.width,player.height);}
-function drawSnowflakes() { ctx.fillStyle='#fff'; snowflakes.forEach(f=>ctx.fillRect(f.x,f.y,f.size,f.size));}
-function updateSnowflakes() {
-  snowflakes.forEach((f,i)=>{
-    f.y+=2;
-    if(f.y+f.size>player.y && f.x+f.size>player.x && f.x<player.x+player.width){ score++; snowflakes.splice(i,1); }
-    else if(f.y>canvas.height){ snowflakes.splice(i,1); }
+  function showFindMe() {
+    hideAllContents();
+    document.getElementById("findMeContent").classList.add("showContent");
+    audio.pause();
+  }
+
+  // 背景音乐
+  const audio = new Audio('https://kanny7dim.github.io/kannyW.github.io/JS1.mp3');
+  audio.loop = true;
+
+  // Home 默认显示
+  showHome();
+
+  // 简单 Home 游戏
+  const canvas = document.getElementById("homeGame");
+  const ctx = canvas.getContext("2d");
+  let snow = [];
+  for(let i=0;i<100;i++){
+    snow.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, r:Math.random()*3+1, d:Math.random()*1});
+  }
+  function drawSnow(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle="white";
+    ctx.beginPath();
+    for(let i=0;i<snow.length;i++){
+      let s = snow[i];
+      ctx.moveTo(s.x, s.y);
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    }
+    ctx.fill();
+    moveSnow();
+    requestAnimationFrame(drawSnow);
+  }
+  function moveSnow(){
+    for(let i=0;i<snow.length;i++){
+      let s = snow[i];
+      s.y += Math.sin(s.d)+0.5;
+      s.x += Math.sin(s.d/2);
+      if(s.y>canvas.height){ s.y=0; s.x=Math.random()*canvas.width;}
+    }
+  }
+  canvas.addEventListener('mousemove', function(e){
+    for(let i=0;i<snow.length;i++){
+      snow[i].x += (e.movementX)/2;
+      snow[i].y += (e.movementY)/2;
+    }
   });
-}
-function clearCanvas(){ctx.clearRect(0,0,canvas.width,canvas.height);}
-function gameLoop(){
-  clearCanvas();
-  drawPlayer();
-  drawSnowflakes();
-  updateSnowflakes();
-  ctx.fillStyle='#fff';
-  ctx.font='14px Arial';
-  ctx.fillText('Score: '+score,10,20);
-  requestAnimationFrame(gameLoop);
-}
-setInterval(createSnowflake,500);
-gameLoop();
+  drawSnow();
+
 </script>
+
 </body>
 </html>
