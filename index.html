@@ -11,10 +11,9 @@
     background: url('https://kanny7dim.github.io/kannyW.github.io/IMG_9403.jpeg') no-repeat center center fixed;
     background-size: cover;
     color: #111;
-    overflow: hidden;
+    overflow-x: hidden;
   }
 
-  /* 名字动画 */
   @keyframes dissolveIn {
     0% { opacity: 0; filter: blur(10px); letter-spacing: 10px; }
     50% { opacity: 0.5; filter: blur(4px); letter-spacing: 5px; }
@@ -32,7 +31,7 @@
     letter-spacing: 2px;
   }
 
-  /* 菜单 */
+  /* 菜单折叠 */
   .menu {
     position: fixed;
     top: 30px;
@@ -41,7 +40,7 @@
   }
 
   .menu-btn {
-    background-color: rgba(0,255,100,0.4);
+    background-color: rgba(0,255,100,0.3);
     border: none;
     padding: 10px 14px;
     cursor: pointer;
@@ -75,13 +74,13 @@
   .menu-content a {
     display: block;
     white-space: nowrap;
-    color: rgba(0,255,100,0.8);
+    color: rgba(0,255,100,0.7);
     text-decoration: none;
     margin: 20px 0;
     font-size: 20px;
     font-weight: 600;
     letter-spacing: 1px;
-    border-bottom: 1px solid rgba(0,255,100,0.6);
+    border-bottom: 1px solid rgba(0,255,100,0.5);
     padding-bottom: 5px;
     transition: all 0.3s;
   }
@@ -92,7 +91,6 @@
 
   .show { display: block; }
 
-  /* 中央内容 */
   #content {
     position: absolute;
     top: 50%;
@@ -128,15 +126,12 @@
     100% {transform: translateY(-5px);}
   }
 
-  /* 游戏画布 */
   #gameCanvas {
     display: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    margin: 0 auto;
     background: rgba(255,255,255,0.1);
   }
+
 </style>
 </head>
 <body>
@@ -157,10 +152,8 @@
 <canvas id="gameCanvas" width="400" height="400"></canvas>
 
 <script>
-  // 菜单折叠
   function toggleMenu() {
-    const menu = document.getElementById("menuItems");
-    menu.classList.toggle("show");
+    document.getElementById("menuItems").classList.toggle("show");
   }
 
   document.addEventListener('click', function(e) {
@@ -175,7 +168,7 @@
   const canvas = document.getElementById('gameCanvas');
   let gameRunning = false;
 
-  // 音乐
+  // 背景音乐，只在Home播放
   const audio = new Audio('https://kanny7dim.github.io/kannyW.github.io/JS1.mp3');
   audio.loop = true;
 
@@ -185,21 +178,23 @@
     content.innerHTML = '';
     content.style.opacity = 0;
 
+    audio.pause(); // 每次点击都先停止音乐
+    audio.currentTime = 0;
+
     if(section === 'home') {
       canvas.style.display = 'block';
-      audio.play().catch(() => console.log("需要用户操作允许播放"));
+      audio.play().catch(()=>console.log("Autoplay blocked"));
       if(!gameRunning) startGame();
-    } else {
-      audio.pause();
-      audio.currentTime = 0;
-      if(section === 'bio') {
-        content.innerHTML = `<p>Kanny Wu</p>
-        <p>Drawing from a background as a classical pianist, Kanny Wu works through sound, image, and sculpture as media to explore perception, fragility, and the position of materials, bodies, and memories in time. Each work creates a dialogue between sensory experience and the world, emphasizing vulnerability, identity, and coexistence.</p>`;
-      } else if(section === 'findme') {
-        content.innerHTML = `<a href="https://www.instagram.com/kanny7dim?igsh=M2N4MTNqdm5rajM1&utm_source=qr" target="_blank" class="insta-btn">Instagram</a>`;
-      } else if(section === 'artwork') {
-        content.innerHTML = `<p>Art Work Section</p>`;
-      }
+    } else if(section === 'bio') {
+      content.innerHTML = `<p>Kanny Wu</p>
+      <p>Drawing from a background as a classical pianist, Kanny Wu works through sound, image, and sculpture as media to explore perception, fragility, and the position of materials, bodies, and memories in time. Each work creates a dialogue between sensory experience and the world, emphasizing vulnerability, identity, and coexistence.</p>`;
+      fadeIn(content);
+    } else if(section === 'findme') {
+      content.innerHTML = `Email: kannywu227@gmail.com<br>
+      <a href="https://www.instagram.com/kanny7dim?igsh=M2N4MTNqdm5rajM1&utm_source=qr" target="_blank" class="insta-btn">Instagram</a>`;
+      fadeIn(content);
+    } else if(section === 'artwork') {
+      content.innerHTML = `<p>Art Work Section</p>`;
       fadeIn(content);
     }
   }
@@ -221,27 +216,25 @@
       snowflakes.push({x:Math.random()*width, y:Math.random()*height, r:Math.random()*3+2, dx:0});
     }
 
+    let playerX = width/2;
+
     canvas.addEventListener('mousemove', e=>{
       playerX = e.offsetX;
     });
 
-    let playerX = width/2;
-
     function draw() {
       ctx.clearRect(0,0,width,height);
 
-      // player
       ctx.fillStyle='rgba(0,255,100,0.7)';
       ctx.fillRect(playerX-20,height-10,40,10);
 
-      // snowflakes
       ctx.fillStyle='white';
       for(let flake of snowflakes){
         ctx.beginPath();
         ctx.arc(flake.x, flake.y, flake.r,0,Math.PI*2);
         ctx.fill();
 
-        flake.y += 0.5; // 下落慢
+        flake.y += 1; 
         if(Math.abs(flake.x - playerX)<20 && flake.y>height-20){
           score++;
           flake.y=0;
@@ -262,6 +255,7 @@
 
     draw();
   }
-</script>
-</body>
-</html>
+
+  // 默认显示Home
+  showContent('home');
+</script
