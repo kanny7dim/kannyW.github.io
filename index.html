@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Kanny Wu</title>
+<title>KannyWu</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
 /* 全局样式 */
@@ -118,26 +118,6 @@ section {
   border-bottom: 1px solid #bbb;
   margin-bottom: 80px;
 }
-
-/* 底部黑色脚印 */
-.footprint {
-  position: fixed;
-  bottom: 20px;
-  width: 30px;
-  height: 30px;
-  background: #000;
-  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-  animation: walk 10s linear infinite;
-  z-index: 0;
-}
-
-@keyframes walk {
-  0% { left: -40px; opacity: 0; }
-  10% { opacity: 0.3; }
-  50% { opacity: 0.5; }
-  90% { opacity: 0.3; }
-  100% { left: 100%; opacity: 0; }
-}
 </style>
 </head>
 <body>
@@ -158,15 +138,11 @@ section {
   <section id="artwork"></section>
 </div>
 
-<!-- 脚印 -->
-<div class="footprint"></div>
-<div class="footprint" style="animation-delay:3s; width:35px; height:35px;"></div>
-
 <script>
 // 名字 Glitch
 window.onload = function() {
   const siteNameDiv = document.getElementById('siteName');
-  const nameText = 'Kanny Wu';
+  const nameText = 'KannyWu';
   for(let char of nameText) {
     const span = document.createElement('span');
     span.textContent = char;
