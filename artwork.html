@@ -8,7 +8,7 @@
 :root {
   --bg: #0b0b0f;
   --fg: #ffffff;
-  --cursor: #00ff00;
+  --cursor: #0f0; /* 荧光绿 */
 }
 html, body {
   margin: 0;
@@ -18,7 +18,7 @@ html, body {
   background: var(--bg);
   color: var(--fg);
   overflow: hidden;
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="32" width="32"><circle cx="16" cy="16" r="6" fill="lime"/></svg>') 16 16, auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="32" width="32"><circle cx="16" cy="16" r="8" fill="lime"/></svg>') 16 16, auto;
 }
 canvas#bgCanvas {
   position: absolute;
@@ -54,33 +54,31 @@ canvas#bgCanvas {
   position: relative;
 }
 .title-wrap div:hover {
-  text-shadow: 0 0 25px var(--cursor);
+  text-shadow: 0 0 25px rgba(0,255,0,1);
 }
 .series-wrap {
   position: absolute;
   top: 60%;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 2;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  align-items: flex-start;
+  gap: 10px;
   font-size: 20px;
   font-weight: 600;
   color: var(--fg);
-  text-shadow: 0 0 15px rgba(255,255,255,0.8);
+  text-shadow: 0 0 12px rgba(255,255,255,0.9);
   opacity: 0;
-  transition: opacity 1.5s;
-  pointer-events: none;
-}
-.series-wrap.show {
-  opacity: 1;
-  pointer-events: auto;
+  transition: opacity 2s ease-in-out;
 }
 .series-wrap div {
   cursor: pointer;
   position: relative;
 }
 .series-wrap div:hover {
-  text-shadow: 0 0 25px rgba(0,255,0,1);
+  text-shadow: 0 0 25px rgba(0,255,255,1);
 }
 .footer-text {
   position: fixed;
@@ -98,7 +96,7 @@ canvas#bgCanvas {
 }
 @media(max-width:768px){
   .title-wrap { font-size: 24px; gap: 20px; }
-  .series-wrap { font-size: 16px; gap: 10px; }
+  .series-wrap { font-size: 16px; gap: 8px; }
   .footer-text { font-size: 14px; }
 }
 </style>
@@ -115,20 +113,20 @@ canvas#bgCanvas {
   <div id="sculptureBtn">Sculpture</div>
 </div>
 
-<div class="series-wrap" id="photographySeries" style="left:50%; transform: translateX(-50%);">
-  <div onclick="location.href='photography/EndlessWorld.html'">Endless World</div>
-  <div onclick="location.href='photography/TimeLine.html'">Time Line</div>
-  <div onclick="location.href='photography/Perception.html'">Perception</div>
+<div class="series-wrap" id="photographySeries">
+  <div onclick="location.href='endless-world.html'">Endless World</div>
+  <div onclick="location.href='timeline.html'">Time Line</div>
+  <div onclick="location.href='reshaping.html'">Reshaping</div>
 </div>
 
-<div class="series-wrap" id="soundSeries" style="left:50%; transform: translateX(-50%);">
-  <div onclick="location.href='sound/SoundScape.html'">SoundScape</div>
-  <div onclick="location.href='sound/DeepListening.html'">Deep Listening</div>
+<div class="series-wrap" id="soundSeries">
+  <div onclick="location.href='soundscape.html'">SoundScape</div>
+  <div onclick="location.href='deeplistening.html'">Deep Listening</div>
 </div>
 
-<div class="series-wrap" id="sculptureSeries" style="left:50%; transform: translateX(-50%);">
-  <div onclick="location.href='sculpture/Sculpture1.html'">Sculpture Series 1</div>
-  <div onclick="location.href='sculpture/Sculpture2.html'">Sculpture Series 2</div>
+<div class="series-wrap" id="sculptureSeries">
+  <div onclick="location.href='sculpture-series1.html'">Sculpture Series 1</div>
+  <div onclick="location.href='sculpture-series2.html'">Sculpture Series 2</div>
 </div>
 
 <div class="footer-text">
@@ -184,7 +182,7 @@ titles.forEach(t=>{
   floatAnim();
 });
 
-// 显示对应系列
+// 系列显示逻辑
 const photographyBtn = document.getElementById('photographyBtn');
 const soundBtn = document.getElementById('soundBtn');
 const sculptureBtn = document.getElementById('sculptureBtn');
@@ -194,23 +192,22 @@ const soundSeries = document.getElementById('soundSeries');
 const sculptureSeries = document.getElementById('sculptureSeries');
 
 function hideAllSeries(){
-  photographySeries.classList.remove('show');
-  soundSeries.classList.remove('show');
-  sculptureSeries.classList.remove('show');
+  photographySeries.style.opacity=0;
+  soundSeries.style.opacity=0;
+  sculptureSeries.style.opacity=0;
 }
 
-// 鼠标悬停显示系列
-photographyBtn.addEventListener('mouseenter', ()=>{
+photographyBtn.addEventListener('mouseenter',()=>{
   hideAllSeries();
-  photographySeries.classList.add('show');
+  photographySeries.style.opacity=1;
 });
-soundBtn.addEventListener('mouseenter', ()=>{
+soundBtn.addEventListener('mouseenter',()=>{
   hideAllSeries();
-  soundSeries.classList.add('show');
+  soundSeries.style.opacity=1;
 });
-sculptureBtn.addEventListener('mouseenter', ()=>{
+sculptureBtn.addEventListener('mouseenter',()=>{
   hideAllSeries();
-  sculptureSeries.classList.add('show');
+  sculptureSeries.style.opacity=1;
 });
 </script>
 
