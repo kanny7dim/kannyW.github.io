@@ -8,7 +8,6 @@
   :root {
     --bg: #0b0b0f;
     --fg: #ffffff;
-    --accent: #9bd3ff;
   }
   html, body {
     margin: 0;
@@ -27,21 +26,20 @@
   }
   .title-wrap {
     position: absolute;
-    top: 40%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 2;
     display: flex;
-    gap: 60px;
-    font-size: 72px;
+    gap: 50px;
+    font-size: 48px; /* 调小字体 */
     font-weight: 700;
     cursor: pointer;
     color: var(--fg);
-    text-shadow: 0 0 10px rgba(255,255,255,0.8);
+    text-shadow: 0 0 12px rgba(255,255,255,0.8);
   }
   .title-wrap div:hover {
-    color: var(--accent);
-    text-shadow: 0 0 20px var(--accent);
+    text-shadow: 0 0 25px rgba(255,255,255,1); /* 光标移动发光 */
   }
   .back-btn {
     position: fixed;
@@ -50,7 +48,7 @@
     font-size: 32px;
     color: #fff;
     text-decoration: none;
-    text-shadow: 0 0 10px #fff;
+    text-shadow: 0 0 12px #fff;
     z-index: 3;
   }
   .footer-text {
@@ -59,15 +57,15 @@
     width: 100%;
     text-align: center;
     color: #fff;
-    font-size: 20px;
+    font-size: 18px;
     text-shadow: 0 0 12px #fff;
     z-index: 2;
-    padding: 0 20px;
-    line-height: 1.4;
+    padding: 0 30px;
+    line-height: 1.5;
   }
   @media(max-width:768px){
-    .title-wrap { font-size: 48px; gap: 40px; }
-    .footer-text { font-size: 16px; }
+    .title-wrap { font-size: 36px; gap: 30px; }
+    .footer-text { font-size: 16px; padding: 0 20px; }
   }
 </style>
 </head>
