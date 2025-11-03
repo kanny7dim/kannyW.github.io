@@ -5,68 +5,73 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Art Work</title>
 <style>
-  :root {
-    --bg: #0b0b0f;
-    --fg: #ffffff;
-  }
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: "Helvetica Neue", Arial, sans-serif;
-    background: var(--bg);
-    color: var(--fg);
-    overflow: hidden;
-  }
-  canvas#bgCanvas {
-    position: absolute;
-    top:0; left:0;
-    width: 100%; height: 100%;
-    z-index: 0;
-  }
-  .title-wrap {
-    position: absolute;
-    top: 45%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 2;
-    display: flex;
-    gap: 50px;
-    font-size: 48px; /* 调小字体 */
-    font-weight: 700;
-    cursor: pointer;
-    color: var(--fg);
-    text-shadow: 0 0 12px rgba(255,255,255,0.8);
-  }
-  .title-wrap div:hover {
-    text-shadow: 0 0 25px rgba(255,255,255,1); /* 光标移动发光 */
-  }
-  .back-btn {
-    position: fixed;
-    top: 30px;
-    right: 40px;
-    font-size: 32px;
-    color: #fff;
-    text-decoration: none;
-    text-shadow: 0 0 12px #fff;
-    z-index: 3;
-  }
-  .footer-text {
-    position: fixed;
-    bottom: 30px;
-    width: 100%;
-    text-align: center;
-    color: #fff;
-    font-size: 18px;
-    text-shadow: 0 0 12px #fff;
-    z-index: 2;
-    padding: 0 30px;
-    line-height: 1.5;
-  }
-  @media(max-width:768px){
-    .title-wrap { font-size: 36px; gap: 30px; }
-    .footer-text { font-size: 16px; padding: 0 20px; }
-  }
+:root {
+  --bg: #0b0b0f;
+  --fg: #ffffff;
+}
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  overflow: hidden;
+}
+canvas#bgCanvas {
+  position: absolute;
+  top:0; left:0;
+  width: 100%; height: 100%;
+  z-index: 0;
+}
+.back-btn {
+  position: fixed;
+  top: 30px;
+  right: 40px;
+  font-size: 32px;
+  color: #fff;
+  text-decoration: none;
+  text-shadow: 0 0 12px #fff;
+  z-index: 3;
+}
+.title-wrap {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  display: flex;
+  gap: 30px;
+  font-size: 32px; /* 中间文字适中 */
+  font-weight: 700;
+  color: var(--fg);
+  text-shadow: 0 0 12px rgba(255,255,255,0.8);
+}
+.title-wrap div {
+  cursor: pointer;
+  position: relative;
+}
+.title-wrap div:hover {
+  text-shadow: 0 0 25px rgba(255,255,255,1); /* 光标发光效果 */
+}
+.footer-text {
+  position: fixed;
+  bottom: 30px;
+  width: 90%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: #fff;
+  font-size: 16px;
+  text-shadow: 0 0 12px #fff;
+  z-index: 2;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+@media(max-width:768px){
+  .title-wrap { font-size: 24px; gap: 20px; }
+  .footer-text { font-size: 14px; }
+}
 </style>
 </head>
 <body>
@@ -82,7 +87,8 @@
 </div>
 
 <div class="footer-text">
-Through sound, photography, and sculpture, they navigate the unknown, attuning to fragility, tenderness, and resilience; every trace speaks.
+By means of sound, photography, and sculpture, they probe the unknown,<br>
+perceiving fragility, grace, and resilience; all is inscribed, all is traceable.
 </div>
 
 <script>
@@ -93,26 +99,41 @@ function resize(){ W=canvas.clientWidth; H=canvas.clientHeight; canvas.width=W; 
 window.addEventListener('resize',resize);
 resize();
 
-// 星空粒子
-const stars = Array.from({length:150},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.6+0.2,vx:(Math.random()-0.5)*0.0008,vy:(Math.random()-0.5)*0.0008}));
+// 星空粒子背景
+const stars = Array.from({length:150},()=>({
+  x:Math.random(), y:Math.random(), r:Math.random()*1.5+0.2,
+  vx:(Math.random()-0.5)*0.0005, vy:(Math.random()-0.5)*0.0005
+}));
 
-function draw(time){
+function draw(){
   ctx.clearRect(0,0,W,H);
   ctx.fillStyle='rgba(8,9,12,0.9)';
   ctx.fillRect(0,0,W,H);
   for(const s of stars){
-    s.x += s.vx;
-    s.y += s.vy;
+    s.x += s.vx; s.y += s.vy;
     if(s.x<0)s.x=1;if(s.x>1)s.x=0;
     if(s.y<0)s.y=1;if(s.y>1)s.y=0;
     ctx.beginPath();
     ctx.fillStyle='rgba(255,255,255,'+(0.6*Math.random()+0.2)+')';
-    ctx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);
+    ctx.arc(s.x*W, s.y*H, s.r,0,Math.PI*2);
     ctx.fill();
   }
   requestAnimationFrame(draw);
 }
-requestAnimationFrame(draw);
+draw();
+
+// 中间三个单词漂浮动画
+const titles = document.querySelectorAll('.title-wrap div');
+titles.forEach(t=>{
+  let posX=0, posY=0;
+  function floatAnim(){
+    posX += (Math.random()-0.5)*0.3;
+    posY += (Math.random()-0.5)*0.3;
+    t.style.transform=`translate(${posX}px, ${posY}px)`;
+    requestAnimationFrame(floatAnim);
+  }
+  floatAnim();
+});
 </script>
 
 </body>
