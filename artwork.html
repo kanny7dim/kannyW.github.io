@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Art Work — Floating Letters</title>
+<style>
+  :root {
+    --bg: #0b0b0f;
+    --fg: #f4f4f6;
+    --accent: #9bd3ff;
+  }
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: "Helvetica Neue", Arial, sans-serif;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  header { padding: 20px; text-align: left; }
+  .panel {
+    position: relative;
+    height: 70vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  canvas#bgCanvas {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+  }
+  .title-wrap { position: relative; z-index: 10; }
+  svg#titleSVG {
+    width: 90%; height: 150px; overflow: visible;
+  }
+  .letter { font-size: 48px; fill: var(--fg); cursor: pointer; text-anchor: middle; dominant-baseline: middle; }
+  .letter:hover { fill: var(--accent); }
+  .link-line { stroke: rgba(155,211,255,0.45); stroke-width: 1.6; stroke-linecap: round; }
+  .controls { margin-top: 10px; display: flex; gap: 10px; justify-content: center; }
+  .chip { background: rgba(255,255,255,0.03); padding: 6px 12px; border-radius: 999px; cursor: pointer; }
+  .chip.active { background: rgba(155,211,255,0.12); border: 1px solid rgba(155,211,255,0.22); }
+  .content { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .card { background: rgba(255,255,255,0.02); padding: 12px; border-radius: 10px; min-width: 180px; }
+  .card h4 { margin: 0 0 4px 0; font-size: 16px; }
+  .card p { margin: 0; font-size: 13px; color: rgba(255,255,255,0.7); }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html">← 回主页</a>
+</header>
+
+<section class="panel">
+  <canvas id="bgCanvas"></canvas>
+  <div class="title-wrap">
+    <svg id="titleSVG" viewBox="0 0 1200 200"></svg>
+  </div>
+</section>
+
+<div class="controls" id="controls">
+  <div class="chip active" data-cat="Photography">Photography</div>
+  <div class="chip" data-cat="Sound">Sound</div>
+  <div class="chip" data-cat="Sculpture">Sculpture</div>
+</div>
+
+<main class="content" id="content">
+  <div class="card" data-cat="Photography">
+    <h4>Photography — Seed</h4>
+    <p>Blue cyanotype, 2024.</p>
+  </div>
+  <div class="card" data-cat="Sound" style="display:none;">
+    <h4>Sound — Echo I</h4>
+    <p>Field recording, 2023.</p>
+  </div>
+  <div class="card" data-cat="Sculpture" style="display:none;">
+    <h4>Sculpture — Fragile Form</h4>
+    <p>Ceramic and wire, 2024.</p>
+  </div>
+</main>
+
+<script>
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+let W=0,H=0;
+function resize() {
+  W = canvas.clientWidth;
+  H = canvas.clientHeight;
+  canvas.width = W;
+  canvas.height = H;
+}
+window.addEventListener('resize', resize);
+resize();
+
+// 星空粒子
+const stars = Array.from({length:120},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.6+0.2,vx:(Math.random()-0.5)*0.0008,vy:(Math.random()-0.5)*0.0008}));
+
+function draw(time){
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='rgba(8,9,12,0.9)';
+  ctx.fillRect(0,0,W,H);
+
+  for(const s of stars){
+    s.x += s.vx;
+    s.y += s.vy;
+    if(s.x<0) s.x=1;if(s.x>1)s.x=0;
+    if(s.y<0) s.y=1;if(s.y>1)s.y=0;
+    ctx.beginPath();
+    ctx.fillStyle='rgba(255,255,255,'+(0.6*Math.random()+0.2)+')';
+    ctx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);
+    ctx.fill();
+  }
+
+  requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+
+// 字母标题
+const svg = document.getElementById('titleSVG');
+const words=['Photography','Sound','Sculpture'];
+const fullTitle = words.join(' / ');
+let letters = [];
+function createLetters(){
+  svg.innerHTML='';
+  const left=60, right=60;
+  const usable=1200-left-right;
+  const chars=fullTitle.split('');
+  const baseGap=usable/(chars.length-1);
+  let curX=left;
+  for(let i=0;i<chars.length;i++){
+    const ch=chars[i];
+    const el=document.createElementNS('http://www.w3.org/2000/svg','text');
+    el.setAttribute('class','letter');
+    el.textContent=ch;
+    const x=curX,y=100;
+    el.setAttribute('x',x);
+    el.setAttribute('y',y);
+    svg.appendChild(el);
+    letters.push({el,x,y,vx:(Math.random()-0.5)*0.4,vy:(Math.random()-0.5)*0.25});
+    curX += (ch===' '||ch==='/'?baseGap*0.6:baseGap);
+  }
+}
+createLetters();
+
+function animateLetters(t){
+  letters.forEach((L,i)=>{
+    const dx=Math.sin(t*0.6 + i*0.2)*2;
+    const dy=Math.cos(t*0.8 + i*0.15)*1.2;
+    L.el.setAttribute('x', L.x+dx);
+    L.el.setAttribute('y', L.y+dy);
+  });
+  requestAnimationFrame(animateLetters);
+}
+requestAnimationFrame(animateLetters);
+
+// 分类切换
+const chips = document.querySelectorAll('.chip');
+const cards = document.querySelectorAll('.card');
+chips.forEach(ch=>ch.addEventListener('click',()=>{
+  const cat=ch.dataset.cat;
+  chips.forEach(c=>c.classList.toggle('active',c===ch));
+  cards.forEach(card=>card.style.display=card.dataset.cat===cat?'':'none');
+}));
+</script>
+
+</body>
+</html>
