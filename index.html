@@ -33,36 +33,17 @@
     letter-spacing: 2px;
   }
 
-  /* 音乐按钮左上角 */
-  .music-btn {
-    position: absolute;
-    top: 90px; /* 名字下面 */
-    left: 40px;
-    width: 40px;
-    height: 40px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 24px;
-    color: #111;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    opacity: 0.6;
-    transition: opacity 0.3s;
-  }
-  .music-btn:hover { opacity: 1; }
-
   /* 菜单 */
   .menu {
     position: fixed;
     top: 30px;
     right: 40px;
     z-index: 1000;
+    display: flex;
+    flex-direction: column;
   }
   .menu-btn {
-    background-color: rgba(255,140,0,0.7);
+    background-color: rgba(144, 255, 120, 0.7); /* 柔和荧光绿 */
     border: none;
     padding: 10px 14px;
     cursor: pointer;
@@ -104,7 +85,6 @@
     padding: 40px 20px;
     line-height: 1.8;
     font-size: 1.2em;
-    background: rgba(255,255,255,0.0);
     z-index: 500;
     opacity: 1;
   }
@@ -116,24 +96,19 @@
 
 <div class="name">KannyWu</div>
 
-<!-- 音乐按钮 -->
-<button class="music-btn" id="playMusicBtn">🎧</button>
-
-<!-- Bio 内容 -->
+<!-- 中央内容 -->
 <div id="bioContent" class="centerContent">
   <p>Kanny Wu</p>
   <p>Drawing from a background as a classical pianist, Kanny Wu works through sound, image, and sculpture as media to explore perception, fragility, and the position of materials, bodies, and memories in time. Each work creates a dialogue between sensory experience and the world, emphasizing vulnerability, identity, and coexistence.</p>
 </div>
 
-<!-- Find Me 内容 -->
 <div id="findMeContent" class="centerContent">
   <p>Email: kannywu227@gmail.com</p>
   <p>Phone: +358 417216296</p>
 </div>
 
-<!-- Home 内容 -->
 <div id="homeContent" class="centerContent">
-  <!-- 可空或显示主页信息 -->
+  <!-- 可自定义主页信息 -->
 </div>
 
 <!-- 菜单 -->
@@ -152,10 +127,6 @@
   // 背景音乐
   const audio = new Audio('https://kanny7dim.github.io/kannyW.github.io/JS1.mp3');
   audio.loop = true;
-  const musicBtn = document.getElementById('playMusicBtn');
-  musicBtn.addEventListener('click', () => {
-    audio.play().catch(()=>console.log("Autoplay blocked, user interaction needed"));
-  });
 
   function hideAll() {
     [bio, findMe, home].forEach(el=>el.style.display='none');
@@ -165,25 +136,24 @@
   function showHome() {
     hideAll();
     home.style.display='block';
-    audio.play().catch(()=>console.log("Autoplay blocked, user interaction needed"));
+    // 点击Home时控制音乐
+    if(audio.paused) audio.play().catch(()=>console.log("Autoplay blocked"));
+    else audio.pause();
   }
 
   function showBio() {
     hideAll();
     bio.style.display='block';
-    stopMusic();
   }
 
   function showFindMe() {
     hideAll();
     findMe.style.display='block';
-    stopMusic();
   }
 
   function showArtWork() {
     hideAll();
-    // 可在这里显示作品
-    stopMusic();
+    // 可添加作品展示
   }
 
   function stopMusic() {
