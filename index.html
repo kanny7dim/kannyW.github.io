@@ -32,24 +32,23 @@
     letter-spacing: 2px;
   }
 
-  /* 耳朵播放音乐按钮 */
+  /* CD 播放音乐按钮 */
   .music-btn {
     position: absolute;
     top: 90px; /* 在名字下面 */
     left: 40px;
     width: 40px;
     height: 40px;
-    background: transparent; /* 透明背景 */
+    background: transparent;
     border: none;
     cursor: pointer;
-    font-size: 24px;
-    color: #111;
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
     opacity: 0.6; /* 半透明 */
     transition: opacity 0.3s;
+    font-size: 28px; /* CD 图标大小 */
   }
 
   .music-btn:hover {
@@ -86,7 +85,7 @@
     display: none;
     position: absolute;
     right: 0;
-    background-color: transparent; /* 去掉白色框 */
+    background-color: transparent;
     border-radius: 0;
     padding: 0;
     text-align: right;
@@ -102,15 +101,15 @@
   /* 导航链接样式 */
   .menu-content a {
     display: block;
-    white-space: nowrap; /* 保证 Art Work 不拆行 */
+    white-space: nowrap;
     color: #111;
     text-decoration: none;
-    margin: 40px 0; /* 上下间隔更大 */
+    margin: 40px 0;
     font-size: 20px;
     font-weight: 600;
     letter-spacing: 1px;
-    border-bottom: 1px solid #111; /* 每条名字下方横线 */
-    padding-bottom: 5px; /* 横线和文字稍微分开 */
+    border-bottom: 1px solid #111;
+    padding-bottom: 5px;
     transition: color 0.3s;
   }
 
@@ -126,8 +125,8 @@
 
 <div class="name">KannyWu</div>
 
-<!-- 耳朵播放音乐按钮 -->
-<button class="music-btn" id="playMusicBtn">👂</button>
+<!-- CD 播放音乐按钮 -->
+<button class="music-btn" id="playMusicBtn">💿</button>
 
 <div class="menu">
   <button class="menu-btn" onclick="toggleMenu()">☰</button>
@@ -158,7 +157,7 @@
   const audio = new Audio('https://kanny7dim.github.io/kannyW.github.io/JS1.mp3');
   audio.loop = true;
 
-  // 点击耳朵按钮播放音乐（浏览器允许）
+  // 点击 CD 按钮播放音乐，不隐藏按钮
   document.getElementById('playMusicBtn').addEventListener('click', () => {
       audio.play().catch(() => console.log("Autoplay blocked, user interaction needed"));
   });
