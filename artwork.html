@@ -56,25 +56,20 @@ canvas#bgCanvas {
 }
 .series-wrap {
   position: absolute;
-  top: 0;
-  left: 0;
   z-index: 2;
-  display: flex;
+  display: none;
   flex-direction: column;
-  gap: 10px;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--fg);
-  text-shadow: 0 0 15px rgba(255,255,255,0.9);
-  opacity: 0;
-  transition: opacity 2s ease;
+  gap: 12px;
 }
 .series-wrap div {
   cursor: pointer;
-  position: relative;
-}
-.series-wrap div:hover {
-  text-shadow: 0 0 25px rgba(255,255,255,1);
+  color: var(--fg);
+  font-size: 18px;
+  font-weight: 600;
+  text-shadow: 0 0 8px rgba(255,255,255,0.8);
+  opacity: 0;
+  transition: opacity 2s;
+  white-space: nowrap;
 }
 .footer-text {
   position: fixed;
@@ -92,7 +87,7 @@ canvas#bgCanvas {
 }
 @media(max-width:768px){
   .title-wrap { font-size: 24px; gap: 20px; }
-  .series-wrap { font-size: 14px; gap: 8px; }
+  .series-wrap div { font-size: 16px; }
   .footer-text { font-size: 14px; }
 }
 </style>
@@ -109,19 +104,23 @@ canvas#bgCanvas {
   <div id="sculptureBtn">Sculpture</div>
 </div>
 
+<!-- Photography 系列 -->
 <div class="series-wrap" id="photographySeries">
   <div>Endless World</div>
   <div>Time Line</div>
   <div>Perception</div>
 </div>
 
+<!-- Sound 系列 -->
 <div class="series-wrap" id="soundSeries">
   <div>SoundScape</div>
   <div>Deep Listening</div>
 </div>
 
+<!-- Sculpture 系列 -->
 <div class="series-wrap" id="sculptureSeries">
   <div>Fragile Form</div>
+  <div>Material Echo</div>
 </div>
 
 <div class="footer-text">
@@ -177,48 +176,29 @@ titles.forEach(t=>{
   floatAnim();
 });
 
-// 系列管理
-const photographyBtn = document.getElementById('photographyBtn');
-const soundBtn = document.getElementById('soundBtn');
-const sculptureBtn = document.getElementById('sculptureBtn');
-
-const photographySeries = document.getElementById('photographySeries');
-const soundSeries = document.getElementById('soundSeries');
-const sculptureSeries = document.getElementById('sculptureSeries');
-
-function hideAllSeries(){
-  photographySeries.style.opacity = 0;
-  soundSeries.style.opacity = 0;
-  sculptureSeries.style.opacity = 0;
-}
-
-// 对齐首字母
-function alignSeries(seriesDiv, targetDiv){
-  const targetRect = targetDiv.getBoundingClientRect();
-  const seriesChildren = Array.from(seriesDiv.children);
-  let top = targetRect.bottom + 10; // 稍微下方
-  seriesChildren.forEach((child,i)=>{
-    child.style.position='absolute';
-    child.style.left = `${targetRect.left}px`;
-    child.style.top = `${top + i*30}px`;
+// 点击显示系列
+function setupCategory(btnId, seriesId){
+  const btn = document.getElementById(btnId);
+  const series = document.getElementById(seriesId);
+  btn.addEventListener('click', ()=>{
+    // 隐藏其他类别
+    document.querySelectorAll('.series-wrap').forEach(s=>{
+      if(s!==series){
+        s.style.display='none';
+        s.querySelectorAll('div').forEach(d=>d.style.opacity=0);
+      }
+    });
+    // 显示当前系列
+    series.style.display='flex';
+    const items = series.querySelectorAll('div');
+    items.forEach((d,i)=>{
+      setTimeout(()=>{ d.style.opacity=1; }, i*500); // 慢慢淡入
+    });
   });
 }
-
-photographyBtn.addEventListener('click',()=>{
-  hideAllSeries();
-  alignSeries(photographySeries, photographyBtn);
-  photographySeries.style.opacity = 1;
-});
-soundBtn.addEventListener('click',()=>{
-  hideAllSeries();
-  alignSeries(soundSeries, soundBtn);
-  soundSeries.style.opacity = 1;
-});
-sculptureBtn.addEventListener('click',()=>{
-  hideAllSeries();
-  alignSeries(sculptureSeries, sculptureBtn);
-  sculptureSeries.style.opacity = 1;
-});
+setupCategory('photographyBtn','photographySeries');
+setupCategory('soundBtn','soundSeries');
+setupCategory('sculptureBtn','sculptureSeries');
 </script>
 
 </body>
