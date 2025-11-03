@@ -71,32 +71,9 @@
     color: #111;
     font-weight: bold;
     transition: background-color 0.3s;
+    margin-bottom: 8px;
   }
   .menu-btn:hover { background-color: rgba(255,140,0,0.9); }
-
-  .menu-content {
-    display: none;
-    position: absolute;
-    right: 0;
-    background-color: transparent;
-    text-align: right;
-    padding: 0;
-  }
-  .menu-content a {
-    display: block;
-    white-space: nowrap;
-    color: #111;
-    text-decoration: none;
-    margin: 40px 0;
-    font-size: 20px;
-    font-weight: 600;
-    border-bottom: 1px solid #111;
-    padding-bottom: 5px;
-    transition: color 0.3s;
-  }
-  .menu-content a:hover { color: #ff8800; }
-  .show { display: block; animation: fadeIn 1.5s ease forwards; }
-  @keyframes fadeIn { from {opacity:0; transform:translateY(-10px);} to {opacity:1; transform:translateY(0);} }
 
   /* 中央内容容器 */
   .centerContent {
@@ -117,8 +94,7 @@
     font-size: 1.2em;
     background: rgba(255,255,255,0.0);
     z-index: 500;
-    opacity: 0;
-    transition: opacity 2s ease-in;
+    opacity: 1;
   }
 
   /* Find Me 联系方式 */
@@ -147,69 +123,62 @@
   <p>Phone: +358 417216296</p>
 </div>
 
+<!-- Home 内容 (可以显示主页背景、名字动画) -->
+<div id="homeContent" class="centerContent">
+  <!-- 可以为空或者显示主页信息 -->
+</div>
+
 <!-- 菜单 -->
 <div class="menu">
-  <button class="menu-btn" onclick="toggleMenu()">☰</button>
-  <div id="menuItems" class="menu-content">
-    <a href="#" onclick="showBio()">Bio</a>
-    <a href="#" onclick="showFindMe()">Find Me</a>
-    <a href="#" onclick="stopMusic()">Art Work</a>
-  </div>
+  <button class="menu-btn" onclick="showHome()">Home</button>
+  <button class="menu-btn" onclick="showBio()">Bio</button>
+  <button class="menu-btn" onclick="showFindMe()">Find Me</button>
+  <button class="menu-btn" onclick="showArtWork()">Art Work</button>
 </div>
 
 <script>
   const bio = document.getElementById('bioContent');
   const findMe = document.getElementById('findMeContent');
-  const menu = document.getElementById("menuItems");
-  const btn = document.querySelector('.menu-btn');
-
-  // 菜单折叠
-  function toggleMenu() {
-    menu.classList.toggle("show");
-  }
-
-  // 点击页面其他地方关闭菜单，同时隐藏 Bio 和 Find Me
-  document.addEventListener('click', function(e) {
-    if (!menu.contains(e.target) && !btn.contains(e.target)) {
-      menu.classList.remove('show');
-      hideContent();
-    }
-  });
-
-  // 显示 Bio
-  function showBio() {
-    hideContent();
-    bio.style.display = 'block';
-    setTimeout(()=>{ bio.style.opacity = 1; }, 50);
-    stopMusic(); // 停止音乐
-  }
-
-  // 显示 Find Me
-  function showFindMe() {
-    hideContent();
-    findMe.style.display = 'block';
-    setTimeout(()=>{ findMe.style.opacity = 1; }, 50);
-    stopMusic(); // 停止音乐
-  }
-
-  // 隐藏所有中央内容
-  function hideContent() {
-    [bio, findMe].forEach(el=>{
-      el.style.opacity = 0;
-      setTimeout(()=>{ el.style.display = 'none'; }, 500);
-    });
-  }
+  const home = document.getElementById('homeContent');
+  const menu = document.querySelector('.menu');
 
   // 背景音乐
   const audio = new Audio('https://kanny7dim.github.io/kannyW.github.io/JS1.mp3');
   audio.loop = true;
-
-  // 点击音乐按钮播放音乐
-  document.getElementById('playMusicBtn').addEventListener('click', () => {
+  const musicBtn = document.getElementById('playMusicBtn');
+  musicBtn.addEventListener('click', () => {
     audio.play().catch(()=>console.log("Autoplay blocked, user interaction needed"));
   });
 
-  // 停止音乐
+  function hideAll() {
+    [bio, findMe, home].forEach(el=>el.style.display='none');
+    stopMusic();
+  }
+
+  function showHome() {
+    hideAll();
+    home.style.display='block';
+    audio.play().catch(()=>console.log("Autoplay blocked, user interaction needed"));
+  }
+
+  function showBio() {
+    hideAll();
+    bio.style.display='block';
+    stopMusic();
+  }
+
+  function showFindMe() {
+    hideAll();
+    findMe.style.display='block';
+    stopMusic();
+  }
+
+  function showArtWork() {
+    hideAll();
+    // 以后可以在这里显示作品
+    stopMusic();
+  }
+
   function stopMusic() {
     audio.pause();
   }
