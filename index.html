@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KannyWu</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 <style>
   body {
     margin: 0;
@@ -13,7 +12,6 @@
     background-size: cover;
     color: #111;
     overflow-x: hidden;
-    position: relative;
   }
 
   /* 名字动画 */
@@ -22,6 +20,7 @@
     50% { opacity: 0.5; filter: blur(4px); letter-spacing: 5px; }
     100% { opacity: 1; filter: blur(0); letter-spacing: normal; }
   }
+
   .name {
     font-size: 2.2em;
     font-weight: 600;
@@ -45,7 +44,6 @@
     max-height: 80%;
     overflow-y: auto;
     color: #111;
-    font-family: 'Playfair Display', serif;
     text-align: center;
     padding: 40px 20px;
     line-height: 1.8;
@@ -53,77 +51,81 @@
     z-index: 500;
   }
 
-  /* 折叠菜单 */
-  .menu-container {
+  /* 菜单 */
+  .menu {
     position: fixed;
     top: 30px;
     right: 40px;
     z-index: 1000;
   }
-  .menu-toggle {
-    background-color: rgba(144,255,120,0.3); /* 半透明绿色 */
+
+  .menu-btn {
+    background-color: rgba(255, 140, 0, 0.7);
     border: none;
     padding: 10px 14px;
-    font-size: 18px;
-    font-weight: bold;
-    color: #111;
-    border-radius: 5px;
     cursor: pointer;
-    transition: filter 0.3s ease, transform 0.3s ease;
+    border-radius: 5px;
+    font-size: 18px;
+    color: #111;
+    font-weight: bold;
+    transition: background-color 0.3s;
   }
-  .menu-toggle:hover {
-    filter: brightness(1.2);
-    transform: scale(1.05);
+
+  .menu-btn:hover {
+    background-color: rgba(255, 140, 0, 0.9);
   }
+
   .menu-content {
     display: none;
     position: absolute;
-    top: 50px;
     right: 0;
-    flex-direction: column;
     background-color: transparent;
+    border-radius: 0;
     padding: 0;
     text-align: right;
-    z-index: 1000;
+    box-shadow: none;
+    animation: fadeIn 1.5s ease forwards;
   }
+
+  @keyframes fadeIn {
+    from {opacity: 0; transform: translateY(-10px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
+
   .menu-content a {
     display: block;
+    white-space: nowrap;
     color: #111;
     text-decoration: none;
-    margin: 20px 0;
+    margin: 40px 0;
     font-size: 20px;
     font-weight: 600;
     letter-spacing: 1px;
     border-bottom: 1px solid #111;
     padding-bottom: 5px;
-    transition: filter 0.3s ease;
-    cursor: pointer;
-  }
-  .menu-content a:hover {
-    animation: ghostMove 0.6s ease-in-out forwards;
-  }
-  @keyframes ghostMove {
-    0%   { transform: translate(0,0) rotate(0deg) scale(1); filter: blur(0px); }
-    25%  { transform: translate(-2px, 1px) rotate(-1deg) scale(1.02); filter: blur(0.5px);}
-    50%  { transform: translate(2px, -1px) rotate(1deg) scale(0.98); filter: blur(1px);}
-    75%  { transform: translate(-1px, 2px) rotate(-0.5deg) scale(1.01); filter: blur(0.5px);}
-    100% { transform: translate(0,0) rotate(0deg) scale(1); filter: blur(0px);}
+    transition: color 0.3s;
   }
 
-  /* 游戏画布放在 Home 内容里 */
+  .menu-content a:hover {
+    color: #ff8800;
+  }
+
+  .show { display: block; animation: fadeIn 1.5s ease forwards; }
+
+  /* 游戏canvas */
   #snowGame {
     display: block;
     margin: 20px auto 0 auto;
     border:1px solid #fff;
     background: rgba(0,0,0,0.2);
   }
+
 </style>
 </head>
 <body>
 
 <div class="name">KannyWu</div>
 
-<!-- 中央内容 -->
 <div id="homeContent" class="centerContent">
   <p>Welcome to Kanny Wu's Homepage!</p>
   <canvas id="snowGame" width="400" height="300"></canvas>
@@ -143,9 +145,8 @@
   <p>Art Work gallery placeholder</p>
 </div>
 
-<!-- 折叠菜单 -->
-<div class="menu-container">
-  <button class="menu-toggle" onclick="toggleMenu()">☰ Menu</button>
+<div class="menu">
+  <button class="menu-btn" onclick="toggleMenu()">☰</button>
   <div id="menuItems" class="menu-content">
     <a onclick="showHome()">Home</a>
     <a onclick="showBio()">Bio</a>
@@ -168,7 +169,8 @@ audio.loop = true;
 // 菜单折叠
 function toggleMenu() { menu.classList.toggle('show'); }
 document.addEventListener('click', function(e){
-  if(!menu.contains(e.target) && !document.querySelector('.menu-toggle').contains(e.target)){
+  const btn = document.querySelector('.menu-btn');
+  if(!menu.contains(e.target) && !btn.contains(e.target)){
     menu.classList.remove('show');
   }
 });
@@ -202,7 +204,7 @@ function showArtWork(){
   audio.pause(); 
 }
 
-// 点击 Home 可以控制音乐暂停/播放
+// Home 点击控制音乐暂停/播放
 home.addEventListener('click', () => {
   if(audio.paused){ audio.play(); } else { audio.pause(); }
 });
@@ -244,7 +246,7 @@ document.addEventListener('keydown',(e)=>{
 });
 setInterval(createSnowflake,500);
 gameLoop();
-</script>
 
+</script>
 </body>
 </html>
