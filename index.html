@@ -31,6 +31,7 @@
     letter-spacing: 2px;
   }
 
+  /* 菜单 */
   .menu {
     position: fixed;
     top: 30px;
@@ -39,7 +40,7 @@
   }
 
   .menu-btn {
-    background-color: rgba(0,255,100,0.3);
+    background-color: rgba(0,255,100,0.4);
     border: none;
     padding: 10px 14px;
     cursor: pointer;
@@ -125,12 +126,11 @@
     100% {transform: translateY(-5px);}
   }
 
-  /* 游戏容器在 Home 中心 */
-  #homeGameContainer {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  /* 游戏画布 */
+  #gameCanvas {
+    display: block;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.1);
   }
 </style>
 </head>
@@ -149,12 +149,10 @@
 </div>
 
 <div id="content"></div>
-
-<div id="homeGameContainer">
-  <canvas id="gameCanvas" width="400" height="400" style="display:none; background: rgba(255,255,255,0.1);"></canvas>
-</div>
+<canvas id="gameCanvas" width="400" height="400" style="display:none;"></canvas>
 
 <script>
+  // 菜单折叠逻辑
   function toggleMenu() {
     const menu = document.getElementById("menuItems");
     menu.classList.toggle("show");
@@ -172,7 +170,7 @@
   const canvas = document.getElementById('gameCanvas');
   let gameRunning = false;
 
-  // 背景音乐
+  // 背景音乐 (Home键控制)
   const audio = new Audio('https://kanny7dim.github.io/kannyW.github.io/JS1.mp3');
   audio.loop = true;
 
@@ -182,25 +180,33 @@
     content.innerHTML = '';
     content.style.opacity = 0;
 
+    // Home
     if(section === 'home') {
       canvas.style.display = 'block';
-      audio.play().catch(()=>console.log("Autoplay blocked"));
       if(!gameRunning) startGame();
+      audio.play().catch(()=>console.log('Autoplay blocked'));
     } else {
-      audio.pause();
-      audio.currentTime = 0;
-      if(section === 'bio') {
-        content.innerHTML = `<p>Kanny Wu</p>
-        <p>Drawing from a background as a classical pianist, Kanny Wu works through sound, image, and sculpture as media to explore perception, fragility, and the position of materials, bodies, and memories in time. Each work creates a dialogue between sensory experience and the world, emphasizing vulnerability, identity, and coexistence.</p>`;
-        fadeIn(content);
-      } else if(section === 'findme') {
-        content.innerHTML = `Email: kannywu227@gmail.com<br>
-        <a href="https://www.instagram.com/kanny7dim?igsh=M2N4MTNqdm5rajM1&utm_source=qr" target="_blank" class="insta-btn">Instagram</a>`;
-        fadeIn(content);
-      } else if(section === 'artwork') {
-        content.innerHTML = `<p>Art Work Section</p>`;
-        fadeIn(content);
-      }
+      audio.pause(); // 点击其他菜单音乐停止
+    }
+
+    // Bio
+    if(section === 'bio') {
+      content.innerHTML = `<p>Kanny Wu</p>
+      <p>Drawing from a background as a classical pianist, Kanny Wu works through sound, image, and sculpture as media to explore perception, fragility, and the position of materials, bodies, and memories in time. Each work creates a dialogue between sensory experience and the world, emphasizing vulnerability, identity, and coexistence.</p>`;
+      fadeIn(content);
+    }
+
+    // Find Me
+    if(section === 'findme') {
+      content.innerHTML = `Email: kannywu227@gmail.com<br>
+      <a href="https://www.instagram.com/kanny7dim?igsh=M2N4MTNqdm5rajM1&utm_source=qr" target="_blank" class="insta-btn">Instagram</a>`;
+      fadeIn(content);
+    }
+
+    // Artwork placeholder
+    if(section === 'artwork') {
+      content.innerHTML = `<p>Art Work Section</p>`;
+      fadeIn(content);
     }
   }
 
@@ -209,6 +215,7 @@
     element.style.animation = 'fadeInContent 2s forwards';
   }
 
+  // 简单扫雪小游戏
   function startGame() {
     const ctx = canvas.getContext('2d');
     const width = canvas.width;
@@ -222,6 +229,7 @@
     }
 
     let playerX = width/2;
+
     canvas.addEventListener('mousemove', e=>{
       playerX = e.offsetX;
     });
@@ -240,7 +248,7 @@
         ctx.arc(flake.x, flake.y, flake.r,0,Math.PI*2);
         ctx.fill();
 
-        flake.y += 0.5; // 下落慢一点
+        flake.y += 0.7; // 下落慢
         if(Math.abs(flake.x - playerX)<20 && flake.y>height-20){
           score++;
           flake.y=0;
@@ -258,3 +266,9 @@
 
       requestAnimationFrame(draw);
     }
+
+    draw();
+  }
+</script>
+</body>
+</html>
