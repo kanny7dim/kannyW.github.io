@@ -32,30 +32,6 @@
     letter-spacing: 2px;
   }
 
-  /* Home音乐按钮 */
-  .music-btn {
-    position: absolute;
-    top: 90px;
-    left: 40px;
-    width: 40px;
-    height: 40px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 24px;
-    color: #111;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    opacity: 0.6;
-    transition: opacity 0.3s;
-  }
-
-  .music-btn:hover {
-    opacity: 1;
-  }
-
   /* 菜单容器 */
   .menu {
     position: fixed;
@@ -64,9 +40,9 @@
     z-index: 1000;
   }
 
-  /* 菜单按钮 */
+  /* 菜单折叠按钮 */
   .menu-btn {
-    background-color: rgba(0, 255, 128, 0.3); /* 荧光绿透明 */
+    background-color: rgba(0,255,100,0.4); /* 半透明荧光绿 */
     border: none;
     padding: 10px 14px;
     cursor: pointer;
@@ -74,12 +50,12 @@
     font-size: 18px;
     color: #111;
     font-weight: bold;
-    transition: all 0.3s;
+    transition: box-shadow 0.3s;
   }
 
   /* 幽灵发光效果 */
-  .menu-btn:hover {
-    box-shadow: 0 0 20px rgba(0, 255, 128, 0.7);
+  .menu-btn:hover, .menu-btn:focus {
+    box-shadow: 0 0 15px rgba(0,255,100,0.8), 0 0 30px rgba(0,255,100,0.6);
   }
 
   /* 菜单内容 */
@@ -91,8 +67,7 @@
     border-radius: 0;
     padding: 0;
     text-align: right;
-    box-shadow: none;
-    animation: fadeIn 1.5s ease forwards;
+    animation: fadeIn 0.5s ease forwards;
   }
 
   @keyframes fadeIn {
@@ -100,73 +75,76 @@
     to {opacity: 1; transform: translateY(0);}
   }
 
+  /* 导航链接样式 */
   .menu-content a {
     display: block;
     white-space: nowrap;
-    color: #111;
+    color: rgba(0,255,100,0.8); /* 同折叠菜单按钮发光绿 */
     text-decoration: none;
-    margin: 30px 0;
+    margin: 20px 0;
     font-size: 20px;
     font-weight: 600;
     letter-spacing: 1px;
-    border-bottom: 1px solid #111;
+    border-bottom: 1px solid rgba(0,255,100,0.6);
     padding-bottom: 5px;
-    transition: color 0.3s;
+    transition: all 0.3s;
   }
 
   .menu-content a:hover {
-    color: #ff8800;
+    text-shadow: 0 0 10px rgba(0,255,100,0.8);
   }
 
-  .show { display: block; animation: fadeIn 1.5s ease forwards; }
+  .show { display: block; }
 
-  /* 中央内容容器 */
-  .content {
+  /* 页面内容容器 */
+  #content {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    max-width: 80%;
+    color: #111;
     text-align: center;
-    color: #111;
+    max-width: 80%;
+    line-height: 1.6;
     font-size: 18px;
-    line-height: 1.8;
+    display: none;
     opacity: 0;
-    transition: opacity 2s;
   }
 
-  .visible { opacity: 1; }
+  /* 渐显动画 */
+  @keyframes fadeInContent {
+    from {opacity:0;}
+    to {opacity:1;}
+  }
 
-  /* Instagram按钮 */
-  .ins-btn {
-    background: transparent;
-    border: none;
-    font-size: 24px;
-    color: #111;
-    cursor: pointer;
+  /* Instagram 按钮 */
+  .insta-btn {
+    display: inline-block;
     margin-top: 20px;
-    opacity: 0.6;
-    transition: all 0.3s;
+    padding: 10px 16px;
+    background-color: rgba(0,0,0,0.5);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    animation: ghost 2s infinite alternate;
   }
 
-  .ins-btn:hover {
-    box-shadow: 0 0 20px rgba(0,0,0,0.6);
-    opacity: 1;
+  @keyframes ghost {
+    0% {transform: translateY(0);}
+    100% {transform: translateY(-5px);}
   }
 
-  /* 游戏容器 */
+  /* Home 游戏画布 */
   #gameCanvas {
-    display: none; /* 只在Home显示 */
-    background: rgba(255,255,255,0.2);
-    border: 2px solid #fff;
-    margin-top: 20px;
+    display: block;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.1);
   }
 </style>
 </head>
 <body>
 
 <div class="name">KannyWu</div>
-<button class="music-btn" id="playMusicBtn">🎧</button>
 
 <div class="menu">
   <button class="menu-btn" onclick="toggleMenu()">☰</button>
@@ -178,24 +156,11 @@
   </div>
 </div>
 
-<!-- 内容区域 -->
-<div id="home" class="content visible">
-  <canvas id="gameCanvas" width="400" height="400"></canvas>
-</div>
+<!-- 页面内容 -->
+<div id="content"></div>
 
-<div id="bio" class="content">
-  <p>Kanny Wu</p>
-  <p>Drawing from a background as a classical pianist, Kanny Wu works through sound, image, and sculpture as media to explore perception, fragility, and the position of materials, bodies, and memories in time. Each work creates a dialogue between sensory experience and the world, emphasizing vulnerability, identity, and coexistence.</p>
-</div>
-
-<div id="artwork" class="content">
-  <p>Art Work Section (add images here)</p>
-</div>
-
-<div id="findme" class="content">
-  <p>Email: <a href="mailto:kannywu227@gmail.com">kannywu227@gmail.com</a></p>
-  <button class="ins-btn" onclick="window.open('https://www.instagram.com/kanny7dim?igsh=M2N4MTNqdm5rajM1&utm_source=qr','_blank')">Instagram</button>
-</div>
+<!-- 游戏画布 -->
+<canvas id="gameCanvas" width="400" height="400" style="display:none;"></canvas>
 
 <script>
   // 菜单折叠
@@ -204,6 +169,7 @@
     menu.classList.toggle("show");
   }
 
+  // 点击页面其他地方关闭菜单
   document.addEventListener('click', function(e) {
     const menu = document.getElementById("menuItems");
     const btn = document.querySelector('.menu-btn');
@@ -212,102 +178,92 @@
     }
   });
 
-  // 内容显示控制
-  const contents = document.querySelectorAll('.content');
-  function showContent(id) {
-    contents.forEach(c => {
-      if(c.id === id) {
-        c.classList.add('visible');
-        if(id === 'home') {
-          startGame();
-          audio.play();
-        } else {
-          stopGame();
-          audio.pause();
-        }
-      } else {
-        c.classList.remove('visible');
-      }
-    });
-  }
-
-  // 背景音乐
-  const audio = new Audio('https://kanny7dim.github.io/kannyW.github.io/JS1.mp3');
-  audio.loop = true;
-  document.getElementById('playMusicBtn').addEventListener('click', () => {
-      if(audio.paused) audio.play();
-      else audio.pause();
-  });
-
-  // --------------------
-  // 扫雪小游戏
+  const content = document.getElementById('content');
   const canvas = document.getElementById('gameCanvas');
-  const ctx = canvas.getContext('2d');
-  let snowflakes = [];
-  let score = 0;
-  let broom = {x: 200, y: 380, width: 60, height: 20};
+  let gameRunning = false;
 
-  function startGame() {
-    canvas.style.display = 'block';
-    snowflakes = [];
-    score = 0;
-    requestAnimationFrame(updateGame);
-  }
-
-  function stopGame() {
+  function showContent(section) {
+    content.style.display = 'none';
     canvas.style.display = 'none';
+    content.innerHTML = '';
+    content.style.opacity = 0;
+
+    if(section === 'home') {
+      canvas.style.display = 'block';
+      if(!gameRunning) startGame();
+    } else if(section === 'bio') {
+      content.innerHTML = `<p>Kanny Wu</p>
+      <p>Drawing from a background as a classical pianist, Kanny Wu works through sound, image, and sculpture as media to explore perception, fragility, and the position of materials, bodies, and memories in time. Each work creates a dialogue between sensory experience and the world, emphasizing vulnerability, identity, and coexistence.</p>`;
+      fadeIn(content);
+    } else if(section === 'findme') {
+      content.innerHTML = `Email: kannywu227@gmail.com<br>
+      <a href="https://www.instagram.com/kanny7dim?igsh=M2N4MTNqdm5rajM1&utm_source=qr" target="_blank" class="insta-btn">Instagram</a>`;
+      fadeIn(content);
+    } else if(section === 'artwork') {
+      content.innerHTML = `<p>Art Work Section</p>`;
+      fadeIn(content);
+    }
   }
 
-  function updateGame() {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-
-    // 绘制扫帚
-    ctx.fillStyle = 'rgba(0,255,128,0.7)';
-    ctx.fillRect(broom.x, broom.y, broom.width, broom.height);
-
-    // 添加雪花
-    if(Math.random() < 0.03) {
-      snowflakes.push({x: Math.random()*canvas.width, y:0, size:5+Math.random()*5, speed:1+Math.random()*2});
-    }
-
-    // 更新雪花
-    for(let i=snowflakes.length-1;i>=0;i--) {
-      let flake = snowflakes[i];
-      flake.y += flake.speed;
-      ctx.fillStyle = 'white';
-      ctx.beginPath();
-      ctx.arc(flake.x, flake.y, flake.size, 0, Math.PI*2);
-      ctx.fill();
-
-      // 接住雪花
-      if(flake.y + flake.size >= broom.y && flake.x >= broom.x && flake.x <= broom.x+broom.width) {
-        snowflakes.splice(i,1);
-        score +=1;
-      }
-
-      // 掉出底部
-      else if(flake.y > canvas.height) {
-        snowflakes.splice(i,1);
-      }
-    }
-
-    // 绘制分数
-    ctx.fillStyle = '#fff';
-    ctx.font = '16px Arial';
-    ctx.fillText('Score: '+score, 10, 20);
-
-    if(document.getElementById('home').classList.contains('visible'))
-      requestAnimationFrame(updateGame);
+  function fadeIn(element) {
+    element.style.display = 'block';
+    element.style.animation = 'fadeInContent 2s forwards';
   }
 
-  // 鼠标控制扫帚
-  canvas.addEventListener('mousemove', function(e) {
-    let rect = canvas.getBoundingClientRect();
-    broom.x = e.clientX - rect.left - broom.width/2;
-    if(broom.x <0) broom.x=0;
-    if(broom.x + broom.width>canvas.width) broom.x = canvas.width-broom.width;
-  });
+  /* Home 页面扫雪小游戏 */
+  function startGame() {
+    const ctx = canvas.getContext('2d');
+    const width = canvas.width;
+    const height = canvas.height;
+    let snowflakes = [];
+    let score = 0;
+    gameRunning = true;
 
+    for(let i=0;i<50;i++){
+      snowflakes.push({x:Math.random()*width, y:Math.random()*height, r:Math.random()*3+2, dx:0});
+    }
+
+    canvas.addEventListener('mousemove', e=>{
+      playerX = e.offsetX;
+    });
+
+    let playerX = width/2;
+
+    function draw() {
+      ctx.clearRect(0,0,width,height);
+
+      // player
+      ctx.fillStyle='rgba(0,255,100,0.7)';
+      ctx.fillRect(playerX-20,height-10,40,10);
+
+      // snowflakes
+      ctx.fillStyle='white';
+      for(let flake of snowflakes){
+        ctx.beginPath();
+        ctx.arc(flake.x, flake.y, flake.r,0,Math.PI*2);
+        ctx.fill();
+
+        flake.y += 2;
+        if(Math.abs(flake.x - playerX)<20 && flake.y>height-20){
+          score++;
+          flake.y=0;
+          flake.x=Math.random()*width;
+        }
+        if(flake.y>height){
+          flake.y=0;
+          flake.x=Math.random()*width;
+        }
+      }
+
+      ctx.fillStyle='rgba(0,255,100,0.8)';
+      ctx.font='16px Arial';
+      ctx.fillText('Score: '+score, 10, 20);
+
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+  }
 </script>
 </body>
 </html>
