@@ -11,21 +11,13 @@
     background: url('https://kanny7dim.github.io/kannyW.github.io/IMG_9403.jpeg') no-repeat center center fixed;
     background-size: cover;
     color: #111;
-    overflow: hidden;
-  }
-
-  /* 名字动画 */
-  @keyframes dissolveIn {
-    0% { opacity: 0; filter: blur(10px); letter-spacing: 10px; }
-    50% { opacity: 0.5; filter: blur(4px); letter-spacing: 5px; }
-    100% { opacity: 1; filter: blur(0); letter-spacing: normal; }
+    overflow-x: hidden;
   }
 
   .name {
     font-size: 2.2em;
     font-weight: 600;
     color: #111;
-    animation: dissolveIn 3.5s ease-out forwards;
     position: absolute;
     top: 30px;
     left: 40px;
@@ -61,26 +53,16 @@
     position: absolute;
     right: 0;
     background-color: transparent;
-    border-radius: 0;
-    padding: 0;
     text-align: right;
-    animation: fadeIn 0.5s ease forwards;
-  }
-
-  @keyframes fadeIn {
-    from {opacity: 0; transform: translateY(-10px);}
-    to {opacity: 1; transform: translateY(0);}
   }
 
   .menu-content a {
     display: block;
-    white-space: nowrap;
     color: rgba(0,255,100,0.8);
     text-decoration: none;
     margin: 20px 0;
     font-size: 20px;
     font-weight: 600;
-    letter-spacing: 1px;
     border-bottom: 1px solid rgba(0,255,100,0.6);
     padding-bottom: 5px;
     transition: all 0.3s;
@@ -92,7 +74,6 @@
 
   .show { display: block; }
 
-  /* 中央内容 */
   #content {
     position: absolute;
     top: 50%;
@@ -128,7 +109,6 @@
     100% {transform: translateY(-5px);}
   }
 
-  /* 游戏画布 */
   #gameCanvas {
     display: none;
     position: absolute;
@@ -157,20 +137,8 @@
 <canvas id="gameCanvas" width="400" height="400"></canvas>
 
 <script>
-  // 菜单折叠
-  function toggleMenu() {
-    const menu = document.getElementById("menuItems");
-    menu.classList.toggle("show");
-  }
-
-  document.addEventListener('click', function(e) {
-    const menu = document.getElementById("menuItems");
-    const btn = document.querySelector('.menu-btn');
-    if (!menu.contains(e.target) && !btn.contains(e.target)) {
-      menu.classList.remove('show');
-    }
-  });
-
+  const menu = document.getElementById("menuItems");
+  const btn = document.querySelector('.menu-btn');
   const content = document.getElementById('content');
   const canvas = document.getElementById('gameCanvas');
   let gameRunning = false;
@@ -178,6 +146,21 @@
   // 音乐
   const audio = new Audio('https://kanny7dim.github.io/kannyW.github.io/JS1.mp3');
   audio.loop = true;
+
+  function toggleMenu() {
+    menu.classList.toggle("show");
+  }
+
+  document.addEventListener('click', function(e) {
+    if (!menu.contains(e.target) && !btn.contains(e.target)) {
+      menu.classList.remove('show');
+    }
+  });
+
+  function fadeIn(element) {
+    element.style.display = 'block';
+    element.style.animation = 'fadeInContent 2s forwards';
+  }
 
   function showContent(section) {
     content.style.display = 'none';
@@ -196,18 +179,13 @@
         content.innerHTML = `<p>Kanny Wu</p>
         <p>Drawing from a background as a classical pianist, Kanny Wu works through sound, image, and sculpture as media to explore perception, fragility, and the position of materials, bodies, and memories in time. Each work creates a dialogue between sensory experience and the world, emphasizing vulnerability, identity, and coexistence.</p>`;
       } else if(section === 'findme') {
-        content.innerHTML = `<p>Email: kannywu227@gmail.com</p>
+        content.innerHTML = `Email: kannywu227@gmail.com<br>
         <a href="https://www.instagram.com/kanny7dim?igsh=M2N4MTNqdm5rajM1&utm_source=qr" target="_blank" class="insta-btn">Instagram</a>`;
       } else if(section === 'artwork') {
         content.innerHTML = `<p>Art Work Section</p>`;
       }
       fadeIn(content);
     }
-  }
-
-  function fadeIn(element) {
-    element.style.display = 'block';
-    element.style.animation = 'fadeInContent 2s forwards';
   }
 
   function startGame() {
@@ -222,11 +200,11 @@
       snowflakes.push({x:Math.random()*width, y:Math.random()*height, r:Math.random()*3+2, dx:0});
     }
 
+    let playerX = width/2;
+
     canvas.addEventListener('mousemove', e=>{
       playerX = e.offsetX;
     });
-
-    let playerX = width/2;
 
     function draw() {
       ctx.clearRect(0,0,width,height);
@@ -242,7 +220,7 @@
         ctx.arc(flake.x, flake.y, flake.r,0,Math.PI*2);
         ctx.fill();
 
-        flake.y += 0.5; // 下落慢
+        flake.y += 0.5;
         if(Math.abs(flake.x - playerX)<20 && flake.y>height-20){
           score++;
           flake.y=0;
@@ -256,4 +234,13 @@
 
       ctx.fillStyle='rgba(0,255,100,0.8)';
       ctx.font='16px Arial';
-      ctx.fillText('Score: '+score, 
+      ctx.fillText('Score: '+score, 10, 20);
+
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+  }
+</script>
+</body>
+</html>
