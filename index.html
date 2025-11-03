@@ -20,7 +20,7 @@ body {
   position: absolute;
   width: 40px;
   height: 40px;
-  background: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.3);
   border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
   animation: floatUp 12s linear infinite;
   z-index: 0;
@@ -49,7 +49,7 @@ header {
 .site-name {
   font-weight: 700;
   font-size: 1.8rem;
-  color: #222;
+  color: #111; /* 深色 */
   position: relative;
   display: inline-block;
 }
@@ -73,7 +73,7 @@ header {
 .menu-toggle {
   font-size: 1.2rem;
   background: #222;
-  color: #e09050; /* 橙色柔和 */
+  color: #e09050;
   border: none;
   padding: 8px 12px;
   border-radius: 5px;
@@ -101,7 +101,7 @@ header {
   opacity: 0;
   max-height: 0;
   overflow: hidden;
-  transition: opacity 2s ease, max-height 2.5s ease; /* 特别慢 */
+  transition: opacity 2s ease, max-height 3s ease; /* 更慢 */
 }
 
 .menu.show {
@@ -125,7 +125,7 @@ header {
 /* 页面内容 */
 .container {
   max-width: 900px;
-  margin: 120px auto 50px;
+  margin: 120px auto 150px;
   padding: 0 20px;
 }
 
@@ -135,7 +135,7 @@ section {
   margin-bottom: 80px;
 }
 
-/* 底部音波 */
+/* 底部声波 */
 canvas#audioWave {
   position: fixed;
   bottom: 0;
@@ -143,7 +143,7 @@ canvas#audioWave {
   width: 100%;
   height: 100px;
   pointer-events: none;
-  z-index: 999;
+  z-index: 1; /* 在脚印上方 */
 }
 </style>
 </head>
@@ -168,22 +168,22 @@ canvas#audioWave {
 <canvas id="audioWave"></canvas>
 
 <script>
-// 生成脚印
+// 脚印生成
 window.onload = function() {
   const numFootprints = 15;
   for(let i=0; i<numFootprints; i++){
     const f = document.createElement('div');
     f.className = 'footprint';
     f.style.left = Math.random() * window.innerWidth + 'px';
-    f.style.top = Math.random() * window.innerHeight + 'px';
+    f.style.top = (Math.random() * (window.innerHeight - 150)) + 'px';
     f.style.width = 30 + Math.random()*20 + 'px';
     f.style.height = 30 + Math.random()*20 + 'px';
     f.style.animationDuration = 8 + Math.random()*6 + 's';
-    f.style.opacity = 0.05 + Math.random()*0.1;
+    f.style.opacity = 0.1 + Math.random()*0.2;
     document.body.appendChild(f);
   }
 
-  // 添加名字文字
+  // 名字
   const siteNameDiv = document.getElementById('siteName');
   const nameText = 'Kanny Wu';
   for(let char of nameText) {
@@ -193,13 +193,13 @@ window.onload = function() {
   }
 };
 
-// 折叠菜单功能
+// 折叠菜单
 function toggleMenu() {
   const menu = document.getElementById('dropdownMenu');
   menu.classList.toggle('show');
 }
 
-// 点击空白处关闭菜单
+// 点击空白关闭
 window.onclick = function(event) {
   const menu = document.getElementById('dropdownMenu');
   const button = document.querySelector('.menu-toggle');
@@ -208,7 +208,7 @@ window.onclick = function(event) {
   }
 };
 
-// 底部音波
+// 底部声波
 const canvas = document.getElementById('audioWave');
 const ctx = canvas.getContext('2d');
 
@@ -219,18 +219,18 @@ function resizeCanvas() {
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
-let t = 0;
+let waveData = [];
+for(let i=0;i<100;i++) waveData[i]=Math.random();
+
 function drawWave() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.beginPath();
-  for (let x = 0; x < canvas.width; x++) {
-    const y = 50 + 20 * Math.sin((x / 50) + t) * Math.cos((x / 100) + t/2);
-    ctx.lineTo(x, y);
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  const barWidth = canvas.width / waveData.length;
+  for(let i=0;i<waveData.length;i++){
+    const barHeight = waveData[i]*50;
+    ctx.fillStyle = 'rgba(0,0,0,0.2)';
+    ctx.fillRect(i*barWidth, canvas.height - barHeight, barWidth*0.8, barHeight);
+    waveData[i] = 0.9*waveData[i] + 0.1*Math.random();
   }
-  ctx.strokeStyle = 'rgba(0,0,0,0.2)';
-  ctx.lineWidth = 2;
-  ctx.stroke();
-  t += 0.03;
   requestAnimationFrame(drawWave);
 }
 drawWave();
