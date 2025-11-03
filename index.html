@@ -3,35 +3,194 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KannyWu - Bio</title>
+<title>KannyWu</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 <style>
   body {
     margin: 0;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    background: #f5f5f5; /* 可以换成其他背景颜色或图片 */
+    background: url('https://kanny7dim.github.io/kannyW.github.io/IMG_9403.jpeg') no-repeat center center fixed;
+    background-size: cover;
     color: #111;
-    padding: 40px;
-    line-height: 1.6;
+    overflow-x: hidden;
   }
 
-  h1 {
-    font-size: 2em;
-    margin-bottom: 20px;
+  /* 名字动画 */
+  @keyframes dissolveIn {
+    0% { opacity: 0; filter: blur(10px); letter-spacing: 10px; }
+    50% { opacity: 0.5; filter: blur(4px); letter-spacing: 5px; }
+    100% { opacity: 1; filter: blur(0); letter-spacing: normal; }
   }
 
-  p {
+  .name {
+    font-size: 2.2em;
+    font-weight: 600;
+    color: #111;
+    animation: dissolveIn 3.5s ease-out forwards;
+    position: absolute;
+    top: 30px;
+    left: 40px;
+    letter-spacing: 2px;
+  }
+
+  /* 耳机播放音乐按钮 */
+  .music-btn {
+    position: absolute;
+    top: 90px;
+    left: 40px;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0.6;
+    transition: opacity 0.3s;
+  }
+  .music-btn:hover {
+    opacity: 1;
+  }
+
+  /* 菜单容器 */
+  .menu {
+    position: fixed;
+    top: 30px;
+    right: 40px;
+    z-index: 1000;
+  }
+
+  /* 菜单按钮 */
+  .menu-btn {
+    background-color: rgba(255, 140, 0, 0.7);
+    border: none;
+    padding: 10px 14px;
+    cursor: pointer;
+    border-radius: 5px;
     font-size: 18px;
-    margin-bottom: 15px;
+    color: #111;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+
+  .menu-btn:hover {
+    background-color: rgba(255, 140, 0, 0.9);
+  }
+
+  /* 菜单内容 */
+  .menu-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: transparent;
+    border-radius: 0;
+    padding: 0;
+    text-align: right;
+    box-shadow: none;
+    animation: fadeIn 1.5s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0; transform: translateY(-10px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
+
+  /* 导航链接样式 */
+  .menu-content a {
+    display: block;
+    white-space: nowrap;
+    color: #111;
+    text-decoration: none;
+    margin: 40px 0;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #111;
+    padding-bottom: 5px;
+    transition: color 0.3s;
+  }
+  .menu-content a:hover {
+    color: #ff8800;
+  }
+  .show { display: block; animation: fadeIn 1.5s ease forwards; }
+
+  /* Bio 容器 */
+  #bioContent {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 800px;
+    background: rgba(255,255,255,0); /* 保持透明 */
+    color: #111;
+    font-family: 'Playfair Display', Helvetica, Arial, sans-serif;
+    text-align: center;
+    padding: 40px 20px;
+    line-height: 1.8;
+    font-size: 1.2em;
+    z-index: 500;
+    animation: fadeIn 1.5s ease forwards;
   }
 </style>
 </head>
 <body>
 
-<h1>Bio</h1>
+<div class="name">KannyWu</div>
 
-<p>这里写你的第一段介绍文字，比如你的艺术背景、创作理念或者经历。</p>
-<p>这里可以继续写第二段内容，介绍你喜欢的艺术形式、创作方法、材料使用等等。</p>
-<p>你可以继续添加多段文字，让读者了解你的个人故事和艺术实践。</p>
+<!-- 耳机按钮 -->
+<button class="music-btn" id="playMusicBtn">🎧</button>
+
+<!-- Bio 内容 -->
+<div id="bioContent">
+  <p>Kanny Wu</p>
+  <p>Drawing from a background as a classical pianist, Kanny Wu works through sound, image, and sculpture as media to explore perception, fragility, and the position of materials, bodies, and memories in time. Each work creates a dialogue between sensory experience and the world, emphasizing vulnerability, identity, and coexistence.</p>
+</div>
+
+<!-- 菜单 -->
+<div class="menu">
+  <button class="menu-btn" onclick="toggleMenu()">☰</button>
+  <div id="menuItems" class="menu-content">
+    <a href="#" onclick="showBio()">Bio</a>
+    <a href="#">Art Work</a>
+    <a href="#">Find Me</a>
+  </div>
+</div>
+
+<script>
+  // 菜单折叠
+  function toggleMenu() {
+    const menu = document.getElementById("menuItems");
+    menu.classList.toggle("show");
+  }
+
+  // 点击页面其他地方关闭菜单
+  document.addEventListener('click', function(e) {
+    const menu = document.getElementById("menuItems");
+    const btn = document.querySelector('.menu-btn');
+    if (!menu.contains(e.target) && !btn.contains(e.target)) {
+      menu.classList.remove('show');
+    }
+  });
+
+  // 显示 Bio
+  function showBio() {
+    document.getElementById('bioContent').style.display = 'block';
+    document.getElementById('bioContent').scrollIntoView({behavior:"smooth"});
+  }
+
+  // 背景音乐
+  const audio = new Audio('https://kanny7dim.github.io/kannyW.github.io/JS1.mp3');
+  audio.loop = true;
+
+  document.getElementById('playMusicBtn').addEventListener('click', () => {
+    audio.play().catch(() => console.log("Autoplay blocked, user interaction needed"));
+  });
+</script>
 
 </body>
 </html>
