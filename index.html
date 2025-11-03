@@ -11,13 +11,21 @@
     background: url('https://kanny7dim.github.io/kannyW.github.io/IMG_9403.jpeg') no-repeat center center fixed;
     background-size: cover;
     color: #111;
-    overflow-x: hidden;
+    overflow: hidden;
+  }
+
+  /* 名字动画 */
+  @keyframes dissolveIn {
+    0% { opacity: 0; filter: blur(10px); letter-spacing: 10px; }
+    50% { opacity: 0.5; filter: blur(4px); letter-spacing: 5px; }
+    100% { opacity: 1; filter: blur(0); letter-spacing: normal; }
   }
 
   .name {
     font-size: 2.2em;
     font-weight: 600;
     color: #111;
+    animation: dissolveIn 3.5s ease-out forwards;
     position: absolute;
     top: 30px;
     left: 40px;
@@ -33,7 +41,7 @@
   }
 
   .menu-btn {
-    background-color: rgba(0,255,100,0.4);
+    background-color: rgba(0,255,100,0.35);
     border: none;
     padding: 10px 14px;
     cursor: pointer;
@@ -53,16 +61,17 @@
     position: absolute;
     right: 0;
     background-color: transparent;
+    padding: 0;
     text-align: right;
   }
 
   .menu-content a {
     display: block;
-    color: rgba(0,255,100,0.8);
-    text-decoration: none;
-    margin: 20px 0;
+    margin: 15px 0;
     font-size: 20px;
     font-weight: 600;
+    color: rgba(0,255,100,0.8);
+    text-decoration: none;
     border-bottom: 1px solid rgba(0,255,100,0.6);
     padding-bottom: 5px;
     transition: all 0.3s;
@@ -74,6 +83,7 @@
 
   .show { display: block; }
 
+  /* 内容 */
   #content {
     position: absolute;
     top: 50%;
@@ -109,6 +119,7 @@
     100% {transform: translateY(-5px);}
   }
 
+  /* 游戏 */
   #gameCanvas {
     display: none;
     position: absolute;
@@ -137,8 +148,19 @@
 <canvas id="gameCanvas" width="400" height="400"></canvas>
 
 <script>
-  const menu = document.getElementById("menuItems");
-  const btn = document.querySelector('.menu-btn');
+  function toggleMenu() {
+    const menu = document.getElementById("menuItems");
+    menu.classList.toggle("show");
+  }
+
+  document.addEventListener('click', function(e) {
+    const menu = document.getElementById("menuItems");
+    const btn = document.querySelector('.menu-btn');
+    if (!menu.contains(e.target) && !btn.contains(e.target)) {
+      menu.classList.remove('show');
+    }
+  });
+
   const content = document.getElementById('content');
   const canvas = document.getElementById('gameCanvas');
   let gameRunning = false;
@@ -146,21 +168,6 @@
   // 音乐
   const audio = new Audio('https://kanny7dim.github.io/kannyW.github.io/JS1.mp3');
   audio.loop = true;
-
-  function toggleMenu() {
-    menu.classList.toggle("show");
-  }
-
-  document.addEventListener('click', function(e) {
-    if (!menu.contains(e.target) && !btn.contains(e.target)) {
-      menu.classList.remove('show');
-    }
-  });
-
-  function fadeIn(element) {
-    element.style.display = 'block';
-    element.style.animation = 'fadeInContent 2s forwards';
-  }
 
   function showContent(section) {
     content.style.display = 'none';
@@ -188,6 +195,11 @@
     }
   }
 
+  function fadeIn(element) {
+    element.style.display = 'block';
+    element.style.animation = 'fadeInContent 2s forwards';
+  }
+
   function startGame() {
     const ctx = canvas.getContext('2d');
     const width = canvas.width;
@@ -200,11 +212,11 @@
       snowflakes.push({x:Math.random()*width, y:Math.random()*height, r:Math.random()*3+2, dx:0});
     }
 
-    let playerX = width/2;
-
     canvas.addEventListener('mousemove', e=>{
       playerX = e.offsetX;
     });
+
+    let playerX = width/2;
 
     function draw() {
       ctx.clearRect(0,0,width,height);
