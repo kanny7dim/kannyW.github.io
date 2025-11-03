@@ -32,24 +32,28 @@
     letter-spacing: 2px;
   }
 
-  /* 耳朵按钮 */
+  /* 耳朵播放音乐按钮 */
   .music-btn {
     position: absolute;
-    top: 80px; /* 在名字下面 */
+    top: 90px; /* 在名字下面 */
     left: 40px;
-    width: 30px;
-    height: 30px;
-    background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Ear_font_awesome.svg/1024px-Ear_font_awesome.svg.png') no-repeat center center;
-    background-size: contain;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255,140,0,0.7);
     border: none;
+    border-radius: 50%;
     cursor: pointer;
-    opacity: 0.8;
-    transition: opacity 0.3s;
+    font-size: 20px;
+    color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     z-index: 1000;
+    transition: opacity 0.3s;
   }
 
   .music-btn:hover {
-    opacity: 1;
+    opacity: 0.9;
   }
 
   /* 菜单容器 */
@@ -123,7 +127,7 @@
 <div class="name">KannyWu</div>
 
 <!-- 耳朵播放音乐按钮 -->
-<button class="music-btn" id="playMusicBtn"></button>
+<button class="music-btn" id="playMusicBtn">👂</button>
 
 <div class="menu">
   <button class="menu-btn" onclick="toggleMenu()">☰</button>
