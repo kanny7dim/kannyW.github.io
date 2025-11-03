@@ -3,157 +3,119 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kanny Wu</title>
-
+<title>KannyWu</title>
 <style>
-/* 整体背景 */
-body {
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  background: url('background.jpeg') no-repeat center center fixed;
-  background-size: cover;
-  position: relative;
-  overflow: hidden;
-  font-family: 'Helvetica Neue', sans-serif;
-}
-
-/* 在背景上加一层轻微的蒙版，避免字被淹没 */
-body::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(255, 255, 255, 0.35);
-  z-index: 0;
-}
-
-/* 左侧艺术家名字 */
-.artist-name {
-  position: absolute;
-  left: 60px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 48px;
-  font-weight: 500;
-  color: rgba(0, 0, 0, 0.8);
-  letter-spacing: 2px;
-  overflow: hidden;
-  z-index: 2;
-  animation: dissolve 5s ease-in-out infinite alternate;
-}
-
-/* 溶解—汇聚动画 */
-@keyframes dissolve {
-  0% {
-    opacity: 0;
-    filter: blur(8px);
-    letter-spacing: 8px;
+  body {
+    margin: 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    /* 背景图，请替换下面链接为你的 GitHub raw 链接 */
+    background: url('https://raw.githubusercontent.com/用户名/仓库名/分支名/61DDEE61-A0AD-43AA-8137-29256D592629.jpeg') no-repeat center center fixed;
+    background-size: cover;
+    color: #111;
+    overflow-x: hidden;
   }
-  50% {
-    opacity: 0.8;
-    filter: blur(2px);
-    letter-spacing: 3px;
+
+  /* dissolve animation for name */
+  @keyframes dissolveIn {
+    0% { opacity: 0; filter: blur(10px); letter-spacing: 10px; }
+    50% { opacity: 0.5; filter: blur(4px); letter-spacing: 5px; }
+    100% { opacity: 1; filter: blur(0); letter-spacing: normal; }
   }
-  100% {
-    opacity: 1;
-    filter: blur(0);
-    letter-spacing: 1px;
+
+  .name {
+    font-size: 2.2em;
+    font-weight: 600;
+    color: #111;
+    animation: dissolveIn 3.5s ease-out forwards;
+    position: absolute;
+    top: 30px;
+    left: 40px;
+    letter-spacing: 2px;
   }
-}
 
-/* 右上角菜单按钮 */
-.menu-toggle {
-  position: fixed;
-  top: 30px;
-  right: 40px;
-  width: 32px;
-  height: 24px;
-  cursor: pointer;
-  z-index: 3;
-  opacity: 0.8;
-}
+  /* menu */
+  .menu {
+    position: fixed;
+    top: 30px;
+    right: 40px;
+    z-index: 1000;
+  }
 
-.menu-toggle div {
-  height: 3px;
-  background-color: rgba(255, 140, 0, 0.7);
-  margin: 6px 0;
-  border-radius: 2px;
-  transition: all 0.4s ease;
-}
+  .menu-btn {
+    background-color: rgba(255, 140, 0, 0.7);
+    border: none;
+    padding: 10px 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 18px;
+    transition: background-color 0.3s;
+  }
 
-.menu {
-  position: fixed;
-  top: 0;
-  right: -250px;
-  width: 250px;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(8px);
-  transition: right 1.2s ease;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
+  .menu-btn:hover {
+    background-color: rgba(255, 140, 0, 0.9);
+  }
 
-.menu a {
-  color: rgba(0, 0, 0, 0.85);
-  text-decoration: none;
-  font-size: 18px;
-  margin: 15px 0;
-  letter-spacing: 1px;
-  transition: color 0.3s ease;
-}
+  .menu-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: rgba(255,255,255,0.95);
+    border-radius: 6px;
+    padding: 12px 20px;
+    text-align: right;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    animation: fadeIn 1.5s ease forwards;
+  }
 
-.menu a:hover {
-  color: #ff8c00;
-}
+  @keyframes fadeIn {
+    from {opacity: 0; transform: translateY(-10px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
 
-/* 打开时的状态 */
-.menu.open {
-  right: 0;
-}
+  .menu-content a {
+    display: block;
+    color: #111;
+    text-decoration: none;
+    margin: 8px 0;
+    font-size: 16px;
+    transition: color 0.3s;
+  }
 
-.menu-toggle.open div:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
-}
+  .menu-content a:hover {
+    color: #ff8800;
+  }
 
-.menu-toggle.open div:nth-child(2) {
-  opacity: 0;
-}
+  .show { display: block; animation: fadeIn 1.5s ease forwards; }
 
-.menu-toggle.open div:nth-child(3) {
-  transform: rotate(-45deg) translate(6px, -6px);
-}
 </style>
 </head>
-
 <body>
 
-<div class="artist-name">Kanny Wu</div>
+<div class="name">KannyWu</div>
 
-<div class="menu-toggle" id="menuToggle">
-  <div></div>
-  <div></div>
-  <div></div>
-</div>
-
-<div class="menu" id="menu">
-  <a href="#">Home</a>
-  <a href="#">Works</a>
-  <a href="#">About</a>
-  <a href="#">Contact</a>
+<div class="menu">
+  <button class="menu-btn" onclick="toggleMenu()">Menu</button>
+  <div id="menuItems" class="menu-content">
+    <a href="#">Find Me</a>
+    <a href="#">Bio</a>
+    <a href="#">Art Work</a>
+  </div>
 </div>
 
 <script>
-const menuToggle = document.getElementById('menuToggle');
-const menu = document.getElementById('menu');
+  function toggleMenu() {
+    const menu = document.getElementById("menuItems");
+    menu.classList.toggle("show");
+  }
 
-menuToggle.addEventListener('click', () => {
-  menu.classList.toggle('open');
-  menuToggle.classList.toggle('open');
-});
+  // 点击页面其他地方自动关闭菜单
+  document.addEventListener('click', function(e) {
+    const menu = document.getElementById("menuItems");
+    const btn = document.querySelector('.menu-btn');
+    if (!menu.contains(e.target) && !btn.contains(e.target)) {
+      menu.classList.remove('show');
+    }
+  });
 </script>
 
 </body>
