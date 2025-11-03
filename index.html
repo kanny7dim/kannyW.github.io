@@ -101,17 +101,21 @@
   /* Bio 容器 */
   #bioContent {
     display: none;
-    position: absolute;
+    position: fixed; /* 保持中央显示 */
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    width: 80%;
     max-width: 800px;
+    max-height: 80%;
+    overflow-y: auto; /* 文字多可滚动 */
     color: #111;
     font-family: 'Playfair Display', serif;
     text-align: center;
     padding: 40px 20px;
     line-height: 1.8;
     font-size: 1.2em;
+    background: rgba(255,255,255,0.0);
     z-index: 500;
     opacity: 0;
     transition: opacity 2s ease-in;
@@ -161,7 +165,7 @@
   function showBio() {
     const bio = document.getElementById('bioContent');
     bio.style.display = 'block';
-    setTimeout(()=>{ bio.style.opacity = 1; }, 50); // 淡入效果
+    setTimeout(()=>{ bio.style.opacity = 1; }, 50);
     stopMusic(); // 点击 Bio 停止音乐
   }
 
