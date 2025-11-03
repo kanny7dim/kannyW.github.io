@@ -5,14 +5,12 @@
 <title>KannyWu</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
-/* 全局样式 */
 body {
   margin: 0;
   font-family: 'Roboto', sans-serif;
   background: #dcdcdc;
   color: #222;
   overflow-x: hidden;
-  position: relative;
 }
 
 /* 顶部导航 */
@@ -33,7 +31,7 @@ header {
 .site-name {
   font-weight: 700;
   font-size: 1.8rem;
-  color: #000; /* 黑色 */
+  color: #000;
   position: relative;
   display: inline-block;
 }
@@ -56,7 +54,7 @@ header {
 /* 折叠按钮 */
 .menu-toggle {
   font-size: 1.2rem;
-  background: rgba(34,34,34,0.5); /* 半透明 */
+  background: rgba(34,34,34,0.5);
   color: #e09050;
   border: none;
   padding: 8px 12px;
@@ -64,10 +62,6 @@ header {
   cursor: pointer;
   z-index: 1002;
   position: relative;
-}
-
-.menu-toggle:hover {
-  background: rgba(51,51,51,0.5);
 }
 
 /* 折叠菜单 */
@@ -139,16 +133,14 @@ section {
 </div>
 
 <script>
-// 名字 Glitch
-window.onload = function() {
-  const siteNameDiv = document.getElementById('siteName');
-  const nameText = 'KannyWu';
-  for(let char of nameText) {
-    const span = document.createElement('span');
-    span.textContent = char;
-    siteNameDiv.appendChild(span);
-  }
-};
+// 生成名字 Glitch
+const siteNameDiv = document.getElementById('siteName');
+const nameText = 'KannyWu';
+for(let char of nameText) {
+  const span = document.createElement('span');
+  span.textContent = char;
+  siteNameDiv.appendChild(span);
+}
 
 // 折叠菜单
 function toggleMenu() {
