@@ -3,165 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KannyWu</title>
+<title>KannyWu - Bio</title>
 <style>
   body {
     margin: 0;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    background: url('https://kanny7dim.github.io/kannyW.github.io/IMG_9403.jpeg') no-repeat center center fixed;
-    background-size: cover;
+    background: #f5f5f5; /* 可以换成其他背景颜色或图片 */
     color: #111;
-    overflow-x: hidden;
+    padding: 40px;
+    line-height: 1.6;
   }
 
-  /* 名字动画 */
-  @keyframes dissolveIn {
-    0% { opacity: 0; filter: blur(10px); letter-spacing: 10px; }
-    50% { opacity: 0.5; filter: blur(4px); letter-spacing: 5px; }
-    100% { opacity: 1; filter: blur(0); letter-spacing: normal; }
+  h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
   }
 
-  .name {
-    font-size: 2.2em;
-    font-weight: 600;
-    color: #111;
-    animation: dissolveIn 3.5s ease-out forwards;
-    position: absolute;
-    top: 30px;
-    left: 40px;
-    letter-spacing: 2px;
-  }
-
-  /* CD 播放音乐按钮 */
-  .music-btn {
-    position: absolute;
-    top: 90px; /* 在名字下面 */
-    left: 40px;
-    width: 40px;
-    height: 40px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    opacity: 0.6; /* 半透明 */
-    transition: opacity 0.3s;
-    font-size: 28px; /* CD 图标大小 */
-  }
-
-  .music-btn:hover {
-    opacity: 1;
-  }
-
-  /* 菜单容器 */
-  .menu {
-    position: fixed;
-    top: 30px;
-    right: 40px;
-    z-index: 1000;
-  }
-
-  /* 菜单按钮 */
-  .menu-btn {
-    background-color: rgba(255, 140, 0, 0.7);
-    border: none;
-    padding: 10px 14px;
-    cursor: pointer;
-    border-radius: 5px;
+  p {
     font-size: 18px;
-    color: #111;
-    font-weight: bold;
-    transition: background-color 0.3s;
+    margin-bottom: 15px;
   }
-
-  .menu-btn:hover {
-    background-color: rgba(255, 140, 0, 0.9);
-  }
-
-  /* 菜单内容 */
-  .menu-content {
-    display: none;
-    position: absolute;
-    right: 0;
-    background-color: transparent;
-    border-radius: 0;
-    padding: 0;
-    text-align: right;
-    box-shadow: none;
-    animation: fadeIn 1.5s ease forwards;
-  }
-
-  @keyframes fadeIn {
-    from {opacity: 0; transform: translateY(-10px);}
-    to {opacity: 1; transform: translateY(0);}
-  }
-
-  /* 导航链接样式 */
-  .menu-content a {
-    display: block;
-    white-space: nowrap;
-    color: #111;
-    text-decoration: none;
-    margin: 40px 0;
-    font-size: 20px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    border-bottom: 1px solid #111;
-    padding-bottom: 5px;
-    transition: color 0.3s;
-  }
-
-  .menu-content a:hover {
-    color: #ff8800;
-  }
-
-  .show { display: block; animation: fadeIn 1.5s ease forwards; }
-
 </style>
 </head>
 <body>
 
-<div class="name">KannyWu</div>
+<h1>Bio</h1>
 
-<!-- CD 播放音乐按钮 -->
-<button class="music-btn" id="playMusicBtn">💿</button>
-
-<div class="menu">
-  <button class="menu-btn" onclick="toggleMenu()">☰</button>
-  <div id="menuItems" class="menu-content">
-    <a href="#">Bio</a>
-    <a href="#">Art Work</a>
-    <a href="#">Find Me</a>
-  </div>
-</div>
-
-<script>
-  // 菜单折叠
-  function toggleMenu() {
-    const menu = document.getElementById("menuItems");
-    menu.classList.toggle("show");
-  }
-
-  // 点击页面其他地方关闭菜单
-  document.addEventListener('click', function(e) {
-    const menu = document.getElementById("menuItems");
-    const btn = document.querySelector('.menu-btn');
-    if (!menu.contains(e.target) && !btn.contains(e.target)) {
-      menu.classList.remove('show');
-    }
-  });
-
-  // 背景音乐
-  const audio = new Audio('https://kanny7dim.github.io/kannyW.github.io/JS1.mp3');
-  audio.loop = true;
-
-  // 点击 CD 按钮播放音乐，不隐藏按钮
-  document.getElementById('playMusicBtn').addEventListener('click', () => {
-      audio.play().catch(() => console.log("Autoplay blocked, user interaction needed"));
-  });
-</script>
+<p>这里写你的第一段介绍文字，比如你的艺术背景、创作理念或者经历。</p>
+<p>这里可以继续写第二段内容，介绍你喜欢的艺术形式、创作方法、材料使用等等。</p>
+<p>你可以继续添加多段文字，让读者了解你的个人故事和艺术实践。</p>
 
 </body>
 </html>
