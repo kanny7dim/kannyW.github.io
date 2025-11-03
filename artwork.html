@@ -56,19 +56,25 @@ canvas#bgCanvas {
 }
 .series-wrap {
   position: absolute;
+  top: 0;
+  left: 0;
   z-index: 2;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  font-size: 20px;
+  gap: 10px;
+  font-size: 18px;
   font-weight: 600;
   color: var(--fg);
-  text-shadow: 0 0 8px rgba(255,255,255,0.8);
+  text-shadow: 0 0 15px rgba(255,255,255,0.9);
   opacity: 0;
-  transition: opacity 1.5s;
+  transition: opacity 2s ease;
+}
+.series-wrap div {
+  cursor: pointer;
+  position: relative;
 }
 .series-wrap div:hover {
-  text-shadow: 0 0 20px rgba(255,255,255,1);
+  text-shadow: 0 0 25px rgba(255,255,255,1);
 }
 .footer-text {
   position: fixed;
@@ -86,7 +92,7 @@ canvas#bgCanvas {
 }
 @media(max-width:768px){
   .title-wrap { font-size: 24px; gap: 20px; }
-  .series-wrap { font-size: 16px; gap: 10px; }
+  .series-wrap { font-size: 14px; gap: 8px; }
   .footer-text { font-size: 14px; }
 }
 </style>
@@ -103,20 +109,19 @@ canvas#bgCanvas {
   <div id="sculptureBtn">Sculpture</div>
 </div>
 
-<div class="series-wrap" id="photographySeries" style="top:60%; left:40%;">
+<div class="series-wrap" id="photographySeries">
   <div>Endless World</div>
   <div>Time Line</div>
   <div>Perception</div>
 </div>
 
-<div class="series-wrap" id="soundSeries" style="top:60%; left:50%;">
+<div class="series-wrap" id="soundSeries">
   <div>SoundScape</div>
   <div>Deep Listening</div>
 </div>
 
-<div class="series-wrap" id="sculptureSeries" style="top:60%; left:60%;">
+<div class="series-wrap" id="sculptureSeries">
   <div>Fragile Form</div>
-  <div>Material Dialogues</div>
 </div>
 
 <div class="footer-text">
@@ -172,28 +177,48 @@ titles.forEach(t=>{
   floatAnim();
 });
 
-// 显示系列函数
-function showSeries(series){
-  const allSeries = [photographySeries, soundSeries, sculptureSeries];
-  allSeries.forEach(s=>{
-    if(s===series){
-      s.style.opacity=1;
-      s.style.display='flex';
-    }else{
-      s.style.opacity=0;
-      s.style.display='none';
-    }
-  });
-}
+// 系列管理
+const photographyBtn = document.getElementById('photographyBtn');
+const soundBtn = document.getElementById('soundBtn');
+const sculptureBtn = document.getElementById('sculptureBtn');
 
-// 点击事件
 const photographySeries = document.getElementById('photographySeries');
 const soundSeries = document.getElementById('soundSeries');
 const sculptureSeries = document.getElementById('sculptureSeries');
 
-document.getElementById('photographyBtn').addEventListener('click',()=>showSeries(photographySeries));
-document.getElementById('soundBtn').addEventListener('click',()=>showSeries(soundSeries));
-document.getElementById('sculptureBtn').addEventListener('click',()=>showSeries(sculptureSeries));
+function hideAllSeries(){
+  photographySeries.style.opacity = 0;
+  soundSeries.style.opacity = 0;
+  sculptureSeries.style.opacity = 0;
+}
+
+// 对齐首字母
+function alignSeries(seriesDiv, targetDiv){
+  const targetRect = targetDiv.getBoundingClientRect();
+  const seriesChildren = Array.from(seriesDiv.children);
+  let top = targetRect.bottom + 10; // 稍微下方
+  seriesChildren.forEach((child,i)=>{
+    child.style.position='absolute';
+    child.style.left = `${targetRect.left}px`;
+    child.style.top = `${top + i*30}px`;
+  });
+}
+
+photographyBtn.addEventListener('click',()=>{
+  hideAllSeries();
+  alignSeries(photographySeries, photographyBtn);
+  photographySeries.style.opacity = 1;
+});
+soundBtn.addEventListener('click',()=>{
+  hideAllSeries();
+  alignSeries(soundSeries, soundBtn);
+  soundSeries.style.opacity = 1;
+});
+sculptureBtn.addEventListener('click',()=>{
+  hideAllSeries();
+  alignSeries(sculptureSeries, sculptureBtn);
+  sculptureSeries.style.opacity = 1;
+});
 </script>
 
 </body>
