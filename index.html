@@ -33,7 +33,7 @@ header {
   position: relative;
 }
 
-/* Glitch 马赛克效果，字块拼接 */
+/* Glitch / 马赛克效果动态明显 */
 .site-name span {
   position: relative;
   display: inline-block;
@@ -47,6 +47,7 @@ header {
   top: 0;
   left: 0;
   color: rgba(0,0,0,0.85);
+  animation: glitchShift 1s infinite linear alternate-reverse;
 }
 
 .site-name span::before {
@@ -57,6 +58,14 @@ header {
 .site-name span::after {
   clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
   opacity: 0.5;
+}
+
+@keyframes glitchShift {
+  0% { transform: translate(0px, 0px); }
+  25% { transform: translate(-2px, 1px); }
+  50% { transform: translate(1px, -1px); }
+  75% { transform: translate(-1px, 2px); }
+  100% { transform: translate(2px, -2px); }
 }
 
 /* 右侧折叠菜单按钮 */
