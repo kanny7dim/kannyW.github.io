@@ -8,7 +8,6 @@
   body {
     margin: 0;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    /* 背景图，使用你的 GitHub Pages URL */
     background: url('https://kanny7dim.github.io/kannyW.github.io/IMG_9403.jpeg') no-repeat center center fixed;
     background-size: cover;
     color: #111;
@@ -63,11 +62,11 @@
     display: none;
     position: absolute;
     right: 0;
-    background-color: rgba(255,255,255,0.95);
-    border-radius: 6px;
-    padding: 12px 20px;
+    background-color: transparent; /* 去掉白色框 */
+    border-radius: 0;
+    padding: 0;
     text-align: right;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    box-shadow: none; /* 去掉阴影 */
     animation: fadeIn 1.5s ease forwards;
   }
 
@@ -76,16 +75,18 @@
     to {opacity: 1; transform: translateY(0);}
   }
 
-  /* 导航链接样式：每条独立一行，间距更大，字体更醒目 */
+  /* 导航链接样式 */
   .menu-content a {
-    display: block;          /* 每个名字独占一行 */
-    white-space: nowrap;     /* 保证 Art Work 不换行 */
+    display: block;
+    white-space: nowrap; /* 保证 Art Work 不拆行 */
     color: #111;
     text-decoration: none;
-    margin: 20px 0;          /* 上下间距更大 */
-    font-size: 20px;         /* 字体稍大 */
-    font-weight: 600;        /* 字体稍粗 */
-    letter-spacing: 1px;     /* 增加一点字母间距 */
+    margin: 30px 0; /* 上下间隔更大 */
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #111; /* 每条名字下面一条横线 */
+    padding-bottom: 5px; /* 横线和文字稍微分开 */
     transition: color 0.3s;
   }
 
