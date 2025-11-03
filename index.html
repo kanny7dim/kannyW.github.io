@@ -39,21 +39,21 @@
     left: 40px;
     width: 40px;
     height: 40px;
-    background-color: rgba(255,140,0,0.7);
+    background: transparent; /* 透明背景 */
     border: none;
-    border-radius: 50%;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 24px;
     color: #111;
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    opacity: 0.6; /* 半透明 */
     transition: opacity 0.3s;
   }
 
   .music-btn:hover {
-    opacity: 0.9;
+    opacity: 1;
   }
 
   /* 菜单容器 */
@@ -158,10 +158,9 @@
   const audio = new Audio('https://kanny7dim.github.io/kannyW.github.io/mymusic.mp3');
   audio.loop = true;
 
-  // 点击耳朵按钮播放音乐
+  // 点击耳朵按钮播放音乐，不隐藏按钮
   document.getElementById('playMusicBtn').addEventListener('click', () => {
-      audio.play();
-      document.getElementById('playMusicBtn').style.display = 'none';
+      audio.play().catch(() => console.log("Autoplay blocked, user interaction needed"));
   });
 </script>
 
