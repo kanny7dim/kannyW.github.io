@@ -29,17 +29,19 @@ header {
 .site-name {
   font-weight: bold;
   font-size: 32px;
-  color: rgba(0,0,0,0.85); /* 黑色淡一点 */
+  color: rgba(0,0,0,0.85); /* 黑色稍淡 */
   position: relative;
 }
 
-/* Glitch / 马赛克效果动态明显 */
+/* 每个字块容器 */
 .site-name span {
   position: relative;
   display: inline-block;
   color: rgba(0,0,0,0.85);
+  overflow: hidden;
 }
 
+/* 溶解汇聚动画 */
 .site-name span::before,
 .site-name span::after {
   content: attr(data-char);
@@ -47,25 +49,27 @@ header {
   top: 0;
   left: 0;
   color: rgba(0,0,0,0.85);
-  animation: glitchShift 1s infinite linear alternate-reverse;
-}
-
-.site-name span::before {
-  clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%);
-  opacity: 0.7;
+  opacity: 0;
+  animation: dissolve 3s infinite;
 }
 
 .site-name span::after {
-  clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
-  opacity: 0.5;
+  animation-delay: 1.5s;
 }
 
-@keyframes glitchShift {
-  0% { transform: translate(0px, 0px); }
-  25% { transform: translate(-2px, 1px); }
-  50% { transform: translate(1px, -1px); }
-  75% { transform: translate(-1px, 2px); }
-  100% { transform: translate(2px, -2px); }
+@keyframes dissolve {
+  0% {
+    opacity: 0;
+    transform: translate(-5px, -5px) rotate(0deg) scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(0px, 0px) rotate(0deg) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(5px, 5px) rotate(0deg) scale(0.8);
+  }
 }
 
 /* 右侧折叠菜单按钮 */
@@ -93,7 +97,7 @@ header {
   opacity: 0;
   max-height: 0;
   overflow: hidden;
-  transition: opacity 2s ease, max-height 3s ease; /* 折叠菜单过渡柔和 */
+  transition: opacity 2s ease, max-height 3s ease; /* 柔和展开 */
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   z-index: 1000;
 }
@@ -148,7 +152,7 @@ section {
 </div>
 
 <script>
-// 名字 Glitch 文字生成
+// 名字文字生成
 const siteNameDiv = document.getElementById('siteName');
 const nameText = 'KannyWu';
 siteNameDiv.innerHTML = '';
