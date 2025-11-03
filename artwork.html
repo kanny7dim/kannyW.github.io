@@ -22,8 +22,10 @@ canvas#bgCanvas, canvas#lineCanvas {
   position: absolute;
   top:0; left:0;
   width: 100%; height: 100%;
-  z-index: 0;
 }
+canvas#bgCanvas { z-index:0; }
+canvas#lineCanvas { z-index:1; pointer-events: none; }
+
 .back-btn {
   position: fixed;
   top: 30px;
@@ -34,6 +36,7 @@ canvas#bgCanvas, canvas#lineCanvas {
   text-shadow: 0 0 12px #fff;
   z-index: 3;
 }
+
 .title-wrap {
   position: absolute;
   top: 45%;
@@ -42,7 +45,7 @@ canvas#bgCanvas, canvas#lineCanvas {
   z-index: 2;
   display: flex;
   gap: 30px;
-  font-size: 32px;
+  font-size: 32px; 
   font-weight: 700;
   color: var(--fg);
   text-shadow: 0 0 12px rgba(255,255,255,0.8);
@@ -54,32 +57,28 @@ canvas#bgCanvas, canvas#lineCanvas {
 .title-wrap div:hover {
   text-shadow: 0 0 25px rgba(255,255,255,1);
 }
+
 .series-wrap {
   position: absolute;
+  top: 55%; /* 左下偏下调整 */
+  left: 25%; /* 左移对齐Photography */
+  transform: translateX(-50%);
   z-index: 2;
-  display: flex;
+  display: none; /* 初始隐藏 */
   flex-direction: column;
   gap: 10px;
-  font-size: 16px; /* 系列标题更小 */
+  font-size: 18px;
   font-weight: 600;
   color: var(--fg);
-  text-shadow: 0 0 10px rgba(255,255,255,0.8);
-  display: none; /* 初始隐藏 */
+  text-shadow: 0 0 8px rgba(255,255,255,0.8);
 }
 .series-wrap div {
   cursor: pointer;
-  position: relative;
 }
 .series-wrap div:hover {
   text-shadow: 0 0 20px rgba(255,255,255,1);
 }
-.line-canvas {
-  position: absolute;
-  top:0; left:0;
-  width: 100%; height: 100%;
-  z-index: 1;
-  pointer-events: none;
-}
+
 .footer-text {
   position: fixed;
   bottom: 30px;
@@ -94,9 +93,10 @@ canvas#bgCanvas, canvas#lineCanvas {
   line-height: 1.5;
   word-wrap: break-word;
 }
+
 @media(max-width:768px){
   .title-wrap { font-size: 24px; gap: 20px; }
-  .series-wrap { font-size: 14px; gap: 8px; }
+  .series-wrap { font-size: 14px; gap: 8px; left: 20%; }
   .footer-text { font-size: 14px; }
 }
 </style>
@@ -104,7 +104,7 @@ canvas#bgCanvas, canvas#lineCanvas {
 <body>
 
 <canvas id="bgCanvas"></canvas>
-<canvas id="lineCanvas" class="line-canvas"></canvas>
+<canvas id="lineCanvas"></canvas>
 
 <a href="index.html" class="back-btn">←</a>
 
@@ -130,6 +130,7 @@ const canvas = document.getElementById('bgCanvas');
 const ctx = canvas.getContext('2d');
 const lineCanvas = document.getElementById('lineCanvas');
 const lineCtx = lineCanvas.getContext('2d');
+
 let W=0,H=0;
 function resize(){ 
   W=canvas.clientWidth; 
@@ -181,35 +182,30 @@ titles.forEach(t=>{
 const photographyBtn = document.getElementById('photographyBtn');
 const photographySeries = document.getElementById('photographySeries');
 
-photographyBtn.addEventListener('click',()=>{
-  if(photographySeries.style.display==='flex'){
-    photographySeries.style.display='none';
-  } else {
-    photographySeries.style.display='flex';
-    // 对齐 Photography 左下方
-    const rect = photographyBtn.getBoundingClientRect();
-    photographySeries.style.left = `${rect.left + rect.width/2 - photographySeries.offsetWidth/2}px`;
-    photographySeries.style.top = `${rect.bottom + 15}px`;
-  }
+photographyBtn.addEventListener('click', () => {
+  photographySeries.style.display = photographySeries.style.display === 'flex' ? 'none' : 'flex';
 });
 
-// 绘制星图线条连接系列
-function drawLines(){
+// 绘制柔和发光线连接首字母
+function drawLines() {
   lineCtx.clearRect(0,0,W,H);
-  if(photographySeries.style.display==='flex'){
+  if (photographySeries.style.display === 'flex') {
     const rects = Array.from(photographySeries.children).map(div=>div.getBoundingClientRect());
-    const photRect = photographyBtn.getBoundingClientRect();
-    const x0 = photRect.left + photRect.width/2;
-    const y0 = photRect.bottom;
-    for(const r of rects){
-      const x1 = r.left + r.width/2;
-      const y1 = r.top + r.height/2;
-      lineCtx.beginPath();
-      lineCtx.strokeStyle='rgba(255,255,255,0.6)';
-      lineCtx.lineWidth=1.5;
-      lineCtx.moveTo(x0,y0);
-      lineCtx.lineTo(x1,y1);
-      lineCtx.stroke();
+    for(let i=0;i<rects.length-1;i++){
+      const x1 = rects[i].x + 8; // 首字母大概偏移
+      const y1 = rects[i].y + rects[i].height/2;
+      const x2 = rects[i+1].x + 8;
+      const y2 = rects[i+1].y + rects[i+1].height/2;
+
+      // 柔和发光多层线
+      for(let glow=0; glow<6; glow++){
+        lineCtx.beginPath();
+        lineCtx.strokeStyle = `rgba(255,255,255,${0.05+0.05*glow})`;
+        lineCtx.lineWidth = 0.5 + glow*0.3;
+        lineCtx.moveTo(x1,y1);
+        lineCtx.lineTo(x2,y2);
+        lineCtx.stroke();
+      }
     }
   }
   requestAnimationFrame(drawLines);
