@@ -3,71 +3,126 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Art Work — Kanny Wu</title>
+<title>Art Work</title>
 <style>
 :root {
   --bg: #0b0b0f;
-  --fg: #fff;
-  --accent: #9bd3ff;
+  --fg: #ffffff;
 }
-body, html {
-  margin:0; padding:0; height:100%; background:var(--bg); color:var(--fg); font-family:Arial,sans-serif; overflow-x:hidden;
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  overflow: hidden;
 }
-
-/* 星空背景 */
 canvas#bgCanvas {
-  position:absolute; top:0; left:0; width:100%; height:100%;
-  z-index:0;
+  position: absolute;
+  top:0; left:0;
+  width: 100%; height: 100%;
+  z-index: 0;
 }
-
-/* 返回按钮 */
 .back-btn {
-  position: fixed; top:30px; right:40px; font-size:32px; color:#fff; text-decoration:none; text-shadow:0 0 12px #fff; z-index:20;
+  position: fixed;
+  top: 30px;
+  right: 40px;
+  font-size: 32px;
+  color: #fff;
+  text-decoration: none;
+  text-shadow: 0 0 12px #fff;
+  z-index: 3;
 }
-
-/* 漂浮标题 */
-.title-wrap { position: relative; z-index:10; text-align:center; margin-top:60px; }
-svg#titleSVG { width:90%; height:150px; overflow:visible; }
-
-/* 分类切换 */
-.chip-wrap { margin-top:30px; display:flex; gap:10px; justify-content:center; z-index:10; position:relative; }
-.chip { padding:6px 12px; border-radius:999px; cursor:pointer; background:rgba(255,255,255,0.03); color:#fff; text-shadow:0 0 10px #fff; transition:0.3s; }
-.chip.active { background:rgba(155,211,255,0.12); border:1px solid rgba(155,211,255,0.22); }
-
-/* 系列文字 */
-.series-wrap { position:relative; z-index:10; margin-top:40px; display:flex; flex-direction:column; align-items:center; gap:30px; }
-.series { display:flex; gap:6px; flex-wrap:wrap; justify-content:center; position:relative; }
-.letter { font-size:24px; cursor:pointer; color:#fff; text-shadow:0 0 12px #fff; transition: all 0.3s; }
-.letter:hover { transform: translateY(-3px); text-shadow:0 0 20px #fff; }
-
-/* 底部英文文字 */
+.title-wrap {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  display: flex;
+  gap: 30px;
+  font-size: 32px; /* 中间文字适中 */
+  font-weight: 700;
+  color: var(--fg);
+  text-shadow: 0 0 12px rgba(255,255,255,0.8);
+}
+.title-wrap div {
+  cursor: pointer;
+  position: relative;
+}
+.title-wrap div:hover {
+  text-shadow: 0 0 25px rgba(255,255,255,1); /* 光标发光效果 */
+}
+.series-wrap {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--fg);
+  text-shadow: 0 0 8px rgba(255,255,255,0.8);
+  display: none; /* 初始隐藏 */
+}
+.series-wrap div {
+  cursor: pointer;
+  position: relative;
+}
+.series-wrap div:hover {
+  text-shadow: 0 0 20px rgba(255,255,255,1);
+}
+.line-canvas {
+  position: absolute;
+  top:0; left:0;
+  width: 100%; height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
 .footer-text {
-  position: fixed; bottom:30px; width:90%; left:50%; transform:translateX(-50%);
-  text-align:center; color:#fff; text-shadow:0 0 12px #fff; line-height:1.5; font-size:16px; z-index:10;
+  position: fixed;
+  bottom: 30px;
+  width: 90%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: #fff;
+  font-size: 16px;
+  text-shadow: 0 0 12px #fff;
+  z-index: 2;
+  line-height: 1.5;
+  word-wrap: break-word;
 }
-
-/* 星图连线 */
-canvas#lineCanvas { position:absolute; top:0; left:0; width:100%; height:100%; z-index:5; pointer-events:none; }
+@media(max-width:768px){
+  .title-wrap { font-size: 24px; gap: 20px; }
+  .series-wrap { font-size: 16px; gap: 10px; }
+  .footer-text { font-size: 14px; }
+}
 </style>
 </head>
 <body>
 
 <canvas id="bgCanvas"></canvas>
-<canvas id="lineCanvas"></canvas>
+<canvas id="lineCanvas" class="line-canvas"></canvas>
 
 <a href="index.html" class="back-btn">←</a>
 
 <div class="title-wrap">
-  <svg id="titleSVG" viewBox="0 0 1200 150"></svg>
+  <div id="photographyBtn">Photography</div>
+  <div onclick="location.href='sound.html'">Sound</div>
+  <div onclick="location.href='sculpture.html'">Sculpture</div>
 </div>
 
-<div class="chip-wrap" id="chipWrap">
-  <div class="chip active" data-cat="Photography">Photography</div>
-  <div class="chip" data-cat="Sound">Sound</div>
-  <div class="chip" data-cat="Sculpture">Sculpture</div>
+<div class="series-wrap" id="photographySeries">
+  <div>Endless World</div>
+  <div>Time Line</div>
+  <div>Perception</div>
 </div>
-
-<div class="series-wrap" id="seriesWrap"></div>
 
 <div class="footer-text">
 By means of sound, photography, and sculpture, they probe the unknown,<br>
@@ -75,131 +130,87 @@ perceiving fragility, grace, and resilience; all is inscribed, all is traceable.
 </div>
 
 <script>
-// 星空背景
 const canvas = document.getElementById('bgCanvas');
 const ctx = canvas.getContext('2d');
+const lineCanvas = document.getElementById('lineCanvas');
+const lineCtx = lineCanvas.getContext('2d');
 let W=0,H=0;
-function resizeCanvas(){ W=canvas.clientWidth; H=canvas.clientHeight; canvas.width=W; canvas.height=H; lineCanvas.width=W; lineCanvas.height=H; }
-window.addEventListener('resize',resizeCanvas); resizeCanvas();
+function resize(){ 
+  W=canvas.clientWidth; 
+  H=canvas.clientHeight; 
+  canvas.width=W; 
+  canvas.height=H;
+  lineCanvas.width=W;
+  lineCanvas.height=H;
+}
+window.addEventListener('resize',resize);
+resize();
 
-const stars = Array.from({length:120},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.6+0.2,vx:(Math.random()-0.5)*0.0008,vy:(Math.random()-0.5)*0.0008}));
-function drawStars(){
+// 星空粒子背景
+const stars = Array.from({length:150},()=>({
+  x:Math.random(), y:Math.random(), r:Math.random()*1.5+0.2,
+  vx:(Math.random()-0.5)*0.0005, vy:(Math.random()-0.5)*0.0005
+}));
+function draw(){
   ctx.clearRect(0,0,W,H);
-  ctx.fillStyle='rgba(8,9,12,0.9)'; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='rgba(8,9,12,0.9)';
+  ctx.fillRect(0,0,W,H);
   for(const s of stars){
-    s.x+=s.vx; s.y+=s.vy;
+    s.x += s.vx; s.y += s.vy;
     if(s.x<0)s.x=1;if(s.x>1)s.x=0;
     if(s.y<0)s.y=1;if(s.y>1)s.y=0;
     ctx.beginPath();
     ctx.fillStyle='rgba(255,255,255,'+(0.6*Math.random()+0.2)+')';
-    ctx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2); ctx.fill();
+    ctx.arc(s.x*W, s.y*H, s.r,0,Math.PI*2);
+    ctx.fill();
   }
-  requestAnimationFrame(drawStars);
+  requestAnimationFrame(draw);
 }
-drawStars();
+draw();
 
-// 漂浮标题
-const svg = document.getElementById('titleSVG');
-const words=['Photography','Sound','Sculpture'];
-const fullTitle = words.join(' / ');
-let letters = [];
-function createLetters(){
-  svg.innerHTML='';
-  const left=60, right=60;
-  const usable=1200-left-right;
-  const chars=fullTitle.split('');
-  const baseGap=usable/(chars.length-1);
-  let curX=left;
-  for(let i=0;i<chars.length;i++){
-    const ch=chars[i];
-    const el=document.createElementNS('http://www.w3.org/2000/svg','text');
-    el.setAttribute('class','letter');
-    el.textContent=ch;
-    const x=curX,y=80;
-    el.setAttribute('x',x);
-    el.setAttribute('y',y);
-    svg.appendChild(el);
-    letters.push({el,x,y});
-    curX += (ch===' '||ch==='/'?baseGap*0.6:baseGap);
+// 中间三个单词漂浮动画
+const titles = document.querySelectorAll('.title-wrap div');
+titles.forEach(t=>{
+  let posX=0, posY=0;
+  function floatAnim(){
+    posX += (Math.random()-0.5)*0.3;
+    posY += (Math.random()-0.5)*0.3;
+    t.style.transform=`translate(${posX}px, ${posY}px)`;
+    requestAnimationFrame(floatAnim);
   }
-}
-createLetters();
-
-function animateLetters(){
-  letters.forEach((L,i)=>{
-    const dx=Math.sin(Date.now()*0.002 + i*0.2)*2;
-    const dy=Math.cos(Date.now()*0.002 + i*0.15)*1.2;
-    L.el.setAttribute('x', L.x+dx);
-    L.el.setAttribute('y', L.y+dy);
-  });
-  requestAnimationFrame(animateLetters);
-}
-animateLetters();
-
-// 分类切换和系列显示
-const chipWrap = document.getElementById('chipWrap');
-const seriesWrap = document.getElementById('seriesWrap');
-
-const seriesData = {
-  'Photography':['Endless World','Time Line','Perception'],
-  'Sound':[],
-  'Sculpture':[]
-};
-
-chipWrap.addEventListener('click',e=>{
-  if(e.target.classList.contains('chip')){
-    const cat = e.target.dataset.cat;
-    chipWrap.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active',c===e.target));
-    seriesWrap.innerHTML='';
-    if(seriesData[cat].length>0){
-      seriesData[cat].forEach(s=>{
-        const div = document.createElement('div');
-        div.className='series';
-        div.dataset.series = s;
-        seriesWrap.appendChild(div);
-        createSeriesLetters(div);
-      });
-    }
-  }
+  floatAnim();
 });
 
-// 创建漂浮字母
-function createSeriesLetters(seriesDiv){
-  const text = seriesDiv.dataset.series;
-  seriesDiv.innerHTML='';
-  const letters = [];
-  for(let i=0;i<text.length;i++){
-    const span = document.createElement('span');
-    span.className='letter';
-    span.textContent=text[i];
-    seriesDiv.appendChild(span);
-    letters.push(span);
-  }
-  function animateLetters(){
-    letters.forEach((l,i)=>{
-      const dx = Math.sin(Date.now()*0.002 + i)*2;
-      const dy = Math.cos(Date.now()*0.002 + i)*1.2;
-      l.style.transform = `translate(${dx}px,${dy}px)`;
-    });
-    requestAnimationFrame(animateLetters);
-  }
-  animateLetters();
-}
+// 点击 Photography 显示系列
+const photographyBtn = document.getElementById('photographyBtn');
+const photographySeries = document.getElementById('photographySeries');
 
-// 星图连线
-const lineCanvas = document.getElementById('lineCanvas');
-const lctx = lineCanvas.getContext('2d');
+photographyBtn.addEventListener('click',()=>{
+  photographySeries.style.display = photographySeries.style.display==='flex'?'none':'flex';
+});
+
+// 绘制星图线条连接系列
 function drawLines(){
-  lctx.clearRect(0,0,W,H);
-  seriesWrap.querySelectorAll('.series').forEach(series=>{
-    const letters = series.querySelectorAll('.letter');
-    letters.forEach((l,i)=>{
-      if(i<letters.length-1){
-        const r1 = l.getBoundingClientRect();
-        const r2 = letters[i+1].getBoundingClientRect();
-        lctx.strokeStyle='rgba(255,255,255,0.3)';
-        lctx.lineWidth=1.2;
-        lctx.beginPath();
-        lctx.moveTo(r1.left+r1.width/2, r1.top+r1.height/2 + window.scrollY);
-        lctx.lineTo(r2.left+r2.width/2, r2.top+r2.height/2 + window.scrollY);
-        lctx.stroke
+  lineCtx.clearRect(0,0,W,H);
+  if(photographySeries.style.display==='flex'){
+    const rects = Array.from(photographySeries.children).map(div=>div.getBoundingClientRect());
+    for(let i=0;i<rects.length-1;i++){
+      lineCtx.beginPath();
+      lineCtx.strokeStyle='rgba(255,255,255,0.5)';
+      lineCtx.lineWidth=1.5;
+      const x1 = rects[i].x + rects[i].width/2;
+      const y1 = rects[i].y + rects[i].height/2;
+      const x2 = rects[i+1].x + rects[i+1].width/2;
+      const y2 = rects[i+1].y + rects[i+1].height/2;
+      lineCtx.moveTo(x1,y1);
+      lineCtx.lineTo(x2,y2);
+      lineCtx.stroke();
+    }
+  }
+  requestAnimationFrame(drawLines);
+}
+drawLines();
+</script>
+
+</body>
+</html>
