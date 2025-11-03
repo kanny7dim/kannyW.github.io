@@ -22,10 +22,8 @@ canvas#bgCanvas, canvas#lineCanvas {
   position: absolute;
   top:0; left:0;
   width: 100%; height: 100%;
+  z-index: 0;
 }
-canvas#bgCanvas { z-index:0; }
-canvas#lineCanvas { z-index:1; pointer-events: none; }
-
 .back-btn {
   position: fixed;
   top: 30px;
@@ -36,7 +34,6 @@ canvas#lineCanvas { z-index:1; pointer-events: none; }
   text-shadow: 0 0 12px #fff;
   z-index: 3;
 }
-
 .title-wrap {
   position: absolute;
   top: 45%;
@@ -45,7 +42,7 @@ canvas#lineCanvas { z-index:1; pointer-events: none; }
   z-index: 2;
   display: flex;
   gap: 30px;
-  font-size: 32px; 
+  font-size: 32px;
   font-weight: 700;
   color: var(--fg);
   text-shadow: 0 0 12px rgba(255,255,255,0.8);
@@ -57,28 +54,22 @@ canvas#lineCanvas { z-index:1; pointer-events: none; }
 .title-wrap div:hover {
   text-shadow: 0 0 25px rgba(255,255,255,1);
 }
-
 .series-wrap {
   position: absolute;
-  top: 55%; /* 左下偏下调整 */
-  left: 25%; /* 左移对齐Photography */
-  transform: translateX(-50%);
+  top: 0; left: 0; /* 初始定位到左上，稍后 JS 会对齐 */
   z-index: 2;
-  display: none; /* 初始隐藏 */
+  display: flex;
   flex-direction: column;
   gap: 10px;
   font-size: 18px;
   font-weight: 600;
   color: var(--fg);
   text-shadow: 0 0 8px rgba(255,255,255,0.8);
-}
-.series-wrap div {
-  cursor: pointer;
+  display: none;
 }
 .series-wrap div:hover {
   text-shadow: 0 0 20px rgba(255,255,255,1);
 }
-
 .footer-text {
   position: fixed;
   bottom: 30px;
@@ -93,10 +84,9 @@ canvas#lineCanvas { z-index:1; pointer-events: none; }
   line-height: 1.5;
   word-wrap: break-word;
 }
-
 @media(max-width:768px){
   .title-wrap { font-size: 24px; gap: 20px; }
-  .series-wrap { font-size: 14px; gap: 8px; left: 20%; }
+  .series-wrap { font-size: 14px; gap: 6px; }
   .footer-text { font-size: 14px; }
 }
 </style>
@@ -130,20 +120,20 @@ const canvas = document.getElementById('bgCanvas');
 const ctx = canvas.getContext('2d');
 const lineCanvas = document.getElementById('lineCanvas');
 const lineCtx = lineCanvas.getContext('2d');
-
 let W=0,H=0;
+
 function resize(){ 
   W=canvas.clientWidth; 
   H=canvas.clientHeight; 
   canvas.width=W; 
-  canvas.height=H;
-  lineCanvas.width=W;
-  lineCanvas.height=H;
+  canvas.height=H; 
+  lineCanvas.width=W; 
+  lineCanvas.height=H; 
 }
 window.addEventListener('resize',resize);
 resize();
 
-// 星空粒子背景
+// 星空背景
 const stars = Array.from({length:150},()=>({
   x:Math.random(), y:Math.random(), r:Math.random()*1.5+0.2,
   vx:(Math.random()-0.5)*0.0005, vy:(Math.random()-0.5)*0.0005
@@ -165,7 +155,7 @@ function draw(){
 }
 draw();
 
-// 中间三个单词漂浮动画
+// 中间标题漂浮
 const titles = document.querySelectorAll('.title-wrap div');
 titles.forEach(t=>{
   let posX=0, posY=0;
@@ -178,34 +168,39 @@ titles.forEach(t=>{
   floatAnim();
 });
 
-// 点击 Photography 显示系列
+// Photography 系列
 const photographyBtn = document.getElementById('photographyBtn');
 const photographySeries = document.getElementById('photographySeries');
 
-photographyBtn.addEventListener('click', () => {
-  photographySeries.style.display = photographySeries.style.display === 'flex' ? 'none' : 'flex';
+photographyBtn.addEventListener('click', ()=>{
+  if(photographySeries.style.display==='flex'){
+    photographySeries.style.display='none';
+  }else{
+    photographySeries.style.display='flex';
+    // 对齐首字母到 Photography 左下
+    const photoRect = photographyBtn.getBoundingClientRect();
+    photographySeries.style.left = (photoRect.left) + 'px';
+    photographySeries.style.top = (photoRect.bottom + 10) + 'px';
+  }
 });
 
-// 绘制柔和发光线连接首字母
-function drawLines() {
+// 绘制首字母连接线
+function drawLines(){
   lineCtx.clearRect(0,0,W,H);
-  if (photographySeries.style.display === 'flex') {
-    const rects = Array.from(photographySeries.children).map(div=>div.getBoundingClientRect());
+  if(photographySeries.style.display==='flex'){
+    const rects = Array.from(photographySeries.children).map(div=>{
+      const r = div.getBoundingClientRect();
+      return {x: r.left + 3, y: r.top + r.height/2}; // 首字母左边 3px
+    });
     for(let i=0;i<rects.length-1;i++){
-      const x1 = rects[i].x + 8; // 首字母大概偏移
-      const y1 = rects[i].y + rects[i].height/2;
-      const x2 = rects[i+1].x + 8;
-      const y2 = rects[i+1].y + rects[i+1].height/2;
-
-      // 柔和发光多层线
-      for(let glow=0; glow<6; glow++){
-        lineCtx.beginPath();
-        lineCtx.strokeStyle = `rgba(255,255,255,${0.05+0.05*glow})`;
-        lineCtx.lineWidth = 0.5 + glow*0.3;
-        lineCtx.moveTo(x1,y1);
-        lineCtx.lineTo(x2,y2);
-        lineCtx.stroke();
-      }
+      lineCtx.beginPath();
+      lineCtx.strokeStyle='rgba(255,255,255,0.5)';
+      lineCtx.lineWidth=1.2;
+      lineCtx.shadowColor='rgba(255,255,255,0.8)';
+      lineCtx.shadowBlur=8;
+      lineCtx.moveTo(rects[i].x, rects[i].y);
+      lineCtx.lineTo(rects[i+1].x, rects[i+1].y);
+      lineCtx.stroke();
     }
   }
   requestAnimationFrame(drawLines);
