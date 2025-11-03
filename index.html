@@ -98,17 +98,17 @@
   .show { display: block; animation: fadeIn 1.5s ease forwards; }
   @keyframes fadeIn { from {opacity:0; transform:translateY(-10px);} to {opacity:1; transform:translateY(0);} }
 
-  /* Bio 容器 */
-  #bioContent {
+  /* 中央内容容器 */
+  .centerContent {
     display: none;
-    position: fixed; /* 保持中央显示 */
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 80%;
     max-width: 800px;
     max-height: 80%;
-    overflow-y: auto; /* 文字多可滚动 */
+    overflow-y: auto;
     color: #111;
     font-family: 'Playfair Display', serif;
     text-align: center;
@@ -120,6 +120,12 @@
     opacity: 0;
     transition: opacity 2s ease-in;
   }
+
+  /* Find Me 联系方式 */
+  #findMeContent p {
+    margin: 20px 0;
+  }
+
 </style>
 </head>
 <body>
@@ -130,9 +136,15 @@
 <button class="music-btn" id="playMusicBtn">🎧</button>
 
 <!-- Bio 内容 -->
-<div id="bioContent">
+<div id="bioContent" class="centerContent">
   <p>Kanny Wu</p>
   <p>Drawing from a background as a classical pianist, Kanny Wu works through sound, image, and sculpture as media to explore perception, fragility, and the position of materials, bodies, and memories in time. Each work creates a dialogue between sensory experience and the world, emphasizing vulnerability, identity, and coexistence.</p>
+</div>
+
+<!-- Find Me 内容 -->
+<div id="findMeContent" class="centerContent">
+  <p>Email: kannywu227@gmail.com</p>
+  <p>Phone: +358 417216296</p>
 </div>
 
 <!-- 菜单 -->
@@ -140,33 +152,52 @@
   <button class="menu-btn" onclick="toggleMenu()">☰</button>
   <div id="menuItems" class="menu-content">
     <a href="#" onclick="showBio()">Bio</a>
+    <a href="#" onclick="showFindMe()">Find Me</a>
     <a href="#" onclick="stopMusic()">Art Work</a>
-    <a href="#" onclick="stopMusic()">Find Me</a>
   </div>
 </div>
 
 <script>
+  const bio = document.getElementById('bioContent');
+  const findMe = document.getElementById('findMeContent');
+  const menu = document.getElementById("menuItems");
+  const btn = document.querySelector('.menu-btn');
+
   // 菜单折叠
   function toggleMenu() {
-    const menu = document.getElementById("menuItems");
     menu.classList.toggle("show");
   }
 
-  // 点击页面其他地方关闭菜单
+  // 点击页面其他地方关闭菜单，同时隐藏 Bio 和 Find Me
   document.addEventListener('click', function(e) {
-    const menu = document.getElementById("menuItems");
-    const btn = document.querySelector('.menu-btn');
     if (!menu.contains(e.target) && !btn.contains(e.target)) {
       menu.classList.remove('show');
+      hideContent();
     }
   });
 
   // 显示 Bio
   function showBio() {
-    const bio = document.getElementById('bioContent');
+    hideContent();
     bio.style.display = 'block';
     setTimeout(()=>{ bio.style.opacity = 1; }, 50);
-    stopMusic(); // 点击 Bio 停止音乐
+    stopMusic(); // 停止音乐
+  }
+
+  // 显示 Find Me
+  function showFindMe() {
+    hideContent();
+    findMe.style.display = 'block';
+    setTimeout(()=>{ findMe.style.opacity = 1; }, 50);
+    stopMusic(); // 停止音乐
+  }
+
+  // 隐藏所有中央内容
+  function hideContent() {
+    [bio, findMe].forEach(el=>{
+      el.style.opacity = 0;
+      setTimeout(()=>{ el.style.display = 'none'; }, 500);
+    });
   }
 
   // 背景音乐
