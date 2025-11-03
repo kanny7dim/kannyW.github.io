@@ -7,7 +7,7 @@
 body {
   margin: 0;
   font-family: sans-serif;
-  background-color: #dcdcdc;
+  background-color: #dcdcdc; /* 背景灰色 */
   color: #222;
 }
 
@@ -28,32 +28,42 @@ header {
 /* 左侧名字 */
 .site-name {
   font-weight: bold;
-  font-size: 24px;
-  color: #000;
+  font-size: 32px;
+  color: rgba(0,0,0,0.85); /* 黑色淡一点 */
   position: relative;
 }
 
-/* Glitch 效果 */
+/* Glitch 马赛克效果，字块拼接 */
 .site-name span {
   position: relative;
   display: inline-block;
-  animation: glitch 1.5s infinite;
+  color: rgba(0,0,0,0.85);
 }
 
-@keyframes glitch {
-  0% { clip-path: inset(0% 0% 0% 0%); transform: translate(0,0);}
-  20% { clip-path: inset(5% 0 15% 0); transform: translate(-1px,1px);}
-  40% { clip-path: inset(10% 0 5% 0); transform: translate(1px,-1px);}
-  60% { clip-path: inset(5% 0 10% 0); transform: translate(-1px,0);}
-  80% { clip-path: inset(0% 0 0% 0); transform: translate(1px,1px);}
-  100% { clip-path: inset(0% 0 0% 0); transform: translate(0,0);}
+.site-name span::before,
+.site-name span::after {
+  content: attr(data-char);
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: rgba(0,0,0,0.85);
+}
+
+.site-name span::before {
+  clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%);
+  opacity: 0.7;
+}
+
+.site-name span::after {
+  clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
+  opacity: 0.5;
 }
 
 /* 右侧折叠菜单按钮 */
 .menu-toggle {
   font-size: 18px;
   background: rgba(0,0,0,0.3);
-  color: #e09050;
+  color: #e09050; /* 橙色 */
   border: none;
   padding: 8px 12px;
   cursor: pointer;
@@ -67,14 +77,14 @@ header {
   top: 70px;
   right: 20px;
   width: 200px;
-  background: #dcdcdc;
+  background: rgba(220,220,220,0.95);
   display: flex;
   flex-direction: column;
   padding: 10px 0;
   opacity: 0;
   max-height: 0;
   overflow: hidden;
-  transition: opacity 2s ease, max-height 3s ease;
+  transition: opacity 2s ease, max-height 3s ease; /* 折叠菜单过渡柔和 */
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   z-index: 1000;
 }
@@ -129,14 +139,15 @@ section {
 </div>
 
 <script>
-// 保证名字渲染
-const nameDiv = document.getElementById('siteName');
+// 名字 Glitch 文字生成
+const siteNameDiv = document.getElementById('siteName');
 const nameText = 'KannyWu';
-nameDiv.innerHTML = '';
+siteNameDiv.innerHTML = '';
 for (let char of nameText) {
   const span = document.createElement('span');
+  span.setAttribute('data-char', char);
   span.textContent = char;
-  nameDiv.appendChild(span);
+  siteNameDiv.appendChild(span);
 }
 
 // 菜单折叠
