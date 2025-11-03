@@ -43,7 +43,7 @@ canvas#bgCanvas {
   transform: translate(-50%, -50%);
   z-index: 2;
   display: flex;
-  gap: 40px;
+  gap: 80px;
   font-size: 32px;
   font-weight: 700;
   color: var(--fg);
@@ -58,8 +58,7 @@ canvas#bgCanvas {
 }
 .series-wrap {
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 55%;
   z-index: 2;
   display: none;
   flex-direction: column;
@@ -70,7 +69,7 @@ canvas#bgCanvas {
   color: var(--fg);
   opacity: 0;
   transition: opacity 2s ease;
-  text-shadow: 0 0 12px rgba(255,255,255,1);
+  text-shadow: 0 0 14px rgba(255,255,255,1);
 }
 .series-wrap div {
   cursor: pointer;
@@ -103,7 +102,7 @@ canvas#bgCanvas {
   transform: translate(-50%, -50%);
 }
 @media(max-width:768px){
-  .title-wrap { font-size: 24px; gap: 25px; }
+  .title-wrap { font-size: 24px; gap: 30px; }
   .series-wrap { font-size: 16px; gap: 8px; }
   .footer-text { font-size: 14px; }
 }
@@ -120,20 +119,20 @@ canvas#bgCanvas {
   <div id="sculptureBtn">Sculpture</div>
 </div>
 
-<!-- 各系列 -->
-<div class="series-wrap" id="photoSeries" style="top:55%;">
-  <div>Endless World</div>
-  <div>Time Line</div>
-  <div>Perception</div>
+<!-- 系列 -->
+<div class="series-wrap" id="photoSeries">
+  <div onclick="location.href='endless-world.html'">Endless World</div>
+  <div onclick="location.href='timeline.html'">Time Line</div>
+  <div onclick="location.href='perception.html'">Perception</div>
 </div>
 
-<div class="series-wrap" id="soundSeries" style="top:55%;">
-  <div>Soundscape</div>
-  <div>Deep Listening</div>
+<div class="series-wrap" id="soundSeries">
+  <div onclick="location.href='soundscape.html'">Soundscape</div>
+  <div onclick="location.href='deep-listening.html'">Deep Listening</div>
 </div>
 
-<div class="series-wrap" id="sculptureSeries" style="top:55%;">
-  <div>Reshaping</div>
+<div class="series-wrap" id="sculptureSeries">
+  <div onclick="location.href='reshaping.html'">Reshaping</div>
 </div>
 
 <div class="footer-text">
@@ -178,19 +177,29 @@ function drawStars(){
 }
 drawStars();
 
-// 定位系列（与类别对齐）
+// 对齐系列与类别首字母
 function alignSeries() {
   const photoBtn = document.getElementById('photographyBtn').getBoundingClientRect();
   const soundBtn = document.getElementById('soundBtn').getBoundingClientRect();
   const sculptureBtn = document.getElementById('sculptureBtn').getBoundingClientRect();
-  document.getElementById('photoSeries').style.left = photoBtn.left + "px";
-  document.getElementById('soundSeries').style.left = soundBtn.left + "px";
-  document.getElementById('sculptureSeries').style.left = sculptureBtn.left + "px";
+  const offsetY = window.innerHeight * 0.55;
+
+  const photoSeries = document.getElementById('photoSeries');
+  photoSeries.style.left = photoBtn.left + "px";
+  photoSeries.style.top = offsetY + "px";
+
+  const soundSeries = document.getElementById('soundSeries');
+  soundSeries.style.left = soundBtn.left + "px";
+  soundSeries.style.top = offsetY + "px";
+
+  const sculptureSeries = document.getElementById('sculptureSeries');
+  sculptureSeries.style.left = sculptureBtn.left + "px";
+  sculptureSeries.style.top = offsetY + "px";
 }
 window.addEventListener('resize', alignSeries);
-alignSeries();
+window.addEventListener('load', alignSeries);
 
-// 点击显示系列
+// 点击类别显示系列
 const seriesMap = {
   photographyBtn: 'photoSeries',
   soundBtn: 'soundSeries',
