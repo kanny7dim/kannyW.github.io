@@ -32,6 +32,26 @@
     letter-spacing: 2px;
   }
 
+  /* 耳朵按钮 */
+  .music-btn {
+    position: absolute;
+    top: 80px; /* 在名字下面 */
+    left: 40px;
+    width: 30px;
+    height: 30px;
+    background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Ear_font_awesome.svg/1024px-Ear_font_awesome.svg.png') no-repeat center center;
+    background-size: contain;
+    border: none;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+    z-index: 1000;
+  }
+
+  .music-btn:hover {
+    opacity: 1;
+  }
+
   /* 菜单容器 */
   .menu {
     position: fixed;
@@ -102,6 +122,9 @@
 
 <div class="name">KannyWu</div>
 
+<!-- 耳朵播放音乐按钮 -->
+<button class="music-btn" id="playMusicBtn"></button>
+
 <div class="menu">
   <button class="menu-btn" onclick="toggleMenu()">☰</button>
   <div id="menuItems" class="menu-content">
@@ -111,13 +134,8 @@
   </div>
 </div>
 
-<!-- 背景音乐，只在主页播放 -->
-<audio autoplay loop>
-  <source src="https://kanny7dim.github.io/kannyW.github.io/mymusic.mp3" type="audio/mpeg">
-  Your browser does not support the audio element.
-</audio>
-
 <script>
+  // 菜单折叠
   function toggleMenu() {
     const menu = document.getElementById("menuItems");
     menu.classList.toggle("show");
@@ -130,6 +148,16 @@
     if (!menu.contains(e.target) && !btn.contains(e.target)) {
       menu.classList.remove('show');
     }
+  });
+
+  // 背景音乐
+  const audio = new Audio('https://kanny7dim.github.io/kannyW.github.io/mymusic.mp3');
+  audio.loop = true;
+
+  // 点击耳朵按钮播放音乐
+  document.getElementById('playMusicBtn').addEventListener('click', () => {
+      audio.play();
+      document.getElementById('playMusicBtn').style.display = 'none';
   });
 </script>
 
