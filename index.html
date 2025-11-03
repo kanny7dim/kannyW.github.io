@@ -8,14 +8,14 @@
   body {
     margin: 0;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    /* 背景图，请替换下面链接为你的 GitHub raw 链接 */
-    background: url('https://raw.githubusercontent.com/用户名/仓库名/分支名/61DDEE61-A0AD-43AA-8137-29256D592629.jpeg') no-repeat center center fixed;
+    /* 背景图，使用你的 GitHub Pages JPG 链接 */
+    background: url('https://kannyw.github.io/IMG_9403.jpeg') no-repeat center center fixed;
     background-size: cover;
     color: #111;
     overflow-x: hidden;
   }
 
-  /* dissolve animation for name */
+  /* 名字淡入 + 模糊动画 */
   @keyframes dissolveIn {
     0% { opacity: 0; filter: blur(10px); letter-spacing: 10px; }
     50% { opacity: 0.5; filter: blur(4px); letter-spacing: 5px; }
@@ -33,7 +33,7 @@
     letter-spacing: 2px;
   }
 
-  /* menu */
+  /* 菜单容器 */
   .menu {
     position: fixed;
     top: 30px;
@@ -41,6 +41,7 @@
     z-index: 1000;
   }
 
+  /* 菜单按钮 */
   .menu-btn {
     background-color: rgba(255, 140, 0, 0.7);
     border: none;
@@ -48,6 +49,8 @@
     cursor: pointer;
     border-radius: 5px;
     font-size: 18px;
+    color: #111;
+    font-weight: bold;
     transition: background-color 0.3s;
   }
 
@@ -55,6 +58,7 @@
     background-color: rgba(255, 140, 0, 0.9);
   }
 
+  /* 菜单内容 */
   .menu-content {
     display: none;
     position: absolute;
@@ -72,17 +76,19 @@
     to {opacity: 1; transform: translateY(0);}
   }
 
+  /* 导航链接样式 */
   .menu-content a {
-    display: block;
-    color: #111;
+    display: block;           /* 每个链接独占一行 */
+    color: #111;              /* 文字颜色 */
     text-decoration: none;
-    margin: 8px 0;
-    font-size: 16px;
+    margin: 12px 0;           /* 上下间距，让文字分开 */
+    font-size: 18px;          /* 字体大小适中 */
+    font-weight: 500;         /* 字体粗细 */
     transition: color 0.3s;
   }
 
   .menu-content a:hover {
-    color: #ff8800;
+    color: #ff8800;           /* hover 变橙色 */
   }
 
   .show { display: block; animation: fadeIn 1.5s ease forwards; }
@@ -91,10 +97,12 @@
 </head>
 <body>
 
+<!-- 名字动画 -->
 <div class="name">KannyWu</div>
 
+<!-- 菜单 -->
 <div class="menu">
-  <button class="menu-btn" onclick="toggleMenu()">Menu</button>
+  <button class="menu-btn" onclick="toggleMenu()">☰</button>
   <div id="menuItems" class="menu-content">
     <a href="#">Find Me</a>
     <a href="#">Bio</a>
@@ -108,7 +116,7 @@
     menu.classList.toggle("show");
   }
 
-  // 点击页面其他地方自动关闭菜单
+  // 点击页面其他地方关闭菜单
   document.addEventListener('click', function(e) {
     const menu = document.getElementById("menuItems");
     const btn = document.querySelector('.menu-btn');
