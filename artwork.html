@@ -34,8 +34,8 @@ svg#titleSVG { width:90%; height:150px; overflow:visible; }
 .chip { padding:6px 12px; border-radius:999px; cursor:pointer; background:rgba(255,255,255,0.03); color:#fff; text-shadow:0 0 10px #fff; transition:0.3s; }
 .chip.active { background:rgba(155,211,255,0.12); border:1px solid rgba(155,211,255,0.22); }
 
-/* 系列星图文字 */
-.series-wrap { position:relative; z-index:10; margin-top:50px; display:flex; flex-direction:column; align-items:center; gap:30px; }
+/* 系列文字 */
+.series-wrap { position:relative; z-index:10; margin-top:40px; display:flex; flex-direction:column; align-items:center; gap:30px; }
 .series { display:flex; gap:6px; flex-wrap:wrap; justify-content:center; position:relative; }
 .letter { font-size:24px; cursor:pointer; color:#fff; text-shadow:0 0 12px #fff; transition: all 0.3s; }
 .letter:hover { transform: translateY(-3px); text-shadow:0 0 20px #fff; }
@@ -163,7 +163,7 @@ chipWrap.addEventListener('click',e=>{
   }
 });
 
-// 创建漂浮字母和动画
+// 创建漂浮字母
 function createSeriesLetters(seriesDiv){
   const text = seriesDiv.dataset.series;
   seriesDiv.innerHTML='';
@@ -202,14 +202,4 @@ function drawLines(){
         lctx.beginPath();
         lctx.moveTo(r1.left+r1.width/2, r1.top+r1.height/2 + window.scrollY);
         lctx.lineTo(r2.left+r2.width/2, r2.top+r2.height/2 + window.scrollY);
-        lctx.stroke();
-      }
-    });
-  });
-  requestAnimationFrame(drawLines);
-}
-drawLines();
-</script>
-
-</body>
-</
+        lctx.stroke
