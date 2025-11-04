@@ -6,9 +6,9 @@
 <title>Art Work</title>
 <style>
 :root {
-  --bg: #0b0b0f; /* 星空背景 */
+  --bg: #0b0b0f;
   --fg: #ffffff;
-  --work-bg: #bfbfbf; /* 莫兰迪灰背景 */
+  --work-bg: #bfbfbf;
 }
 html, body {
   margin: 0;
@@ -65,42 +65,39 @@ canvas#bgCanvas {
 #workView img {
   max-width: 90%;
   max-height: 80%;
+  transition: opacity 0.3s;
 }
 #workView .back-btn {
   position: fixed;
   top: 20px;
   right: 20px;
-  font-size: 36px;
+  font-size: 32px;
   color: #000;
   cursor: pointer;
   z-index: 3;
   font-weight: bold;
 }
 
-/* 底部切换按钮 */
+/* 底部小箭头切换 */
 #bottomNav {
   position: absolute;
-  bottom: 40px;
+  bottom: 30px;
   display: flex;
   justify-content: center;
-  gap: 50px;
+  gap: 100px;
   width: 100%;
 }
-.navBtn {
+.navArrow {
   font-size: 28px;
   color: black;
-  text-shadow: 0 0 8px rgba(0,0,0,0.5);
-  background: rgba(255,255,255,0.4);
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  line-height: 50px;
-  text-align: center;
+  text-shadow: 0 0 10px rgba(0,0,0,0.8);
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
+  user-select: none;
 }
-.navBtn:hover {
-  box-shadow: 0 0 10px rgba(0,0,0,0.6);
+.navArrow:hover {
+  text-shadow: 0 0 20px rgba(0,0,0,1);
+  transform: scale(1.1);
 }
 
 /* 底部文字 */
@@ -127,7 +124,8 @@ canvas#bgCanvas {
   }
   #workView img { width: 90%; height: auto; }
   .footer-text { font-size: 14px; bottom: 20px; }
-  .navBtn { font-size: 24px; width:45px; height:45px; line-height:45px;}
+  #bottomNav { gap: 60px; bottom: 20px; }
+  .navArrow { font-size: 24px; }
 }
 </style>
 </head>
@@ -147,8 +145,8 @@ canvas#bgCanvas {
   <span class="back-btn" onclick="closeWork()">&larr; Back</span>
   <img id="currentImg" src="EndlessWorld01.jpg.JPG" alt="Artwork">
   <div id="bottomNav">
-    <span class="navBtn" id="prevBtn">&#10094;</span>
-    <span class="navBtn" id="nextBtn">&#10095;</span>
+    <span class="navArrow" id="prevBtn">&#10094;</span>
+    <span class="navArrow" id="nextBtn">&#10095;</span>
   </div>
 </div>
 
