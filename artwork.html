@@ -3,14 +3,49 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Endless World</title>
+<title>Art Work</title>
 <style>
-:root { --bg:#cfcfcf; --fg:#000; }
+:root {
+  --bg-home: #0b0b0f;
+  --fg-home: #ffffff;
+  --bg-gallery: #C1BEB7;
+}
 html, body {
-  margin:0; padding:0;
-  font-family:"Helvetica Neue", Arial, sans-serif;
-  background:var(--bg);
-  color:var(--fg);
+  margin: 0; padding: 0;
+  height: 100%;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  overflow: hidden;
+}
+canvas#bgCanvas {
+  position: absolute;
+  top:0; left:0;
+  width:100%; height:100%;
+  z-index:0;
+}
+.title-wrap {
+  position:absolute;
+  top:45%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  display:flex;
+  gap:60px;
+  font-size:32px;
+  font-weight:700;
+  color: var(--fg-home);
+  z-index:2;
+}
+.title-wrap div {
+  cursor:pointer;
+  text-shadow:0 0 12px rgba(255,255,255,0.8);
+  animation: flicker 3s infinite;
+  transition: text-shadow 0.3s ease;
+}
+.title-wrap div:hover {
+  text-shadow:0 0 30px rgba(0,255,127,0.9);
+}
+@keyframes flicker {
+  0%,100% { text-shadow:0 0 12px rgba(255,255,255,0.8); }
+  50% { text-shadow:0 0 18px rgba(0,255,127,0.6); }
 }
 .back-btn {
   position: fixed;
@@ -18,57 +53,66 @@ html, body {
   right: 20px;
   font-size: 32px;
   color: #000;
-  text-decoration: none;
+  cursor: pointer;
   z-index: 10;
+  display: none;
 }
 .gallery {
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:20px;
-  padding:80px 20px 40px 20px;
+  display: none;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 80px 20px 40px 20px;
+  background: var(--bg-gallery);
+  height: 100%;
+  overflow-y: auto;
 }
 .gallery img {
-  max-width:300px;
-  width:100%;
-  height:auto;
-  cursor:pointer;
+  max-width: 300px;
+  width: 100%;
+  cursor: pointer;
 }
 #lightbox {
-  position:fixed;
+  position: fixed;
   top:0; left:0;
   width:100%; height:100%;
-  background:rgba(0,0,0,0.9);
+  background: rgba(0,0,0,0.95);
   display:none;
   justify-content:center;
   align-items:center;
   z-index:20;
 }
-#lightbox img {
-  max-width:90%;
-  max-height:90%;
-}
-#lightbox .close-btn {
-  position:fixed;
-  top:20px; right:20px;
-  font-size:32px;
+#lightbox img { max-width:90%; max-height:90%; }
+.close-btn {
+  position: fixed;
+  top:20px;
+  right:20px;
+  font-size:40px;
   color:#fff;
   cursor:pointer;
   z-index:25;
+}
+@media(max-width:768px){
+  .title-wrap { flex-direction: column; gap:30px; font-size:24px; }
 }
 </style>
 </head>
 <body>
 
-<a href="artwork.html" class="back-btn">←</a>
+<canvas id="bgCanvas"></canvas>
 
-<div class="gallery">
-  <img src="EndlessWorld01.jpg.JPG" alt="">
-  <img src="EndlessWorld02.jpg.JPG" alt="">
-  <img src="EndlessWorld03.jpg.JPG" alt="">
-  <img src="EndlessWorld04.jpg.JPG" alt="">
-  <img src="EndlessWorld05.jpg.JPG" alt="">
+<div class="title-wrap">
+  <div data-category="endlessworld">EndlessWorld</div>
+  <div data-category="perception">Perception</div>
+  <div data-category="deeplistening">DeepListening</div>
+  <div data-category="reshaping">Reshaping</div>
 </div>
+
+<div class="gallery" id="gallery">
+  <!-- 图片会动态加载 -->
+</div>
+
+<a class="back-btn" id="backBtn">←</a>
 
 <div id="lightbox">
   <span class="close-btn">&times;</span>
@@ -76,25 +120,89 @@ html, body {
 </div>
 
 <script>
-const lightbox = document.getElementById('lightbox');
-const lbImg = lightbox.querySelector('img');
-const closeBtn = lightbox.querySelector('.close-btn');
-const imgs = document.querySelectorAll('.gallery img');
+// 星空背景首页
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+let W=0,H=0;
+function resize(){
+  W=canvas.clientWidth;
+  H=canvas.clientHeight;
+  canvas.width=W;
+  canvas.height=H;
+}
+window.addEventListener('resize',resize);
+resize();
 
-imgs.forEach(img => {
-  img.addEventListener('click', () => {
-    lbImg.src = img.src;
-    lightbox.style.display = 'flex';
+const stars = Array.from({length:150},()=>({
+  x:Math.random(), y:Math.random(), r:Math.random()*1.5+0.2,
+  vx:(Math.random()-0.5)*0.0005, vy:(Math.random()-0.5)*0.0005
+}));
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='rgba(8,9,12,0.9)';
+  ctx.fillRect(0,0,W,H);
+  for(const s of stars){
+    s.x += s.vx; s.y += s.vy;
+    if(s.x<0)s.x=1;if(s.x>1)s.x=0;
+    if(s.y<0)s.y=1;if(s.y>1)s.y=0;
+    ctx.beginPath();
+    ctx.fillStyle='rgba(255,255,255,'+(0.6*Math.random()+0.2)+')';
+    ctx.arc(s.x*W, s.y*H, s.r,0,Math.PI*2);
+    ctx.fill();
+  }
+  requestAnimationFrame(draw);
+}
+draw();
+
+// 图片数据
+const images = {
+  endlessworld: ["EndlessWorld01.jpg.JPG","EndlessWorld02.jpg.JPG","EndlessWorld03.jpg.JPG","EndlessWorld04.jpg.JPG","EndlessWorld05.jpg.JPG"],
+  perception: [],
+  deeplistening: [],
+  reshaping: []
+};
+
+const titleWrap = document.querySelector(".title-wrap");
+const gallery = document.getElementById("gallery");
+const backBtn = document.getElementById("backBtn");
+const lightbox = document.getElementById("lightbox");
+const lbImg = lightbox.querySelector("img");
+const closeBtn = document.querySelector(".close-btn");
+
+// 点击类别显示图片
+titleWrap.addEventListener("click",(e)=>{
+  const category = e.target.getAttribute("data-category");
+  if(!category) return;
+  // 隐藏首页
+  titleWrap.style.display="none";
+  canvas.style.display="none";
+  gallery.innerHTML="";
+  images[category].forEach(src=>{
+    const img = document.createElement("img");
+    img.src = src;
+    gallery.appendChild(img);
+    img.addEventListener("click",()=>{
+      lbImg.src=src;
+      lightbox.style.display="flex";
+    });
   });
+  gallery.style.display="flex";
+  backBtn.style.display="block";
 });
 
-closeBtn.addEventListener('click', () => {
-  lightbox.style.display = 'none';
+// 返回首页
+backBtn.addEventListener("click",()=>{
+  gallery.style.display="none";
+  backBtn.style.display="none";
+  titleWrap.style.display="flex";
+  canvas.style.display="block";
+  lightbox.style.display="none";
 });
 
-lightbox.addEventListener('click', (e) => {
-  if(e.target === lightbox) lightbox.style.display = 'none';
-});
+// 关闭放大图
+closeBtn.addEventListener("click",()=>{ lightbox.style.display="none"; });
+lightbox.addEventListener("click",(e)=>{ if(e.target===lightbox) lightbox.style.display="none"; });
+
 </script>
 
 </body>
