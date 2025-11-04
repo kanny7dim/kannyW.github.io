@@ -6,94 +6,103 @@
 <title>Art Work</title>
 <style>
 :root {
-  --bg-home: #0b0b0f;
-  --fg-home: #ffffff;
-  --bg-gallery: #C1BEB7;
+  --bg: #0b0b0f; /* 星空背景色 */
+  --fg: #ffffff;
+  --work-bg: #bfbfbf; /* 莫兰迪灰背景 */
 }
 html, body {
-  margin: 0; padding: 0;
+  margin: 0;
+  padding: 0;
   height: 100%;
   font-family: "Helvetica Neue", Arial, sans-serif;
+  color: var(--fg);
   overflow: hidden;
 }
 canvas#bgCanvas {
   position: absolute;
-  top:0; left:0;
-  width:100%; height:100%;
-  z-index:0;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
 }
 .title-wrap {
-  position:absolute;
-  top:45%;
-  left:50%;
-  transform:translate(-50%, -50%);
-  display:flex;
-  gap:60px;
-  font-size:32px;
-  font-weight:700;
-  color: var(--fg-home);
-  z-index:2;
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  display: flex;
+  gap: 60px;
+  font-size: 32px;
+  font-weight: 700;
+  text-shadow: 0 0 12px rgba(255,255,255,0.8);
 }
 .title-wrap div {
-  cursor:pointer;
-  text-shadow:0 0 12px rgba(255,255,255,0.8);
-  animation: flicker 3s infinite;
-  transition: text-shadow 0.3s ease;
+  cursor: pointer;
+  transition: text-shadow 0.5s, transform 0.5s;
+  animation: glowMove 2s infinite alternate;
 }
 .title-wrap div:hover {
-  text-shadow:0 0 30px rgba(0,255,127,0.9);
+  text-shadow: 0 0 35px rgba(0,255,127,1);
+  transform: translateY(-2px);
 }
-@keyframes flicker {
-  0%,100% { text-shadow:0 0 12px rgba(255,255,255,0.8); }
-  50% { text-shadow:0 0 18px rgba(0,255,127,0.6); }
+@keyframes glowMove {
+  0% { text-shadow: 0 0 10px rgba(0,255,127,0.7); transform: translateY(0); }
+  100% { text-shadow: 0 0 20px rgba(0,255,127,0.5); transform: translateY(2px); }
 }
-.back-btn {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  font-size: 32px;
-  color: #000;
-  cursor: pointer;
-  z-index: 10;
+
+#gallery {
   display: none;
-}
-.gallery {
-  display: none;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-  padding: 80px 20px 40px 20px;
-  background: var(--bg-gallery);
-  height: 100%;
+  position: absolute;
+  top:0; left:0;
+  width: 100%; height: 100%;
+  background: var(--work-bg);
   overflow-y: auto;
+  z-index: 2;
+  padding: 60px 20px 20px 20px;
+  box-sizing: border-box;
 }
-.gallery img {
-  max-width: 300px;
-  width: 100%;
+#gallery img {
+  width: 300px;
+  height: auto;
+  margin: 10px;
   cursor: pointer;
+  display: inline-block;
 }
 #lightbox {
+  display: none;
   position: fixed;
   top:0; left:0;
   width:100%; height:100%;
   background: rgba(0,0,0,0.95);
-  display:none;
   justify-content:center;
   align-items:center;
-  z-index:20;
+  z-index: 10;
 }
-#lightbox img { max-width:90%; max-height:90%; }
-.close-btn {
+#lightbox img {
+  max-width:90%;
+  max-height:90%;
+}
+#lightbox .close-btn {
   position: fixed;
-  top:20px;
-  right:20px;
-  font-size:40px;
-  color:#fff;
-  cursor:pointer;
-  z-index:25;
+  top: 20px;
+  right: 20px;
+  font-size: 36px;
+  color: #000;
+  cursor: pointer;
+  z-index: 11;
 }
+
+.back-btn {
+  display: none;
+}
+
 @media(max-width:768px){
-  .title-wrap { flex-direction: column; gap:30px; font-size:24px; }
+  .title-wrap {
+    flex-direction: column;
+    gap: 30px;
+    font-size: 24px;
+  }
+  #gallery img { width: 90%; max-width: 300px; }
 }
 </style>
 </head>
@@ -101,33 +110,38 @@ canvas#bgCanvas {
 
 <canvas id="bgCanvas"></canvas>
 
-<div class="title-wrap">
-  <div data-category="endlessworld">EndlessWorld</div>
-  <div data-category="perception">Perception</div>
-  <div data-category="deeplistening">DeepListening</div>
-  <div data-category="reshaping">Reshaping</div>
+<div class="title-wrap" id="categories">
+  <div id="endlessBtn">EndlessWorld</div>
+  <div id="perceptionBtn">Perception</div>
+  <div id="deepBtn">DeepListening</div>
+  <div id="reshapeBtn">Reshaping</div>
 </div>
 
-<div class="gallery" id="gallery">
-  <!-- 图片会动态加载 -->
+<!-- Gallery -->
+<div id="gallery">
+  <span class="close-btn" onclick="closeGallery()">&times;</span>
+  <img src="EndlessWorld01.jpg.JPG" alt="Endless World 1">
+  <img src="EndlessWorld02.jpg.JPG" alt="Endless World 2">
+  <img src="EndlessWorld03.jpg.JPG" alt="Endless World 3">
+  <img src="EndlessWorld04.jpg.JPG" alt="Endless World 4">
+  <img src="EndlessWorld05.jpg.JPG" alt="Endless World 5">
 </div>
 
-<a class="back-btn" id="backBtn">←</a>
-
+<!-- Lightbox -->
 <div id="lightbox">
-  <span class="close-btn">&times;</span>
+  <span class="close-btn" onclick="closeLightbox()">&times;</span>
   <img src="" alt="">
 </div>
 
 <script>
-// 星空背景首页
+// 星空背景
 const canvas = document.getElementById('bgCanvas');
 const ctx = canvas.getContext('2d');
 let W=0,H=0;
 function resize(){
-  W=canvas.clientWidth;
-  H=canvas.clientHeight;
-  canvas.width=W;
+  W=canvas.clientWidth; 
+  H=canvas.clientHeight; 
+  canvas.width=W; 
   canvas.height=H;
 }
 window.addEventListener('resize',resize);
@@ -137,7 +151,7 @@ const stars = Array.from({length:150},()=>({
   x:Math.random(), y:Math.random(), r:Math.random()*1.5+0.2,
   vx:(Math.random()-0.5)*0.0005, vy:(Math.random()-0.5)*0.0005
 }));
-function draw(){
+function drawStars(){
   ctx.clearRect(0,0,W,H);
   ctx.fillStyle='rgba(8,9,12,0.9)';
   ctx.fillRect(0,0,W,H);
@@ -150,59 +164,37 @@ function draw(){
     ctx.arc(s.x*W, s.y*H, s.r,0,Math.PI*2);
     ctx.fill();
   }
-  requestAnimationFrame(draw);
+  requestAnimationFrame(drawStars);
 }
-draw();
+drawStars();
 
-// 图片数据
-const images = {
-  endlessworld: ["EndlessWorld01.jpg.JPG","EndlessWorld02.jpg.JPG","EndlessWorld03.jpg.JPG","EndlessWorld04.jpg.JPG","EndlessWorld05.jpg.JPG"],
-  perception: [],
-  deeplistening: [],
-  reshaping: []
-};
+// 点击进入 EndlessWorld
+const categories = document.getElementById('categories');
+const gallery = document.getElementById('gallery');
+const lightbox = document.getElementById('lightbox');
+const lbImg = lightbox.querySelector('img');
 
-const titleWrap = document.querySelector(".title-wrap");
-const gallery = document.getElementById("gallery");
-const backBtn = document.getElementById("backBtn");
-const lightbox = document.getElementById("lightbox");
-const lbImg = lightbox.querySelector("img");
-const closeBtn = document.querySelector(".close-btn");
+document.getElementById('endlessBtn').addEventListener('click', ()=>{
+  categories.style.display='none';
+  gallery.style.display='block';
+});
 
-// 点击类别显示图片
-titleWrap.addEventListener("click",(e)=>{
-  const category = e.target.getAttribute("data-category");
-  if(!category) return;
-  // 隐藏首页
-  titleWrap.style.display="none";
-  canvas.style.display="none";
-  gallery.innerHTML="";
-  images[category].forEach(src=>{
-    const img = document.createElement("img");
-    img.src = src;
-    gallery.appendChild(img);
-    img.addEventListener("click",()=>{
-      lbImg.src=src;
-      lightbox.style.display="flex";
-    });
+function closeGallery(){
+  gallery.style.display='none';
+  categories.style.display='flex';
+}
+
+// Lightbox
+const galleryImgs = gallery.querySelectorAll('img');
+galleryImgs.forEach(img=>{
+  img.addEventListener('click', ()=>{
+    lbImg.src = img.src;
+    lightbox.style.display='flex';
   });
-  gallery.style.display="flex";
-  backBtn.style.display="block";
 });
-
-// 返回首页
-backBtn.addEventListener("click",()=>{
-  gallery.style.display="none";
-  backBtn.style.display="none";
-  titleWrap.style.display="flex";
-  canvas.style.display="block";
-  lightbox.style.display="none";
-});
-
-// 关闭放大图
-closeBtn.addEventListener("click",()=>{ lightbox.style.display="none"; });
-lightbox.addEventListener("click",(e)=>{ if(e.target===lightbox) lightbox.style.display="none"; });
-
+function closeLightbox(){
+  lightbox.style.display='none';
+}
 </script>
 
 </body>
