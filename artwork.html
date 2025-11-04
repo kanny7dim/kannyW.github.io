@@ -50,7 +50,7 @@ canvas#bgCanvas {
   100% { text-shadow: 0 0 20px rgba(0,255,127,0.5); transform: translateY(2px); }
 }
 
-/* 返回主页按钮 */
+/* 返回主页按钮（只在首页显示） */
 #homeBack {
   position: absolute;
   top: 25px;
@@ -150,9 +150,10 @@ canvas#bgCanvas {
 
 <canvas id="bgCanvas"></canvas>
 
-<!-- 返回主页按钮 -->
+<!-- 返回主页按钮（只在首页显示） -->
 <div id="homeBack" onclick="goHome()">&#10094;</div>
 
+<!-- 四个类别 -->
 <div class="title-wrap" id="categories">
   <div id="endlessBtn">EndlessWorld</div>
   <div id="perceptionBtn">Perception</div>
@@ -216,6 +217,7 @@ const categories = document.getElementById('categories');
 const workView = document.getElementById('workView');
 const currentImg = document.getElementById('currentImg');
 const footerText = document.getElementById('footerText');
+const homeBack = document.getElementById('homeBack');
 
 const endlessImgs = [
   "EndlessWorld01.jpg.JPG",
@@ -230,16 +232,18 @@ let idx = 0;
 document.getElementById('endlessBtn').addEventListener('click', ()=>{
   categories.style.display='none';
   footerText.style.display='none';
+  homeBack.style.display='none'; // 隐藏主页返回箭头
   workView.style.display='flex';
   idx = 0;
   currentImg.src = endlessImgs[idx];
 });
 
-// 返回首页
+// 返回 Art Work 页
 function closeWork(){
   workView.style.display='none';
   categories.style.display='flex';
   footerText.style.display='block';
+  homeBack.style.display='block'; // 恢复主页返回箭头
 }
 
 // 切换按钮
