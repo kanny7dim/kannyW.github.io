@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Endless World</title>
+<style>
+body {
+  margin:0;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background: #0b0b0f;
+  color: #fff;
+}
+.back-btn {
+  position: fixed;
+  top:20px;
+  right:20px;
+  font-size:32px;
+  color:#fff;
+  text-decoration:none;
+  text-shadow:0 0 12px #fff;
+  z-index:10;
+}
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap:20px;
+  padding: 80px 20px 20px 20px;
+}
+.gallery img {
+  max-width: 180px;
+  cursor: pointer;
+  border-radius:5px;
+  box-shadow: 0 0 15px rgba(255,255,255,0.5);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.gallery img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(255,255,255,0.8);
+}
+
+/* Lightbox */
+#lightbox {
+  position: fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background: rgba(0,0,0,0.9);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index:20;
+  flex-direction: column;
+}
+#lightbox img {
+  max-width:90%;
+  max-height:80%;
+  border-radius:5px;
+}
+#lightbox .close, #lightbox .prev, #lightbox .next {
+  position: absolute;
+  color:#fff;
+  font-size: 36px;
+  cursor: pointer;
+  user-select: none;
+}
+#lightbox .close { top:20px; right:30px; }
+#lightbox .prev { left:20px; top:50%; transform: translateY(-50%); }
+#lightbox .next { right:20px; top:50%; transform: translateY(-50%); }
+@media(max-width:768px){
+  .gallery img { max-width: 140px; }
+  #lightbox img { max-width:95%; max-height:70%; }
+}
+</style>
+</head>
+<body>
+
+<a href="photography.html" class="back-btn">←</a>
+
+<div class="gallery">
+  <img src="EndlessWorld/EndlessWorld1.jpg" alt="1">
+  <img src="EndlessWorld/EndlessWorld2.jpg" alt="2">
+  <img src="EndlessWorld/EndlessWorld3.jpg" alt="3">
+  <img src="EndlessWorld/EndlessWorld4.jpg" alt="4">
+  <img src="EndlessWorld/EndlessWorld5.jpg" alt="5">
+</div>
+
+<div id="lightbox">
+  <span class="close">&times;</span>
+  <span class="prev">&#10094;</span>
+  <img src="">
+  <span class="next">&#10095;</span>
+</div>
+
+<script>
+const gallery = document.querySelectorAll('.gallery img');
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = lightbox.querySelector('img');
+const closeBtn = lightbox.querySelector('.close');
+const prevBtn = lightbox.querySelector('.prev');
+const nextBtn = lightbox.querySelector('.next');
+
+let currentIndex = 0;
+
+// 打开 Lightbox
+gallery.forEach((img, index)=>{
+  img.addEventListener('click', ()=>{
+    currentIndex = index;
+    lightboxImg.src = img.src;
+    lightbox.style.display = 'flex';
+  });
+});
+
+// 关闭 Lightbox
+closeBtn.addEventListener('click', ()=>{ lightbox.style.display='none'; });
+
+// 切换图片
+function showImage(index){
+  if(index<0) index = gallery.length-1;
+  if(index>=gallery.length) index=0;
+  currentIndex=index;
+  lightboxImg.src=gallery[index].src;
+}
+prevBtn.addEventListener('click', ()=>showImage(currentIndex-1));
+nextBtn.addEventListener('click', ()=>showImage(currentIndex+1));
+
+// 点击空白处关闭
+lightbox.addEventListener('click', e=>{
+  if(e.target===lightbox) lightbox.style.display='none';
+});
+</script>
+
+</body>
+</html>
