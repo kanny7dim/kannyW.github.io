@@ -5,37 +5,59 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Photography</title>
 <style>
-body {
-  margin:0;
-  font-family:"Helvetica Neue", Arial, sans-serif;
-  background:#000;
-  color:#fff;
-}
-.container {
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  height:100vh;
-  gap:40px;
-}
-.category {
-  font-size:32px;
-  font-weight:700;
-  cursor:pointer;
-  text-shadow:0 0 12px #0f0; /* 荧光绿光标 */
-  transition:text-shadow 0.3s;
-}
-.category:hover {
-  text-shadow:0 0 25px #0f0;
-}
+:root { --bg:#0b0b0f; --fg:#fff; }
+html, body { margin:0; padding:0; font-family:"Helvetica Neue", Arial, sans-serif; background:var(--bg); color:var(--fg); overflow-x:hidden; }
+.back-btn { position:fixed; top:30px; right:40px; font-size:32px; color:#fff; text-decoration:none; text-shadow:0 0 12px #fff; z-index:3; }
+.title-wrap { position:absolute; top:45%; left:50%; transform:translate(-50%,-50%); display:flex; gap:30px; font-size:32px; font-weight:700; color:var(--fg); text-shadow:0 0 12px rgba(255,255,255,0.8); }
+.title-wrap div { cursor:pointer; position:relative; }
+.title-wrap div:hover { text-shadow:0 0 25px rgba(255,255,255,1); }
+.footer-text { position:fixed; bottom:30px; width:90%; left:50%; transform:translateX(-50%); text-align:center; color:#fff; font-size:16px; text-shadow:0 0 12px #fff; z-index:2; line-height:1.5; word-wrap:break-word; }
+@media(max-width:768px){ .title-wrap { font-size:24px; gap:20px; } .footer-text { font-size:14px; } }
 </style>
 </head>
 <body>
-<div class="container">
-  <div onclick="location.href='EndlessWorld.html'" class="category">Endless World</div>
-  <div class="category">Sound</div>
-  <div class="category">Sculpture</div>
+
+<canvas id="bgCanvas"></canvas>
+
+<a href="index.html" class="back-btn">←</a>
+
+<div class="title-wrap">
+  <div onclick="location.href='EndlessWorld.html'">Endless World</div>
+  <div onclick="location.href='sound.html'">Sound</div>
+  <div onclick="location.href='sculpture.html'">Sculpture</div>
 </div>
+
+<div class="footer-text">
+By means of sound, photography, and sculpture, they probe the unknown,<br>
+perceiving fragility, grace, and resilience; all is inscribed, all is traceable.
+</div>
+
+<script>
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+let W=0,H=0;
+function resize(){ W=canvas.clientWidth; H=canvas.clientHeight; canvas.width=W; canvas.height=H; }
+window.addEventListener('resize',resize);
+resize();
+
+const stars = Array.from({length:150},()=>({x:Math.random(), y:Math.random(), r:Math.random()*1.5+0.2, vx:(Math.random()-0.5)*0.0005, vy:(Math.random()-0.5)*0.0005}));
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='rgba(8,9,12,0.9)';
+  ctx.fillRect(0,0,W,H);
+  for(const s of stars){
+    s.x += s.vx; s.y += s.vy;
+    if(s.x<0)s.x=1;if(s.x>1)s.x=0;
+    if(s.y<0)s.y=1;if(s.y>1)s.y=0;
+    ctx.beginPath();
+    ctx.fillStyle='rgba(255,255,255,'+(0.6*Math.random()+0.2)+')';
+    ctx.arc(s.x*W, s.y*H, s.r,0,Math.PI*2);
+    ctx.fill();
+  }
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
+
 </body>
 </html>
