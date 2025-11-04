@@ -3,16 +3,100 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Photography</title>
+<title>Art Work</title>
 <style>
-:root { --bg:#0b0b0f; --fg:#fff; }
-html, body { margin:0; padding:0; font-family:"Helvetica Neue", Arial, sans-serif; background:var(--bg); color:var(--fg); overflow-x:hidden; }
-.back-btn { position:fixed; top:30px; right:40px; font-size:32px; color:#fff; text-decoration:none; text-shadow:0 0 12px #fff; z-index:3; }
-.title-wrap { position:absolute; top:45%; left:50%; transform:translate(-50%,-50%); display:flex; gap:30px; font-size:32px; font-weight:700; color:var(--fg); text-shadow:0 0 12px rgba(255,255,255,0.8); }
-.title-wrap div { cursor:pointer; position:relative; }
-.title-wrap div:hover { text-shadow:0 0 25px rgba(255,255,255,1); }
-.footer-text { position:fixed; bottom:30px; width:90%; left:50%; transform:translateX(-50%); text-align:center; color:#fff; font-size:16px; text-shadow:0 0 12px #fff; z-index:2; line-height:1.5; word-wrap:break-word; }
-@media(max-width:768px){ .title-wrap { font-size:24px; gap:20px; } .footer-text { font-size:14px; } }
+:root {
+  --bg: #0b0b0f;
+  --fg: #ffffff;
+}
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  overflow: hidden;
+}
+.back-btn {
+  position: fixed;
+  top: 30px;
+  right: 40px;
+  font-size: 32px;
+  color: #00ff00; /* 荧光绿 */
+  text-decoration: none;
+  text-shadow: 0 0 12px #00ff00;
+  z-index: 3;
+}
+.title-wrap {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  display: flex;
+  gap: 30px;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--fg);
+  text-shadow: 0 0 12px rgba(255,255,255,0.8);
+}
+.title-wrap div {
+  cursor: pointer;
+  position: relative;
+}
+.title-wrap div:hover {
+  text-shadow: 0 0 25px rgba(255,255,255,1);
+}
+.series-wrap {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* 系列左对齐 */
+  gap: 15px;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--fg);
+  text-shadow: 0 0 12px rgba(255,255,255,0.8);
+  display: none; /* 初始隐藏 */
+}
+.series-wrap div {
+  cursor: pointer;
+  position: relative;
+}
+.series-wrap div:hover {
+  text-shadow: 0 0 20px rgba(255,255,255,1);
+}
+.line-canvas {
+  position: absolute;
+  top:0; left:0;
+  width: 100%; height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+.footer-text {
+  position: fixed;
+  bottom: 30px;
+  width: 90%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: #fff;
+  font-size: 16px;
+  text-shadow: 0 0 12px #fff;
+  z-index: 2;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+@media(max-width:768px){
+  .title-wrap { font-size: 24px; gap: 20px; }
+  .series-wrap { font-size: 16px; gap: 10px; }
+  .footer-text { font-size: 14px; }
+}
 </style>
 </head>
 <body>
@@ -22,9 +106,24 @@ html, body { margin:0; padding:0; font-family:"Helvetica Neue", Arial, sans-seri
 <a href="index.html" class="back-btn">←</a>
 
 <div class="title-wrap">
+  <div id="photographyBtn">Photography</div>
+  <div id="soundBtn">Sound</div>
+  <div id="sculptureBtn">Sculpture</div>
+</div>
+
+<div class="series-wrap" id="photographySeries">
   <div onclick="location.href='EndlessWorld.html'">Endless World</div>
-  <div onclick="location.href='sound.html'">Sound</div>
-  <div onclick="location.href='sculpture.html'">Sculpture</div>
+  <div onclick="location.href='TimeLine.html'">Time Line</div>
+  <div onclick="location.href='Perception.html'">Perception</div>
+</div>
+
+<div class="series-wrap" id="soundSeries">
+  <div onclick="location.href='SoundScape.html'">SoundScape</div>
+  <div onclick="location.href='DeepListening.html'">Deep Listening</div>
+</div>
+
+<div class="series-wrap" id="sculptureSeries">
+  <div onclick="location.href='Reshaping.html'">Reshaping</div>
 </div>
 
 <div class="footer-text">
@@ -36,11 +135,20 @@ perceiving fragility, grace, and resilience; all is inscribed, all is traceable.
 const canvas = document.getElementById('bgCanvas');
 const ctx = canvas.getContext('2d');
 let W=0,H=0;
-function resize(){ W=canvas.clientWidth; H=canvas.clientHeight; canvas.width=W; canvas.height=H; }
+function resize(){ 
+  W=canvas.clientWidth; 
+  H=canvas.clientHeight; 
+  canvas.width=W; 
+  canvas.height=H;
+}
 window.addEventListener('resize',resize);
 resize();
 
-const stars = Array.from({length:150},()=>({x:Math.random(), y:Math.random(), r:Math.random()*1.5+0.2, vx:(Math.random()-0.5)*0.0005, vy:(Math.random()-0.5)*0.0005}));
+// 星空粒子背景
+const stars = Array.from({length:150},()=>({
+  x:Math.random(), y:Math.random(), r:Math.random()*1.5+0.2,
+  vx:(Math.random()-0.5)*0.0005, vy:(Math.random()-0.5)*0.0005
+}));
 function draw(){
   ctx.clearRect(0,0,W,H);
   ctx.fillStyle='rgba(8,9,12,0.9)';
@@ -57,6 +165,43 @@ function draw(){
   requestAnimationFrame(draw);
 }
 draw();
+
+// 点击显示对应系列
+const photographyBtn = document.getElementById('photographyBtn');
+const soundBtn = document.getElementById('soundBtn');
+const sculptureBtn = document.getElementById('sculptureBtn');
+
+const photographySeries = document.getElementById('photographySeries');
+const soundSeries = document.getElementById('soundSeries');
+const sculptureSeries = document.getElementById('sculptureSeries');
+
+function hideAllSeries(){
+  photographySeries.style.display='none';
+  soundSeries.style.display='none';
+  sculptureSeries.style.display='none';
+}
+
+photographyBtn.addEventListener('click', ()=>{
+  hideAllSeries();
+  photographySeries.style.display='flex';
+});
+
+soundBtn.addEventListener('click', ()=>{
+  hideAllSeries();
+  soundSeries.style.display='flex';
+});
+
+sculptureBtn.addEventListener('click', ()=>{
+  hideAllSeries();
+  sculptureSeries.style.display='flex';
+});
+
+// 点击空白区域关闭系列
+document.body.addEventListener('click', (e)=>{
+  if(!e.target.closest('.title-wrap') && !e.target.closest('.series-wrap')){
+    hideAllSeries();
+  }
+});
 </script>
 
 </body>
