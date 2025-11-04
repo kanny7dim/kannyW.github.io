@@ -6,11 +6,9 @@
 <title>Art Work</title>
 <style>
 :root {
-  --bg: #0b0b0f;
+  --bg: #0b0b0f; /* 星空背景 */
   --fg: #ffffff;
-  --work-bg: #bfbfbf;
 }
-
 html, body {
   margin: 0;
   padding: 0;
@@ -19,15 +17,12 @@ html, body {
   color: var(--fg);
   overflow: hidden;
 }
-
 canvas#bgCanvas {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
   z-index: 0;
 }
-
-/* 首页标题 */
 .title-wrap {
   position: absolute;
   top: 45%;
@@ -54,92 +49,20 @@ canvas#bgCanvas {
   100% { text-shadow: 0 0 20px rgba(0,255,127,0.5); transform: translateY(2px); }
 }
 
-/* EndlessWorld 图片页 */
-#workView {
-  display: none;
-  position: absolute;
-  top:0; left:0;
-  width: 100%; height: 100%;
-  background: var(--work-bg);
-  justify-content:center;
-  align-items:center;
-  flex-direction: column;
-  z-index: 2;
-}
-#workView img {
-  max-width: 90%;
-  max-height: 80%;
-}
-#workView .back-btn {
+/* 返回主页按钮 */
+.back-home {
   position: fixed;
   top: 20px;
-  right: 20px;
-  font-size: 36px;
-  color: #000;
-  cursor: pointer;
-  z-index: 3;
-  font-weight: bold;
-  text-shadow: 0 0 8px rgba(0,0,0,0.3);
-}
-
-/* 图片页底部切换按钮 */
-#prevBtn, #nextBtn {
-  position: absolute;
-  bottom: 40px;
-  font-size: 28px;
-  color: rgba(0,0,0,0.8);
-  text-shadow: 0 0 10px #000;
-  cursor: pointer;
-  z-index: 3;
-  user-select: none;
-  transition: transform 0.3s;
-}
-#prevBtn:hover, #nextBtn:hover {
-  transform: scale(1.2);
-}
-#prevBtn { left: 40px; }
-#nextBtn { right: 40px; }
-
-/* DeepListening 文字页 */
-#deepPage {
-  display: none;
-  position: absolute;
-  top:0; left:0;
-  width: 100%; height: 100%;
-  background: radial-gradient(circle at 30% 30%, rgba(30,30,40,0.3), #000 90%);
+  right: 30px;
+  font-size: 38px;
   color: #fff;
-  z-index: 2;
-  overflow-y: auto;
-}
-#deepCanvas {
-  position: absolute;
-  top:0; left:0;
-  width:100%; height:100%;
-  z-index:0;
-}
-.deep-content {
-  position: relative;
-  z-index:1;
-  max-width: 800px;
-  padding: 80px 40px;
-  line-height: 1.8;
-  font-size: 18px;
-  text-shadow: 0 0 12px rgba(255,255,255,0.8);
-  text-align: left;
-  margin-left: 5%;
-}
-#deepBack {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  font-size: 32px;
-  color: #fff;
+  text-shadow: 0 0 15px rgba(255,255,255,0.9);
   cursor: pointer;
   z-index: 3;
-  text-shadow: 0 0 12px #fff;
-  transition: transform 0.3s;
+  transition: text-shadow 0.3s, transform 0.3s;
 }
-#deepBack:hover {
+.back-home:hover {
+  text-shadow: 0 0 25px rgba(0,255,127,1);
   transform: scale(1.1);
 }
 
@@ -165,10 +88,7 @@ canvas#bgCanvas {
     gap: 30px;
     font-size: 24px;
   }
-  #workView img { width: 90%; height: auto; }
   .footer-text { font-size: 14px; bottom: 20px; }
-  #prevBtn, #nextBtn { font-size: 24px; }
-  .deep-content { font-size: 16px; padding: 60px 30px; }
 }
 </style>
 </head>
@@ -177,41 +97,25 @@ canvas#bgCanvas {
 <!-- 星空背景 -->
 <canvas id="bgCanvas"></canvas>
 
-<!-- 首页分类 -->
-<div class="title-wrap" id="categories">
-  <div id="endlessBtn">EndlessWorld</div>
-  <div id="perceptionBtn">Perception</div>
-  <div id="deepBtn">DeepListening</div>
-  <div id="reshapeBtn">Reshaping</div>
-</div>
+<!-- 返回主页按钮 -->
+<div class="back-home" onclick="location.href='index.html'">&#8592;</div>
 
-<!-- EndlessWorld 图片页 -->
-<div id="workView">
-  <span class="back-btn" onclick="closeWork()">&larr;</span>
-  <img id="currentImg" src="EndlessWorld01.jpg.JPG" alt="Artwork">
-  <span id="prevBtn">&#10094;</span>
-  <span id="nextBtn">&#10095;</span>
-</div>
-
-<!-- DeepListening 文字页 -->
-<div id="deepPage">
-  <canvas id="deepCanvas"></canvas>
-  <span id="deepBack">&larr;</span>
-  <div class="deep-content">
-    <p><strong>Deep listening unfolds as a sensorial practice</strong> — a way of attuning to the fragile boundaries between body, matter, and the world. Sound is not only perceived by the ear but moves through the body, through the quiet resonances of materials and the subtle rhythms of breath. Each vibration carries memory; even silence holds the pulse of life.</p>
-    <p>For Kanny, listening is not a method but a condition of being — like breathing, it exists within us, often unnoticed. It accompanies moments of calm and of panic, tracing the intervals between tension and release. To listen deeply is to give time back to perception, to dwell within the small shifts that shape presence.</p>
-    <p>Deep listening is not about transcendence, but about remaining — staying close to what trembles, what changes, and what continues to breathe within the world.</p>
-  </div>
+<!-- 类别标题 -->
+<div class="title-wrap">
+  <div onclick="location.href='endlessworld.html'">EndlessWorld</div>
+  <div onclick="location.href='perception.html'">Perception</div>
+  <div onclick="location.href='deeplistening.html'">DeepListening</div>
+  <div onclick="location.href='reshaping.html'">Reshaping</div>
 </div>
 
 <!-- 底部文字 -->
-<div class="footer-text" id="footerText">
+<div class="footer-text">
 By means of sound, photography, and sculpture, they probe the unknown,<br>
 perceiving fragility, grace, and resilience; all is inscribed, all is traceable.
 </div>
 
 <script>
-// 星空背景（首页）
+// 星空背景
 const canvas = document.getElementById('bgCanvas');
 const ctx = canvas.getContext('2d');
 let W=0,H=0;
@@ -228,6 +132,7 @@ const stars = Array.from({length:150},()=>({
   x:Math.random(), y:Math.random(), r:Math.random()*1.5+0.2,
   vx:(Math.random()-0.5)*0.0005, vy:(Math.random()-0.5)*0.0005
 }));
+
 function drawStars(){
   ctx.clearRect(0,0,W,H);
   ctx.fillStyle='rgba(8,9,12,0.9)';
@@ -244,88 +149,6 @@ function drawStars(){
   requestAnimationFrame(drawStars);
 }
 drawStars();
-
-// EndlessWorld 图片逻辑
-const categories = document.getElementById('categories');
-const workView = document.getElementById('workView');
-const currentImg = document.getElementById('currentImg');
-const footerText = document.getElementById('footerText');
-
-const endlessImgs = [
-  "EndlessWorld01.jpg.JPG",
-  "EndlessWorld02.jpg.JPG",
-  "EndlessWorld03.jpg.JPG",
-  "EndlessWorld04.jpg.JPG",
-  "EndlessWorld05.jpg.JPG"
-];
-let idx = 0;
-
-document.getElementById('endlessBtn').addEventListener('click', ()=>{
-  categories.style.display='none';
-  footerText.style.display='none';
-  workView.style.display='flex';
-  idx = 0;
-  currentImg.src = endlessImgs[idx];
-});
-
-function closeWork(){
-  workView.style.display='none';
-  categories.style.display='flex';
-  footerText.style.display='block';
-}
-
-document.getElementById('prevBtn').addEventListener('click', ()=>{
-  idx = (idx - 1 + endlessImgs.length) % endlessImgs.length;
-  currentImg.src = endlessImgs[idx];
-});
-document.getElementById('nextBtn').addEventListener('click', ()=>{
-  idx = (idx + 1) % endlessImgs.length;
-  currentImg.src = endlessImgs[idx];
-});
-
-// DeepListening 页面逻辑
-const deepPage = document.getElementById('deepPage');
-const deepBtn = document.getElementById('deepBtn');
-const deepBack = document.getElementById('deepBack');
-const deepCanvas = document.getElementById('deepCanvas');
-const deepCtx = deepCanvas.getContext('2d');
-
-function resizeDeep(){
-  deepCanvas.width = deepCanvas.clientWidth;
-  deepCanvas.height = deepCanvas.clientHeight;
-}
-window.addEventListener('resize', resizeDeep);
-resizeDeep();
-
-const deepStars = Array.from({length:60},()=>({
-  x:Math.random(), y:Math.random(), r:Math.random()*1.2+0.3
-}));
-
-function drawDeepStars(){
-  deepCtx.clearRect(0,0,deepCanvas.width,deepCanvas.height);
-  deepCtx.fillStyle = '#000';
-  deepCtx.fillRect(0,0,deepCanvas.width,deepCanvas.height);
-  for(const s of deepStars){
-    deepCtx.beginPath();
-    deepCtx.fillStyle='rgba(255,255,255,'+(0.5*Math.random()+0.1)+')';
-    deepCtx.arc(s.x*deepCanvas.width, s.y*deepCanvas.height, s.r,0,Math.PI*2);
-    deepCtx.fill();
-  }
-  requestAnimationFrame(drawDeepStars);
-}
-drawDeepStars();
-
-deepBtn.addEventListener('click', ()=>{
-  categories.style.display='none';
-  footerText.style.display='none';
-  deepPage.style.display='block';
-});
-
-deepBack.addEventListener('click', ()=>{
-  deepPage.style.display='none';
-  categories.style.display='flex';
-  footerText.style.display='block';
-});
 </script>
 
 </body>
