@@ -76,25 +76,32 @@ canvas#bgCanvas {
   z-index: 3;
   font-weight: bold;
 }
-/* 切换按钮 */
-#prevBtn, #nextBtn {
+
+/* 底部切换按钮 */
+#bottomNav {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 36px;
-  color: #000;
-  background: rgba(255,255,255,0.3);
+  bottom: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  width: 100%;
+}
+.navBtn {
+  font-size: 28px;
+  color: black;
+  text-shadow: 0 0 8px rgba(0,0,0,0.5);
+  background: rgba(255,255,255,0.4);
   border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  line-height: 60px;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
   text-align: center;
   cursor: pointer;
-  z-index: 3;
-  user-select: none;
+  transition: all 0.3s;
 }
-#prevBtn { left: 20px; }
-#nextBtn { right: 20px; }
+.navBtn:hover {
+  box-shadow: 0 0 10px rgba(0,0,0,0.6);
+}
 
 /* 底部文字 */
 .footer-text {
@@ -120,7 +127,7 @@ canvas#bgCanvas {
   }
   #workView img { width: 90%; height: auto; }
   .footer-text { font-size: 14px; bottom: 20px; }
-  #prevBtn, #nextBtn { font-size: 28px; width:50px; height:50px; line-height:50px;}
+  .navBtn { font-size: 24px; width:45px; height:45px; line-height:45px;}
 }
 </style>
 </head>
@@ -135,12 +142,14 @@ canvas#bgCanvas {
   <div id="reshapeBtn">Reshaping</div>
 </div>
 
-<!-- 单图查看 -->
+<!-- 作品查看 -->
 <div id="workView">
   <span class="back-btn" onclick="closeWork()">&larr; Back</span>
   <img id="currentImg" src="EndlessWorld01.jpg.JPG" alt="Artwork">
-  <span id="prevBtn">&#10094;</span>
-  <span id="nextBtn">&#10095;</span>
+  <div id="bottomNav">
+    <span class="navBtn" id="prevBtn">&#10094;</span>
+    <span class="navBtn" id="nextBtn">&#10095;</span>
+  </div>
 </div>
 
 <!-- 底部文字 -->
@@ -150,7 +159,7 @@ perceiving fragility, grace, and resilience; all is inscribed, all is traceable.
 </div>
 
 <script>
-// 星空+微星云+陨石
+// 星空背景
 const canvas = document.getElementById('bgCanvas');
 const ctx = canvas.getContext('2d');
 let W=0,H=0;
@@ -167,30 +176,10 @@ const stars = Array.from({length:150},()=>({
   x:Math.random(), y:Math.random(), r:Math.random()*1.5+0.2,
   vx:(Math.random()-0.5)*0.0005, vy:(Math.random()-0.5)*0.0005
 }));
-const clouds = Array.from({length:10},()=>({
-  x:Math.random(), y:Math.random(), r:Math.random()*200+100, opacity:Math.random()*0.1+0.05
-}));
-const meteors = Array.from({length:5},()=>({
-  x:Math.random()*W,
-  y:Math.random()*H,
-  len:Math.random()*50+30,
-  speed:Math.random()*4+2,
-  angle: Math.PI/4
-}));
-
-function drawBackground(){
+function drawStars(){
   ctx.clearRect(0,0,W,H);
-  // 星空底色
   ctx.fillStyle='rgba(8,9,12,0.9)';
   ctx.fillRect(0,0,W,H);
-  // 星云
-  for(const c of clouds){
-    ctx.beginPath();
-    ctx.fillStyle=`rgba(200,200,200,${c.opacity})`;
-    ctx.arc(c.x*W,c.y*H,c.r,0,Math.PI*2);
-    ctx.fill();
-  }
-  // 星星
   for(const s of stars){
     s.x += s.vx; s.y += s.vy;
     if(s.x<0)s.x=1;if(s.x>1)s.x=0;
@@ -200,26 +189,11 @@ function drawBackground(){
     ctx.arc(s.x*W, s.y*H, s.r,0,Math.PI*2);
     ctx.fill();
   }
-  // 陨石
-  for(const m of meteors){
-    m.x += m.speed*Math.cos(m.angle);
-    m.y += m.speed*Math.sin(m.angle);
-    if(m.x>W || m.y>H){
-      m.x = Math.random()*W;
-      m.y = -50;
-    }
-    ctx.beginPath();
-    ctx.strokeStyle='rgba(255,255,255,0.8)';
-    ctx.lineWidth=2;
-    ctx.moveTo(m.x, m.y);
-    ctx.lineTo(m.x - m.len*Math.cos(m.angle), m.y - m.len*Math.sin(m.angle));
-    ctx.stroke();
-  }
-  requestAnimationFrame(drawBackground);
+  requestAnimationFrame(drawStars);
 }
-drawBackground();
+drawStars();
 
-// 点击进入作品查看
+// 点击进入作品
 const categories = document.getElementById('categories');
 const workView = document.getElementById('workView');
 const currentImg = document.getElementById('currentImg');
