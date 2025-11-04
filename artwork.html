@@ -50,6 +50,23 @@ canvas#bgCanvas {
   100% { text-shadow: 0 0 20px rgba(0,255,127,0.5); transform: translateY(2px); }
 }
 
+/* 返回主页按钮 */
+#homeBack {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  font-size: 30px;
+  color: white;
+  text-shadow: 0 0 10px white;
+  cursor: pointer;
+  z-index: 3;
+  transition: transform 0.3s ease, text-shadow 0.3s;
+}
+#homeBack:hover {
+  transform: scale(1.2);
+  text-shadow: 0 0 20px white;
+}
+
 /* 作品查看页面 */
 #workView {
   display: none;
@@ -78,7 +95,7 @@ canvas#bgCanvas {
   font-weight: bold;
 }
 
-/* 底部小箭头切换 */
+/* 底部箭头切换 */
 #bottomNav {
   position: absolute;
   bottom: 30px;
@@ -132,6 +149,9 @@ canvas#bgCanvas {
 <body>
 
 <canvas id="bgCanvas"></canvas>
+
+<!-- 返回主页按钮 -->
+<div id="homeBack" onclick="goHome()">&#10094;</div>
 
 <div class="title-wrap" id="categories">
   <div id="endlessBtn">EndlessWorld</div>
@@ -231,6 +251,11 @@ document.getElementById('nextBtn').addEventListener('click', ()=>{
   idx = (idx + 1) % endlessImgs.length;
   currentImg.src = endlessImgs[idx];
 });
+
+// 返回主页
+function goHome(){
+  window.location.href = "index.html";
+}
 </script>
 
 </body>
