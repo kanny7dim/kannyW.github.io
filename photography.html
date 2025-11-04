@@ -3,55 +3,86 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Photography - Endless World</title>
+<title>Endless World</title>
 <style>
-  body {
-    margin: 0;
-    font-family: "Helvetica Neue", Arial, sans-serif;
-    background: #0b0b0f; /* 深色背景 */
-    color: #fff;
-  }
+:root {
+  --bg: #000000;
+  --fg: #ffffff;
+}
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  overflow-x: hidden;
+}
 
-  a.back-btn {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    font-size: 32px;
-    color: #fff;
-    text-decoration: none;
-    text-shadow: 0 0 12px #fff;
-    z-index: 10;
-  }
+/* 返回按钮 */
+.back-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  font-size: 32px;
+  color: #fff;
+  text-decoration: none;
+  text-shadow: 0 0 12px #fff;
+  z-index: 10;
+}
 
-  .gallery {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 80px 10px 40px 10px;
-    gap: 40px;
-  }
+/* 图片网格 */
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 80px 20px 40px 20px;
+}
 
-  .gallery img {
-    max-width: 95%;
-    height: auto;
-    box-shadow: 0 0 20px rgba(255,255,255,0.5);
-    border-radius: 8px;
-    transition: transform 0.3s;
-  }
+.gallery img {
+  max-width: 300px;
+  width: 100%;
+  height: auto;
+  cursor: pointer;
+  border: 2px solid rgba(255,255,255,0.2);
+  box-shadow: 0 0 12px rgba(255,255,255,0.5);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
 
-  .gallery img:hover {
-    transform: scale(1.03);
-    box-shadow: 0 0 35px rgba(255,255,255,0.8);
-  }
+.gallery img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255,255,255,0.8);
+}
 
-  @media (min-width: 768px) {
-    .gallery {
-      gap: 60px;
-    }
-    .gallery img {
-      max-width: 70%;
-    }
-  }
+/* Lightbox */
+#lightbox {
+  position: fixed;
+  top:0; left:0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.95);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+}
+
+#lightbox img {
+  max-width: 90%;
+  max-height: 90%;
+  box-shadow: 0 0 30px rgba(255,255,255,0.9);
+}
+
+.close-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  font-size: 40px;
+  color: #fff;
+  cursor: pointer;
+  z-index: 25;
+  text-shadow: 0 0 12px #fff;
+}
 </style>
 </head>
 <body>
@@ -59,11 +90,41 @@
 <a href="photography.html" class="back-btn">←</a>
 
 <div class="gallery">
-  <img src="EndlessWorld/EndlessWorld1.jpg" alt="Endless World 1">
-  <img src="EndlessWorld/EndlessWorld2.jpg" alt="Endless World 2">
-  <img src="EndlessWorld/EndlessWorld3.jpg" alt="Endless World 3">
-  <img src="EndlessWorld/EndlessWorld4.jpg" alt="Endless World 4">
+  <img src="EndlessWorld:01.jpg.JPG" alt="Endless World 1">
+  <img src="EndlessWorld:02.jpg.JPG" alt="Endless World 2">
+  <img src="EndlessWorld:03.jpg.JPG" alt="Endless World 3">
+  <img src="EndlessWorld:04.jpg.JPG" alt="Endless World 4">
+  <img src="EndlessWorld:05.jpg.JPG" alt="Endless World 5">
 </div>
+
+<!-- Lightbox -->
+<div id="lightbox">
+  <span class="close-btn">&times;</span>
+  <img src="" alt="">
+</div>
+
+<script>
+// Lightbox 功能
+const lightbox = document.getElementById('lightbox');
+const lbImg = lightbox.querySelector('img');
+const closeBtn = document.querySelector('.close-btn');
+const imgs = document.querySelectorAll('.gallery img');
+
+imgs.forEach(img => {
+  img.addEventListener('click', () => {
+    lbImg.src = img.src;
+    lightbox.style.display = 'flex';
+  });
+});
+
+closeBtn.addEventListener('click', () => {
+  lightbox.style.display = 'none';
+});
+
+lightbox.addEventListener('click', (e) => {
+  if(e.target === lightbox) lightbox.style.display = 'none';
+});
+</script>
 
 </body>
 </html>
