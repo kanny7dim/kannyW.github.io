@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Photography - Endless World</title>
+<style>
+  body {
+    margin: 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    background: #0b0b0f; /* 深色背景 */
+    color: #fff;
+  }
+
+  a.back-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 32px;
+    color: #fff;
+    text-decoration: none;
+    text-shadow: 0 0 12px #fff;
+    z-index: 10;
+  }
+
+  .gallery {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 80px 10px 40px 10px;
+    gap: 40px;
+  }
+
+  .gallery img {
+    max-width: 95%;
+    height: auto;
+    box-shadow: 0 0 20px rgba(255,255,255,0.5);
+    border-radius: 8px;
+    transition: transform 0.3s;
+  }
+
+  .gallery img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 35px rgba(255,255,255,0.8);
+  }
+
+  @media (min-width: 768px) {
+    .gallery {
+      gap: 60px;
+    }
+    .gallery img {
+      max-width: 70%;
+    }
+  }
+</style>
+</head>
+<body>
+
+<a href="photography.html" class="back-btn">←</a>
+
+<div class="gallery">
+  <img src="EndlessWorld/EndlessWorld1.jpg" alt="Endless World 1">
+  <img src="EndlessWorld/EndlessWorld2.jpg" alt="Endless World 2">
+  <img src="EndlessWorld/EndlessWorld3.jpg" alt="Endless World 3">
+  <img src="EndlessWorld/EndlessWorld4.jpg" alt="Endless World 4">
+</div>
+
+</body>
+</html>
