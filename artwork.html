@@ -6,7 +6,8 @@
 <title>Art Work</title>
 <style>
 :root {
-  --bg: #0b0b0f;
+  --bg-home: #0b0b0f; /* 星空背景 */
+  --bg-category: #dcdcdc; /* 莫兰迪灰背景 */
   --fg: #ffffff;
 }
 html, body {
@@ -14,16 +15,14 @@ html, body {
   padding: 0;
   height: 100%;
   font-family: "Helvetica Neue", Arial, sans-serif;
-  background: var(--bg);
-  color: var(--fg);
   overflow: hidden;
   cursor: url('https://cur.cursors-4u.net/cursors/cur-2/cur116.cur'), auto;
 }
 canvas#bgCanvas {
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  z-index: 0;
+  top:0; left:0;
+  width:100%; height:100%;
+  z-index:0;
 }
 .back-btn {
   position: fixed;
@@ -33,7 +32,8 @@ canvas#bgCanvas {
   color: #fff;
   text-decoration: none;
   text-shadow: 0 0 12px #fff;
-  z-index: 3;
+  z-index: 10;
+  display: none; /* 初始不显示，进入类别后显示 */
 }
 .title-wrap {
   position: absolute;
@@ -42,18 +42,35 @@ canvas#bgCanvas {
   transform: translate(-50%, -50%);
   z-index: 2;
   display: flex;
-  gap: 50px;
+  gap: 40px;
   font-size: 32px;
   font-weight: 700;
   color: var(--fg);
   text-shadow: 0 0 12px rgba(255,255,255,0.8);
+  white-space: nowrap; /* 保持按钮文字不换行 */
 }
 .title-wrap div {
   cursor: pointer;
+  position: relative;
   transition: text-shadow 0.3s ease;
 }
 .title-wrap div:hover {
   text-shadow: 0 0 25px #00ff7f;
+}
+.gallery {
+  display: none;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 80px 20px 40px 20px;
+  z-index: 2;
+  position: relative;
+}
+.gallery img {
+  max-width: 300px;
+  width: 100%;
+  height: auto;
+  cursor: default;
 }
 .footer-text {
   position: fixed;
@@ -67,22 +84,36 @@ canvas#bgCanvas {
   text-shadow: 0 0 12px #fff;
   z-index: 2;
   line-height: 1.5;
+  word-wrap: break-word;
+}
+@media(max-width:1024px){
+  .title-wrap { font-size: 26px; gap: 25px; }
+  .gallery { gap: 15px; }
 }
 @media(max-width:768px){
-  .title-wrap { flex-direction: column; gap: 25px; top: 40%; font-size: 24px; }
+  .title-wrap { flex-direction: column; align-items: center; top: 40%; }
+  .footer-text { font-size: 14px; bottom: 20px; }
 }
 </style>
 </head>
 <body>
 
 <canvas id="bgCanvas"></canvas>
-<a href="index.html" class="back-btn">←</a>
+<a href="#" class="back-btn" id="backBtn">←</a>
 
-<div class="title-wrap">
-  <div id="endlessBtn">Endless World</div>
-  <div id="perceptionBtn">Perception</div>
-  <div id="deepBtn">Deep Listening</div>
-  <div id="reshapingBtn">Reshaping</div>
+<div class="title-wrap" id="homeButtons">
+  <div id="photographyBtn">Photography</div>
+  <div id="soundBtn">Sound</div>
+  <div id="sculptureBtn">Sculpture</div>
+</div>
+
+<!-- 图片展示区 -->
+<div class="gallery" id="photographyGallery">
+  <img src="EndlessWorld01.jpg.JPG" alt="Endless World 1">
+  <img src="EndlessWorld02.jpg.JPG" alt="Endless World 2">
+  <img src="EndlessWorld03.jpg.JPG" alt="Endless World 3">
+  <img src="EndlessWorld04.jpg.JPG" alt="Endless World 4">
+  <img src="EndlessWorld05.jpg.JPG" alt="Endless World 5">
 </div>
 
 <div class="footer-text">
@@ -91,55 +122,74 @@ perceiving fragility, grace, and resilience; all is inscribed, all is traceable.
 </div>
 
 <script>
-// 星空背景
 const canvas = document.getElementById('bgCanvas');
 const ctx = canvas.getContext('2d');
 let W=0,H=0;
 function resize(){
-  W=canvas.clientWidth; 
-  H=canvas.clientHeight; 
-  canvas.width=W; 
+  W=canvas.clientWidth;
+  H=canvas.clientHeight;
+  canvas.width=W;
   canvas.height=H;
 }
 window.addEventListener('resize',resize);
 resize();
 
+// 星空粒子背景
 const stars = Array.from({length:150},()=>({
   x:Math.random(), y:Math.random(), r:Math.random()*1.5+0.2,
   vx:(Math.random()-0.5)*0.0005, vy:(Math.random()-0.5)*0.0005
 }));
-function draw(){
+function drawStars(){
   ctx.clearRect(0,0,W,H);
   ctx.fillStyle='rgba(8,9,12,0.9)';
   ctx.fillRect(0,0,W,H);
   for(const s of stars){
     s.x += s.vx; s.y += s.vy;
-    if(s.x<0)s.x=1; if(s.x>1)s.x=0;
-    if(s.y<0)s.y=1; if(s.y>1)s.y=0;
+    if(s.x<0)s.x=1;if(s.x>1)s.x=0;
+    if(s.y<0)s.y=1;if(s.y>1)s.y=0;
     ctx.beginPath();
     ctx.fillStyle='rgba(255,255,255,'+(0.6*Math.random()+0.2)+')';
     ctx.arc(s.x*W, s.y*H, s.r,0,Math.PI*2);
     ctx.fill();
   }
-  requestAnimationFrame(draw);
+  requestAnimationFrame(drawStars);
 }
-draw();
+drawStars();
 
-// 点击跳转逻辑
-document.getElementById('endlessBtn').addEventListener('click',()=>{
-  window.location.href='EndlessWorld.html';
+const photographyBtn = document.getElementById('photographyBtn');
+const soundBtn = document.getElementById('soundBtn');
+const sculptureBtn = document.getElementById('sculptureBtn');
+const homeButtons = document.getElementById('homeButtons');
+const backBtn = document.getElementById('backBtn');
+const photographyGallery = document.getElementById('photographyGallery');
+
+function showGallery(category){
+  // 隐藏首页按钮
+  homeButtons.style.display = 'none';
+  // 显示返回按钮
+  backBtn.style.display = 'block';
+  // 显示对应图片区
+  if(category==='photography'){
+    photographyGallery.style.display = 'flex';
+  }
+  // 改变背景为灰色
+  canvas.style.display='none';
+  document.body.style.backgroundColor = '#dcdcdc';
+}
+
+// 返回首页
+backBtn.addEventListener('click', ()=>{
+  homeButtons.style.display = 'flex';
+  backBtn.style.display = 'none';
+  photographyGallery.style.display = 'none';
+  document.body.style.backgroundColor = '';
+  canvas.style.display='block';
 });
 
-// 其他按钮暂不跳转，可添加提示或以后添加页面
-document.getElementById('perceptionBtn').addEventListener('click',()=>{
-  alert('Coming soon!');
-});
-document.getElementById('deepBtn').addEventListener('click',()=>{
-  alert('Coming soon!');
-});
-document.getElementById('reshapingBtn').addEventListener('click',()=>{
-  alert('Coming soon!');
-});
+// 点击类别
+photographyBtn.addEventListener('click', ()=>showGallery('photography'));
+soundBtn.addEventListener('click', ()=>alert('Sound作品暂未添加'));
+sculptureBtn.addEventListener('click', ()=>alert('Sculpture作品暂未添加'));
 </script>
 
 </body>
