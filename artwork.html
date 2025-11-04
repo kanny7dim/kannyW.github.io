@@ -10,6 +10,7 @@
   --fg: #ffffff;
   --work-bg: #bfbfbf;
 }
+
 html, body {
   margin: 0;
   padding: 0;
@@ -18,12 +19,15 @@ html, body {
   color: var(--fg);
   overflow: hidden;
 }
+
 canvas#bgCanvas {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
   z-index: 0;
 }
+
+/* 首页标题 */
 .title-wrap {
   position: absolute;
   top: 45%;
@@ -50,24 +54,7 @@ canvas#bgCanvas {
   100% { text-shadow: 0 0 20px rgba(0,255,127,0.5); transform: translateY(2px); }
 }
 
-/* 返回主页按钮（只在首页显示） */
-#homeBack {
-  position: absolute;
-  top: 25px;
-  right: 25px;
-  font-size: 30px;
-  color: white;
-  text-shadow: 0 0 10px white;
-  cursor: pointer;
-  z-index: 3;
-  transition: transform 0.3s ease, text-shadow 0.3s;
-}
-#homeBack:hover {
-  transform: scale(1.2);
-  text-shadow: 0 0 20px white;
-}
-
-/* 作品查看页面 */
+/* EndlessWorld 图片页 */
 #workView {
   display: none;
   position: absolute;
@@ -82,38 +69,77 @@ canvas#bgCanvas {
 #workView img {
   max-width: 90%;
   max-height: 80%;
-  transition: opacity 0.3s;
 }
 #workView .back-btn {
   position: fixed;
   top: 20px;
   right: 20px;
-  font-size: 32px;
+  font-size: 36px;
   color: #000;
   cursor: pointer;
   z-index: 3;
   font-weight: bold;
+  text-shadow: 0 0 8px rgba(0,0,0,0.3);
 }
 
-/* 底部箭头切换 */
-#bottomNav {
+/* 图片页底部切换按钮 */
+#prevBtn, #nextBtn {
   position: absolute;
-  bottom: 30px;
-  display: flex;
-  justify-content: center;
-  gap: 100px;
-  width: 100%;
-}
-.navArrow {
+  bottom: 40px;
   font-size: 28px;
-  color: black;
-  text-shadow: 0 0 10px rgba(0,0,0,0.8);
+  color: rgba(0,0,0,0.8);
+  text-shadow: 0 0 10px #000;
   cursor: pointer;
-  transition: all 0.3s ease;
+  z-index: 3;
   user-select: none;
+  transition: transform 0.3s;
 }
-.navArrow:hover {
-  text-shadow: 0 0 20px rgba(0,0,0,1);
+#prevBtn:hover, #nextBtn:hover {
+  transform: scale(1.2);
+}
+#prevBtn { left: 40px; }
+#nextBtn { right: 40px; }
+
+/* DeepListening 文字页 */
+#deepPage {
+  display: none;
+  position: absolute;
+  top:0; left:0;
+  width: 100%; height: 100%;
+  background: radial-gradient(circle at 30% 30%, rgba(30,30,40,0.3), #000 90%);
+  color: #fff;
+  z-index: 2;
+  overflow-y: auto;
+}
+#deepCanvas {
+  position: absolute;
+  top:0; left:0;
+  width:100%; height:100%;
+  z-index:0;
+}
+.deep-content {
+  position: relative;
+  z-index:1;
+  max-width: 800px;
+  padding: 80px 40px;
+  line-height: 1.8;
+  font-size: 18px;
+  text-shadow: 0 0 12px rgba(255,255,255,0.8);
+  text-align: left;
+  margin-left: 5%;
+}
+#deepBack {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  font-size: 32px;
+  color: #fff;
+  cursor: pointer;
+  z-index: 3;
+  text-shadow: 0 0 12px #fff;
+  transition: transform 0.3s;
+}
+#deepBack:hover {
   transform: scale(1.1);
 }
 
@@ -141,19 +167,17 @@ canvas#bgCanvas {
   }
   #workView img { width: 90%; height: auto; }
   .footer-text { font-size: 14px; bottom: 20px; }
-  #bottomNav { gap: 60px; bottom: 20px; }
-  .navArrow { font-size: 24px; }
+  #prevBtn, #nextBtn { font-size: 24px; }
+  .deep-content { font-size: 16px; padding: 60px 30px; }
 }
 </style>
 </head>
 <body>
 
+<!-- 星空背景 -->
 <canvas id="bgCanvas"></canvas>
 
-<!-- 返回主页按钮（只在首页显示） -->
-<div id="homeBack" onclick="goHome()">&#10094;</div>
-
-<!-- 四个类别 -->
+<!-- 首页分类 -->
 <div class="title-wrap" id="categories">
   <div id="endlessBtn">EndlessWorld</div>
   <div id="perceptionBtn">Perception</div>
@@ -161,13 +185,22 @@ canvas#bgCanvas {
   <div id="reshapeBtn">Reshaping</div>
 </div>
 
-<!-- 作品查看 -->
+<!-- EndlessWorld 图片页 -->
 <div id="workView">
-  <span class="back-btn" onclick="closeWork()">&larr; Back</span>
+  <span class="back-btn" onclick="closeWork()">&larr;</span>
   <img id="currentImg" src="EndlessWorld01.jpg.JPG" alt="Artwork">
-  <div id="bottomNav">
-    <span class="navArrow" id="prevBtn">&#10094;</span>
-    <span class="navArrow" id="nextBtn">&#10095;</span>
+  <span id="prevBtn">&#10094;</span>
+  <span id="nextBtn">&#10095;</span>
+</div>
+
+<!-- DeepListening 文字页 -->
+<div id="deepPage">
+  <canvas id="deepCanvas"></canvas>
+  <span id="deepBack">&larr;</span>
+  <div class="deep-content">
+    <p><strong>Deep listening unfolds as a sensorial practice</strong> — a way of attuning to the fragile boundaries between body, matter, and the world. Sound is not only perceived by the ear but moves through the body, through the quiet resonances of materials and the subtle rhythms of breath. Each vibration carries memory; even silence holds the pulse of life.</p>
+    <p>For Kanny, listening is not a method but a condition of being — like breathing, it exists within us, often unnoticed. It accompanies moments of calm and of panic, tracing the intervals between tension and release. To listen deeply is to give time back to perception, to dwell within the small shifts that shape presence.</p>
+    <p>Deep listening is not about transcendence, but about remaining — staying close to what trembles, what changes, and what continues to breathe within the world.</p>
   </div>
 </div>
 
@@ -178,7 +211,7 @@ perceiving fragility, grace, and resilience; all is inscribed, all is traceable.
 </div>
 
 <script>
-// 星空背景
+// 星空背景（首页）
 const canvas = document.getElementById('bgCanvas');
 const ctx = canvas.getContext('2d');
 let W=0,H=0;
@@ -212,12 +245,11 @@ function drawStars(){
 }
 drawStars();
 
-// 点击进入作品
+// EndlessWorld 图片逻辑
 const categories = document.getElementById('categories');
 const workView = document.getElementById('workView');
 const currentImg = document.getElementById('currentImg');
 const footerText = document.getElementById('footerText');
-const homeBack = document.getElementById('homeBack');
 
 const endlessImgs = [
   "EndlessWorld01.jpg.JPG",
@@ -226,27 +258,22 @@ const endlessImgs = [
   "EndlessWorld04.jpg.JPG",
   "EndlessWorld05.jpg.JPG"
 ];
-
 let idx = 0;
 
 document.getElementById('endlessBtn').addEventListener('click', ()=>{
   categories.style.display='none';
   footerText.style.display='none';
-  homeBack.style.display='none'; // 隐藏主页返回箭头
   workView.style.display='flex';
   idx = 0;
   currentImg.src = endlessImgs[idx];
 });
 
-// 返回 Art Work 页
 function closeWork(){
   workView.style.display='none';
   categories.style.display='flex';
   footerText.style.display='block';
-  homeBack.style.display='block'; // 恢复主页返回箭头
 }
 
-// 切换按钮
 document.getElementById('prevBtn').addEventListener('click', ()=>{
   idx = (idx - 1 + endlessImgs.length) % endlessImgs.length;
   currentImg.src = endlessImgs[idx];
@@ -256,10 +283,49 @@ document.getElementById('nextBtn').addEventListener('click', ()=>{
   currentImg.src = endlessImgs[idx];
 });
 
-// 返回主页
-function goHome(){
-  window.location.href = "index.html";
+// DeepListening 页面逻辑
+const deepPage = document.getElementById('deepPage');
+const deepBtn = document.getElementById('deepBtn');
+const deepBack = document.getElementById('deepBack');
+const deepCanvas = document.getElementById('deepCanvas');
+const deepCtx = deepCanvas.getContext('2d');
+
+function resizeDeep(){
+  deepCanvas.width = deepCanvas.clientWidth;
+  deepCanvas.height = deepCanvas.clientHeight;
 }
+window.addEventListener('resize', resizeDeep);
+resizeDeep();
+
+const deepStars = Array.from({length:60},()=>({
+  x:Math.random(), y:Math.random(), r:Math.random()*1.2+0.3
+}));
+
+function drawDeepStars(){
+  deepCtx.clearRect(0,0,deepCanvas.width,deepCanvas.height);
+  deepCtx.fillStyle = '#000';
+  deepCtx.fillRect(0,0,deepCanvas.width,deepCanvas.height);
+  for(const s of deepStars){
+    deepCtx.beginPath();
+    deepCtx.fillStyle='rgba(255,255,255,'+(0.5*Math.random()+0.1)+')';
+    deepCtx.arc(s.x*deepCanvas.width, s.y*deepCanvas.height, s.r,0,Math.PI*2);
+    deepCtx.fill();
+  }
+  requestAnimationFrame(drawDeepStars);
+}
+drawDeepStars();
+
+deepBtn.addEventListener('click', ()=>{
+  categories.style.display='none';
+  footerText.style.display='none';
+  deepPage.style.display='block';
+});
+
+deepBack.addEventListener('click', ()=>{
+  deepPage.style.display='none';
+  categories.style.display='flex';
+  footerText.style.display='block';
+});
 </script>
 
 </body>
