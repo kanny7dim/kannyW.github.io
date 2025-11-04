@@ -6,7 +6,7 @@
 <title>Art Work</title>
 <style>
 :root {
-  --bg: #0b0b0f; /* 星空背景色 */
+  --bg: #0b0b0f; /* 星空背景 */
   --fg: #ffffff;
   --work-bg: #bfbfbf; /* 莫兰迪灰背景 */
 }
@@ -50,50 +50,46 @@ canvas#bgCanvas {
   100% { text-shadow: 0 0 20px rgba(0,255,127,0.5); transform: translateY(2px); }
 }
 
-#gallery {
+/* 作品查看页面 */
+#workView {
   display: none;
   position: absolute;
   top:0; left:0;
   width: 100%; height: 100%;
   background: var(--work-bg);
-  overflow-y: auto;
-  z-index: 2;
-  padding: 60px 20px 20px 20px;
-  box-sizing: border-box;
-}
-#gallery img {
-  width: 300px;
-  height: auto;
-  margin: 10px;
-  cursor: pointer;
-  display: inline-block;
-}
-#lightbox {
-  display: none;
-  position: fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  background: rgba(0,0,0,0.95);
   justify-content:center;
   align-items:center;
-  z-index: 10;
+  z-index: 2;
 }
-#lightbox img {
-  max-width:90%;
-  max-height:90%;
+#workView img {
+  max-width: 90%;
+  max-height: 90%;
+  cursor: pointer;
 }
-#lightbox .close-btn {
+#workView .back-btn {
   position: fixed;
   top: 20px;
   right: 20px;
   font-size: 36px;
   color: #000;
   cursor: pointer;
-  z-index: 11;
+  z-index: 3;
 }
 
-.back-btn {
-  display: none;
+/* 底部文字 */
+.footer-text {
+  position: fixed;
+  bottom: 30px;
+  width: 90%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: #fff;
+  font-size: 16px;
+  text-shadow: 0 0 12px #fff;
+  z-index: 2;
+  line-height: 1.5;
+  word-wrap: break-word;
 }
 
 @media(max-width:768px){
@@ -102,7 +98,8 @@ canvas#bgCanvas {
     gap: 30px;
     font-size: 24px;
   }
-  #gallery img { width: 90%; max-width: 300px; }
+  #workView img { width: 90%; height: auto; }
+  .footer-text { font-size: 14px; bottom: 20px; }
 }
 </style>
 </head>
@@ -117,20 +114,16 @@ canvas#bgCanvas {
   <div id="reshapeBtn">Reshaping</div>
 </div>
 
-<!-- Gallery -->
-<div id="gallery">
-  <span class="close-btn" onclick="closeGallery()">&times;</span>
-  <img src="EndlessWorld01.jpg.JPG" alt="Endless World 1">
-  <img src="EndlessWorld02.jpg.JPG" alt="Endless World 2">
-  <img src="EndlessWorld03.jpg.JPG" alt="Endless World 3">
-  <img src="EndlessWorld04.jpg.JPG" alt="Endless World 4">
-  <img src="EndlessWorld05.jpg.JPG" alt="Endless World 5">
+<!-- 单图查看 -->
+<div id="workView">
+  <span class="back-btn" onclick="closeWork()">&larr;</span>
+  <img id="currentImg" src="EndlessWorld01.jpg.JPG" alt="Artwork">
 </div>
 
-<!-- Lightbox -->
-<div id="lightbox">
-  <span class="close-btn" onclick="closeLightbox()">&times;</span>
-  <img src="" alt="">
+<!-- 底部文字 -->
+<div class="footer-text">
+By means of sound, photography, and sculpture, they probe the unknown,<br>
+perceiving fragility, grace, and resilience; all is inscribed, all is traceable.
 </div>
 
 <script>
@@ -168,33 +161,36 @@ function drawStars(){
 }
 drawStars();
 
-// 点击进入 EndlessWorld
+// 点击进入作品查看
 const categories = document.getElementById('categories');
-const gallery = document.getElementById('gallery');
-const lightbox = document.getElementById('lightbox');
-const lbImg = lightbox.querySelector('img');
+const workView = document.getElementById('workView');
+const currentImg = document.getElementById('currentImg');
 
 document.getElementById('endlessBtn').addEventListener('click', ()=>{
   categories.style.display='none';
-  gallery.style.display='block';
+  workView.style.display='flex';
+  currentImg.src = "EndlessWorld01.jpg.JPG";
 });
 
-function closeGallery(){
-  gallery.style.display='none';
+// 返回首页
+function closeWork(){
+  workView.style.display='none';
   categories.style.display='flex';
 }
 
-// Lightbox
-const galleryImgs = gallery.querySelectorAll('img');
-galleryImgs.forEach(img=>{
-  img.addEventListener('click', ()=>{
-    lbImg.src = img.src;
-    lightbox.style.display='flex';
-  });
+// 点击图片可切换下一张
+const endlessImgs = [
+  "EndlessWorld01.jpg.JPG",
+  "EndlessWorld02.jpg.JPG",
+  "EndlessWorld03.jpg.JPG",
+  "EndlessWorld04.jpg.JPG",
+  "EndlessWorld05.jpg.JPG"
+];
+let idx = 0;
+currentImg.addEventListener('click', ()=>{
+  idx = (idx + 1) % endlessImgs.length;
+  currentImg.src = endlessImgs[idx];
 });
-function closeLightbox(){
-  lightbox.style.display='none';
-}
 </script>
 
 </body>
