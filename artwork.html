@@ -23,7 +23,7 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 .title-wrap div:hover{text-shadow:0 0 35px rgba(0,255,127,1);transform:translateY(-2px);}
 @keyframes glowMove{0%{text-shadow:0 0 10px rgba(0,255,127,0.7);transform:translateY(0);}100%{text-shadow:0 0 20px rgba(0,255,127,0.5);transform:translateY(2px);}}
 
-/* 首页返回主页箭头 (只在首页显示) */
+/* 首页返回主页箭头 */
 #homeBack{position:absolute;top:20px;right:22px;font-size:32px;color:#fff;text-shadow:0 0 12px #fff;cursor:pointer;z-index:3;transition:transform .18s;}
 #homeBack:hover{transform:scale(1.12);}
 
@@ -32,7 +32,7 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 #workView img{max-width:90%;max-height:80%;}
 #workView .back-btn{position:fixed;top:18px;right:18px;font-size:32px;color:#000;cursor:pointer;z-index:3;font-weight:700;}
 
-/* 图片页左右切换箭头（底部两侧） */
+/* 图片页左右切换箭头 */
 #prevBtn, #nextBtn{position:absolute;bottom:36px;font-size:28px;color:rgba(0,0,0,0.85);cursor:pointer;z-index:3;user-select:none;transition:transform .15s;}
 #prevBtn:hover,#nextBtn:hover{transform:scale(1.1);}
 #prevBtn{left:36px;}#nextBtn{right:36px;}
@@ -44,6 +44,11 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 #deepBack:hover{transform:scale(1.08);}
 .deep-content{position:relative;z-index:1;max-width:900px;margin:80px 0 120px 5%;padding:0 28px;line-height:1.8;font-size:18px;text-shadow:0 0 12px rgba(255,255,255,0.9);text-align:left;color:#fff;}
 
+/* Audio Tracks 样式 */
+.audio-track{display:flex;align-items:center;gap:12px;margin-bottom:12px;cursor:pointer;}
+.audio-track span{font-weight:700;text-shadow:0 0 12px #fff;color:#fff;}
+.audio-track audio{flex:1;outline:none;border:none;background:none;box-shadow:0 0 12px #fff;border-radius:4px;}
+
 /* 底部说明文字 */
 .footer-text{position:fixed;bottom:30px;width:90%;left:50%;transform:translateX(-50%);text-align:center;color:#fff;font-size:16px;text-shadow:0 0 12px #fff;z-index:2;line-height:1.5;word-wrap:break-word;}
 
@@ -54,13 +59,10 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 </head>
 <body>
 
-<!-- 星空背景 -->
 <canvas id="bgCanvas"></canvas>
 
-<!-- 首页返回主页尖头（只显示在首页） -->
 <div id="homeBack" title="Back to homepage" onclick="goHome()">&#10094;</div>
 
-<!-- 四个类别 -->
 <div class="title-wrap" id="categories">
   <div id="endlessBtn">EndlessWorld</div>
   <div id="perceptionBtn">Perception</div>
@@ -68,7 +70,6 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
   <div id="reshapeBtn">Reshaping</div>
 </div>
 
-<!-- EndlessWorld 图片查看（保持原来行为） -->
 <div id="workView">
   <span class="back-btn" onclick="closeWork()">&larr;</span>
   <img id="currentImg" src="EndlessWorld01.jpg.JPG" alt="Artwork">
@@ -76,7 +77,6 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
   <span id="nextBtn">&#10095;</span>
 </div>
 
-<!-- DeepListening 文字页（黑底少量星光，文字靠左） -->
 <div id="deepPage">
   <canvas id="deepCanvas"></canvas>
   <span id="deepBack">&larr;</span>
@@ -86,18 +86,15 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
     <p>For Kanny, listening is not a method but a condition of being — like breathing, it exists within us, often unnoticed. It accompanies moments of calm and of panic, tracing the intervals between tension and release. To listen deeply is to give time back to perception, to dwell within the small shifts that shape presence.</p>
     <p>Deep listening is not about transcendence, but about remaining — staying close to what trembles, what changes, and what continues to breathe within the world.</p>
 
-    <!-- Audio Tracks Section -->
     <div style="margin-top:32px;">
       <h3 style="color:#fff; text-shadow:0 0 12px #fff; margin-bottom:16px;">Audio Tracks</h3>
-
-      <!-- 发光音轨线条播放器 -->
-      <div style="display:flex; flex-direction:column; gap:12px;">
-        <audio controls src="deep01.mp3" style="width:100%; outline:none; border-radius:4px; box-shadow:0 0 16px #0ff;"></audio>
-        <audio controls src="deep02.mp3" style="width:100%; outline:none; border-radius:4px; box-shadow:0 0 16px #0ff;"></audio>
-        <audio controls src="deep03.mp3" style="width:100%; outline:none; border-radius:4px; box-shadow:0 0 16px #0ff;"></audio>
-        <audio controls src="deep04.mp3" style="width:100%; outline:none; border-radius:4px; box-shadow:0 0 16px #0ff;"></audio>
-        <audio controls src="deep05.mp3" style="width:100%; outline:none; border-radius:4px; box-shadow:0 0 16px #0ff;"></audio>
-        <audio controls src="deep06.mp3" style="width:100%; outline:none; border-radius:4px; box-shadow:0 0 16px #0ff;"></audio>
+      <div>
+        <div class="audio-track"><span>Track 01</span><audio controls src="deep01.mp3"></audio></div>
+        <div class="audio-track"><span>Track 02</span><audio controls src="deep02.mp3"></audio></div>
+        <div class="audio-track"><span>Track 03</span><audio controls src="deep03.mp3"></audio></div>
+        <div class="audio-track"><span>Track 04</span><audio controls src="deep04.mp3"></audio></div>
+        <div class="audio-track"><span>Track 05</span><audio controls src="deep05.mp3"></audio></div>
+        <div class="audio-track"><span>Track 06</span><audio controls src="deep06.mp3"></audio></div>
       </div>
 
       <p style="margin-top:16px; font-size:14px; color:#fff; text-shadow:0 0 8px #fff;">
@@ -107,14 +104,13 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
   </div>
 </div>
 
-<!-- 底部发光文字 -->
 <div class="footer-text" id="footerText">
 By means of sound, photography, and sculpture, they probe the unknown,<br>
 perceiving fragility, grace, and resilience; all is inscribed, all is traceable.
 </div>
 
 <script>
-// ---------- 星空背景（首页） ----------
+// ---------- 星空背景 ----------
 const canvas = document.getElementById('bgCanvas');
 const ctx = canvas.getContext('2d');
 let W=0,H=0;
@@ -128,7 +124,7 @@ function drawStars(){ ctx.clearRect(0,0,W,H); ctx.fillStyle='rgba(8,9,12,0.9)'; 
 }
 drawStars();
 
-// ---------- EndlessWorld 图片逻辑（不变） ----------
+// ---------- EndlessWorld 图片逻辑 ----------
 const categories = document.getElementById('categories');
 const workView = document.getElementById('workView');
 const currentImg = document.getElementById('currentImg');
