@@ -38,7 +38,6 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 #prevBtn{left:36px;}#nextBtn{right:36px;}
 
 /* Perception 页面修改样式 */
-/* 左上角文字固定 */
 .perception-content{
   position:absolute;
   top:24px;
@@ -60,6 +59,7 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
   display:flex;
   justify-content:center;
   align-items:center;
+  background:#fff;
   z-index:2;
 }
 
@@ -98,6 +98,7 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 #perceptionPrev{left:36px;}
 #perceptionNext{right:36px;}
 #perceptionPrev:hover,#perceptionNext:hover{transform:scale(1.1);text-shadow:0 0 12px #000,0 0 20px #000;}
+.back-btn{color:rgba(0,0,0,0.85); text-shadow:0 0 12px #000;}
 
 /* DeepListening 文字页 */
 #deepPage{display:none;position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 30% 30%, rgba(30,30,40,0.28), #000 90%);color:#fff;z-index:2;overflow:auto;}
@@ -142,8 +143,6 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
   <!-- 左上角文字 -->
   <div class="perception-content">
     <h2>Perception</h2>
-    <p>Perception is the way we inhabit and respond to the world, a continuous dialogue with time, memory, and matter. It arises not only from sight and hearing, but also from the subtle textures of touch, the traces of scent, the echoes within the body, and the rhythms of breath. Even a body carrying a lesion can reveal unexpected layers of sensitivity, connecting fragility, endurance, and presence.</p>
-    <p>Through perception, moments are felt in their fullness: the past reverberates through memory, the body registers shifts in air and weight, and the smallest gestures unfold into awareness. Time’s flow becomes tangible as perception gathers the ephemeral and the persistent, creating a bridge between what is and what was. It is in this attentiveness — to the textures, sounds, scents, and quiet movements around and within — that life quietly reveals its delicate choreography.</p>
   </div>
 
   <!-- 图片和说明 -->
@@ -238,7 +237,6 @@ const perceptionImg = document.getElementById('perceptionImg');
 const perceptionPrev = document.getElementById('perceptionPrev');
 const perceptionNext = document.getElementById('perceptionNext');
 const caption = document.getElementById('caption');
-const perceptionContent = document.querySelector('.perception-content');
 
 const perceptionImgs = [
   "Perception01.jpg.jpg",
@@ -249,11 +247,12 @@ const perceptionImgs = [
   "Perception06.jpg.jpg"
 ];
 
+// 第三、第四张互换说明文字
 const perceptionCaptions = [
   "Window, Installation",
   "Window, Installation",
-  "Fibromatosis and Me, 2016–Present",
   "Grandmother's Memory, Installation",
+  "Fibromatosis and Me, 2016–Present",
   "A Part, 2024",
   "Light House"
 ];
