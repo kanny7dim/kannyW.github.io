@@ -27,15 +27,13 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 #homeBack{position:absolute;top:20px;right:22px;font-size:32px;color:#fff;text-shadow:0 0 12px #fff;cursor:pointer;z-index:3;transition:transform .18s;}
 #homeBack:hover{transform:scale(1.12);}
 
-/* EndlessWorld 图片查看页 */
-#workView{display:none;position:absolute;top:0;left:0;width:100%;height:100%;background:var(--work-bg);z-index:2;justify-content:center;align-items:center;flex-direction:column;}
-#workView img{max-width:90%;max-height:80%;}
-#workView .back-btn{position:fixed;top:18px;right:18px;font-size:32px;color:#000;cursor:pointer;z-index:3;font-weight:700;}
-
-/* 图片页左右切换箭头 */
-#prevBtn, #nextBtn{position:absolute;bottom:36px;font-size:28px;color:rgba(0,0,0,0.85);cursor:pointer;z-index:3;user-select:none;transition:transform .15s;}
-#prevBtn:hover,#nextBtn:hover{transform:scale(1.1);}
-#prevBtn{left:36px;}#nextBtn{right:36px;}
+/* 图片查看页基础样式 */
+#workView, #perceptionView{display:none;position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;justify-content:center;align-items:center;flex-direction:column;}
+#workView img, #perceptionView img{max-width:90%;max-height:80%;cursor:zoom-in;}
+.back-btn{position:fixed;top:18px;right:18px;font-size:32px;color:#000;cursor:pointer;z-index:3;font-weight:700;}
+#prevBtn, #nextBtn, #perceptionPrev, #perceptionNext{position:absolute;bottom:36px;font-size:28px;color:rgba(0,0,0,0.85);cursor:pointer;z-index:3;user-select:none;transition:transform .15s;}
+#prevBtn:hover,#nextBtn:hover,#perceptionPrev:hover,#perceptionNext:hover{transform:scale(1.1);}
+#prevBtn{left:36px;}#nextBtn{right:36px;}#perceptionPrev{left:36px;}#perceptionNext{right:36px;}
 
 /* DeepListening 文字页 */
 #deepPage{display:none;position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 30% 30%, rgba(30,30,40,0.28), #000 90%);color:#fff;z-index:2;overflow:auto;}
@@ -44,12 +42,16 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 #deepBack:hover{transform:scale(1.08);}
 .deep-content{position:relative;z-index:1;max-width:900px;margin:80px 0 120px 5%;padding:0 28px;line-height:1.8;font-size:18px;text-shadow:0 0 12px rgba(255,255,255,0.9);text-align:left;color:#fff;}
 
+/* Perception 页面文字样式 */
+#perceptionView{background:#fff;overflow:auto;color:#000;}
+.perception-content{position:relative;z-index:1;max-width:900px;margin:80px 0 120px 5%;padding:0 28px;line-height:1.8;font-size:18px;text-align:left;}
+
 /* 底部说明文字 */
 .footer-text{position:fixed;bottom:30px;width:90%;left:50%;transform:translateX(-50%);text-align:center;color:#fff;font-size:16px;text-shadow:0 0 12px #fff;z-index:2;line-height:1.5;word-wrap:break-word;}
 
 /* responsive */
 @media(max-width:900px){.title-wrap{gap:36px;font-size:26px}}
-@media(max-width:600px){.title-wrap{flex-direction:column;top:40%}.deep-content{font-size:16px;padding:0 16px;margin-left:6%;}}
+@media(max-width:600px){.title-wrap{flex-direction:column;top:40%}.deep-content,.perception-content{font-size:16px;padding:0 16px;margin-left:6%;}}
 </style>
 </head>
 <body>
@@ -65,6 +67,7 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
   <div id="reshapeBtn">Reshaping</div>
 </div>
 
+<!-- EndlessWorld -->
 <div id="workView">
   <span class="back-btn" onclick="closeWork()">&larr;</span>
   <img id="currentImg" src="EndlessWorld01.jpg.JPG" alt="Artwork">
@@ -72,17 +75,30 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
   <span id="nextBtn">&#10095;</span>
 </div>
 
+<!-- Perception -->
+<div id="perceptionView">
+  <span class="back-btn" onclick="closePerception()">&larr;</span>
+  <img id="perceptionImg" src="Perception01.jpg.jpg" alt="Perception">
+  <span id="perceptionPrev">&#10094;</span>
+  <span id="perceptionNext">&#10095;</span>
+  <div class="perception-content">
+    <h2>Perception</h2>
+    <p>Perception is the way we inhabit and respond to the world, a continuous dialogue with time, memory, and matter. It arises not only from sight and hearing, but also from the subtle textures of touch, the traces of scent, the echoes within the body, and the rhythms of breath. Even a body carrying a lesion can reveal unexpected layers of sensitivity, connecting fragility, endurance, and presence.</p>
+    <p>Through perception, moments are felt in their fullness: the past reverberates through memory, the body registers shifts in air and weight, and the smallest gestures unfold into awareness. Time’s flow becomes tangible as perception gathers the ephemeral and the persistent, creating a bridge between what is and what was. It is in this attentiveness — to the textures, sounds, scents, and quiet movements around and within — that life quietly reveals its delicate choreography.</p>
+  </div>
+</div>
+
+<!-- DeepListening -->
 <div id="deepPage">
   <canvas id="deepCanvas"></canvas>
   <span id="deepBack">&larr;</span>
   <div class="deep-content">
-    <h2 style="margin-top:0; color:#fff; text-shadow:0 0 12px #fff;">Deep Listening</h2>
+    <h2 style="margin-top:0;">Deep Listening</h2>
     <p>Deep listening unfolds as a sensorial practice — a way of attuning to the fragile boundaries between body, matter, and the world. Sound is not only perceived by the ear but moves through the body, through the quiet resonances of materials and the subtle rhythms of breath. Each vibration carries memory; even silence holds the pulse of life.</p>
     <p>For Kanny, listening is not a method but a condition of being — like breathing, it exists within us, often unnoticed. It accompanies moments of calm and of panic, tracing the intervals between tension and release. To listen deeply is to give time back to perception, to dwell within the small shifts that shape presence.</p>
     <p>Deep listening is not about transcendence, but about remaining — staying close to what trembles, what changes, and what continues to breathe within the world.</p>
-
     <div style="margin-top:32px;">
-      <h3 style="color:#fff; text-shadow:0 0 12px #fff; margin-bottom:16px;">Audio Tracks</h3>
+      <h3 style="margin-bottom:16px;">Audio Tracks</h3>
       <div>
         <audio controls src="deep01.mp3.mp3"></audio><br>
         <audio controls src="deep02.mp3.mp3"></audio><br>
@@ -91,9 +107,7 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
         <audio controls src="deep05.mp3.mp3"></audio><br>
         <audio controls src="deep06.mp3.mp3"></audio>
       </div>
-      <p style="margin-top:16px; font-size:14px; color:#fff; text-shadow:0 0 8px #fff;">
-        These tracks can be played individually or simultaneously, allowing the audience to freely combine sounds.
-      </p>
+      <p style="margin-top:16px; font-size:14px;">These tracks can be played individually or simultaneously, allowing the audience to freely combine sounds.</p>
     </div>
   </div>
 </div>
@@ -118,7 +132,7 @@ function drawStars(){ ctx.clearRect(0,0,W,H); ctx.fillStyle='rgba(8,9,12,0.9)'; 
 }
 drawStars();
 
-// ---------- EndlessWorld 图片逻辑 ----------
+// ---------- EndlessWorld ----------
 const categories = document.getElementById('categories');
 const workView = document.getElementById('workView');
 const currentImg = document.getElementById('currentImg');
@@ -150,7 +164,40 @@ function closeWork(){
 document.getElementById('prevBtn').addEventListener('click', ()=>{ idx = (idx - 1 + endlessImgs.length) % endlessImgs.length; currentImg.src = endlessImgs[idx]; });
 document.getElementById('nextBtn').addEventListener('click', ()=>{ idx = (idx + 1) % endlessImgs.length; currentImg.src = endlessImgs[idx]; });
 
-// ---------- DeepListening page logic ----------
+// ---------- Perception ----------
+const perceptionView = document.getElementById('perceptionView');
+const perceptionBtn = document.getElementById('perceptionBtn');
+const perceptionImg = document.getElementById('perceptionImg');
+const perceptionPrev = document.getElementById('perceptionPrev');
+const perceptionNext = document.getElementById('perceptionNext');
+const perceptionImgs = [
+  "Perception01.jpg.jpg",
+  "Perception02.jpg.jpg",
+  "Perception03.jpg.jpg",
+  "Perception04.jpg.jpg",
+  "Perception05.jpg.jpg",
+  "Perception06.jpg.jpg"
+];
+let pIdx = 0;
+
+perceptionBtn.addEventListener('click', ()=>{
+  categories.style.display='none';
+  footerText.style.display='none';
+  homeBack.style.display='none';
+  perceptionView.style.display='flex';
+  pIdx = 0;
+  perceptionImg.src = perceptionImgs[pIdx];
+});
+function closePerception(){
+  perceptionView.style.display='none';
+  categories.style.display='flex';
+  footerText.style.display='block';
+  homeBack.style.display='block';
+}
+perceptionPrev.addEventListener('click', ()=>{ pIdx = (pIdx - 1 + perceptionImgs.length) % perceptionImgs.length; perceptionImg.src = perceptionImgs[pIdx]; });
+perceptionNext.addEventListener('click', ()=>{ pIdx = (pIdx + 1) % perceptionImgs.length; perceptionImg.src = perceptionImgs[pIdx]; });
+
+// ---------- DeepListening ----------
 const deepPage = document.getElementById('deepPage');
 const deepBtn = document.getElementById('deepBtn');
 const deepBack = document.getElementById('deepBack');
@@ -186,11 +233,8 @@ deepBack.addEventListener('click', ()=>{
   homeBack.style.display='block';
 });
 
-// ---------- Perception / Reshaping placeholders ----------
-document.getElementById('perceptionBtn').addEventListener('click', ()=>{});
-document.getElementById('reshapeBtn').addEventListener('click', ()=>{});
-
 // ---------- Home -> index ----------
+document.getElementById('reshapeBtn').addEventListener('click', ()=>{});
 function goHome(){ window.location.href = "index.html"; }
 </script>
 
