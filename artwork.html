@@ -21,7 +21,7 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 }
 .title-wrap div{cursor:pointer;transition:text-shadow .5s,transform .4s;animation:glowMove 2s infinite alternate;}
 .title-wrap div:hover{text-shadow:0 0 35px rgba(0,255,127,1);transform:translateY(-2px);}
-@keyframes glowMove{0%{text-shadow:0 0 10px rgba(0,255,127,0.7);transform:translateY(0);}100%{text-shadow:0 0 20px rgba(0,255,127,0.5);transform:translateY(2px);}}
+@keyframes glowMove{0%{text-shadow:0 0 10px rgba(0,255,255,0.7);transform:translateY(0);}100%{text-shadow:0 0 20px rgba(0,255,255,0.5);transform:translateY(2px);}}
 
 /* 首页返回主页箭头 */
 #homeBack{position:absolute;top:20px;right:22px;font-size:32px;color:#fff;text-shadow:0 0 12px #fff;cursor:pointer;z-index:3;transition:transform .18s;}
@@ -43,20 +43,8 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 .deep-content{position:relative;z-index:1;max-width:900px;margin:80px 0 120px 5%;padding:0 28px;line-height:1.8;font-size:18px;text-shadow:0 0 12px rgba(255,255,255,0.9);text-align:left;color:#fff;}
 
 /* Perception 页面文字样式 */
-#perceptionView{background:#fff;overflow:auto;color:#000;position:relative;}
-.perception-content{position:absolute;top:24px;left:24px;max-width:900px;padding:0;line-height:1.8;font-size:18px;text-align:left;}
-
-/* 图片右下角说明 */
-#caption{
-  position:absolute;
-  bottom:16px;
-  right:16px;
-  font-size:16px;
-  color:#000;
-  background:rgba(255,255,255,0.5);
-  padding:4px 8px;
-  border-radius:4px;
-}
+#perceptionView{background:#fff;overflow:auto;color:#000;display:flex;flex-direction:column;align-items:flex-start;}
+.perception-content{position:relative;z-index:1;max-width:900px;margin:40px 0 20px 5%;padding:0 28px;line-height:1.8;font-size:18px;text-align:left;}
 
 /* 底部说明文字 */
 .footer-text{position:fixed;bottom:30px;width:90%;left:50%;transform:translateX(-50%);text-align:center;color:#fff;font-size:16px;text-shadow:0 0 12px #fff;z-index:2;line-height:1.5;word-wrap:break-word;}
@@ -90,15 +78,14 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 <!-- Perception -->
 <div id="perceptionView">
   <span class="back-btn" onclick="closePerception()">&larr;</span>
-  <img id="perceptionImg" src="Perception01.jpg.jpg" alt="Perception">
-  <div id="caption">Window, Installation</div>
-  <span id="perceptionPrev">&#10094;</span>
-  <span id="perceptionNext">&#10095;</span>
   <div class="perception-content">
     <h2>Perception</h2>
     <p>Perception is the way we inhabit and respond to the world, a continuous dialogue with time, memory, and matter. It arises not only from sight and hearing, but also from the subtle textures of touch, the traces of scent, the echoes within the body, and the rhythms of breath. Even a body carrying a lesion can reveal unexpected layers of sensitivity, connecting fragility, endurance, and presence.</p>
     <p>Through perception, moments are felt in their fullness: the past reverberates through memory, the body registers shifts in air and weight, and the smallest gestures unfold into awareness. Time’s flow becomes tangible as perception gathers the ephemeral and the persistent, creating a bridge between what is and what was. It is in this attentiveness — to the textures, sounds, scents, and quiet movements around and within — that life quietly reveals its delicate choreography.</p>
   </div>
+  <img id="perceptionImg" src="Perception01.jpg.jpg" alt="Perception">
+  <span id="perceptionPrev">&#10094;</span>
+  <span id="perceptionNext">&#10095;</span>
 </div>
 
 <!-- DeepListening -->
@@ -183,9 +170,6 @@ const perceptionBtn = document.getElementById('perceptionBtn');
 const perceptionImg = document.getElementById('perceptionImg');
 const perceptionPrev = document.getElementById('perceptionPrev');
 const perceptionNext = document.getElementById('perceptionNext');
-const caption = document.getElementById('caption');
-const perceptionContent = document.querySelector('.perception-content');
-
 const perceptionImgs = [
   "Perception01.jpg.jpg",
   "Perception02.jpg.jpg",
@@ -194,16 +178,6 @@ const perceptionImgs = [
   "Perception05.jpg.jpg",
   "Perception06.jpg.jpg"
 ];
-
-const perceptionCaptions = [
-  "Window, Installation",
-  "Window, Installation",
-  "Fibromatosis and Me, 2016–Present",
-  "Grandmother's Memory, Installation",
-  "A Part, 2024",
-  "Light House"
-];
-
 let pIdx = 0;
 
 perceptionBtn.addEventListener('click', ()=>{
@@ -213,30 +187,15 @@ perceptionBtn.addEventListener('click', ()=>{
   perceptionView.style.display='flex';
   pIdx = 0;
   perceptionImg.src = perceptionImgs[pIdx];
-  caption.innerText = perceptionCaptions[pIdx];
-  perceptionContent.style.display = 'block';
 });
-
 function closePerception(){
   perceptionView.style.display='none';
   categories.style.display='flex';
   footerText.style.display='block';
   homeBack.style.display='block';
 }
-
-perceptionPrev.addEventListener('click', ()=>{
-  pIdx = (pIdx - 1 + perceptionImgs.length) % perceptionImgs.length;
-  perceptionImg.src = perceptionImgs[pIdx];
-  caption.innerText = perceptionCaptions[pIdx];
-  perceptionContent.style.display = pIdx === 0 ? 'block' : 'none';
-});
-
-perceptionNext.addEventListener('click', ()=>{
-  pIdx = (pIdx + 1) % perceptionImgs.length;
-  perceptionImg.src = perceptionImgs[pIdx];
-  caption.innerText = perceptionCaptions[pIdx];
-  perceptionContent.style.display = pIdx === 0 ? 'block' : 'none';
-});
+perceptionPrev.addEventListener('click', ()=>{ pIdx = (pIdx - 1 + perceptionImgs.length) % perceptionImgs.length; perceptionImg.src = perceptionImgs[pIdx]; });
+perceptionNext.addEventListener('click', ()=>{ pIdx = (pIdx + 1) % perceptionImgs.length; perceptionImg.src = perceptionImgs[pIdx]; });
 
 // ---------- DeepListening ----------
 const deepPage = document.getElementById('deepPage');
