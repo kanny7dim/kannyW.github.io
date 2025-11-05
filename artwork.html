@@ -21,7 +21,7 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 }
 .title-wrap div{cursor:pointer;transition:text-shadow .5s,transform .4s;animation:glowMove 2s infinite alternate;}
 .title-wrap div:hover{text-shadow:0 0 35px rgba(0,255,127,1);transform:translateY(-2px);}
-@keyframes glowMove{0%{text-shadow:0 0 10px rgba(0,255,255,0.7);transform:translateY(0);}100%{text-shadow:0 0 20px rgba(0,255,255,0.5);transform:translateY(2px);}}
+@keyframes glowMove{0%{text-shadow:0 0 10px rgba(0,255,127,0.7);transform:translateY(0);}100%{text-shadow:0 0 20px rgba(0,255,127,0.5);transform:translateY(2px);}}
 
 /* 首页返回主页箭头 */
 #homeBack{position:absolute;top:20px;right:22px;font-size:32px;color:#fff;text-shadow:0 0 12px #fff;cursor:pointer;z-index:3;transition:transform .18s;}
@@ -43,8 +43,20 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 .deep-content{position:relative;z-index:1;max-width:900px;margin:80px 0 120px 5%;padding:0 28px;line-height:1.8;font-size:18px;text-shadow:0 0 12px rgba(255,255,255,0.9);text-align:left;color:#fff;}
 
 /* Perception 页面文字样式 */
-#perceptionView{background:#fff;overflow:auto;color:#000;display:flex;flex-direction:column;align-items:flex-start;}
-.perception-content{position:relative;z-index:1;max-width:900px;margin:40px 0 20px 5%;padding:0 28px;line-height:1.8;font-size:18px;text-align:left;}
+#perceptionView{background:#fff;overflow:auto;color:#000;position:relative;}
+.perception-content{position:relative;max-width:900px;padding:24px;line-height:1.8;font-size:18px;text-align:left;margin-bottom:20px;}
+
+/* 图片右下角说明 */
+#caption{
+  position:absolute;
+  bottom:16px;
+  right:16px;
+  font-size:16px;
+  color:#000;
+  background:rgba(255,255,255,0.5);
+  padding:4px 8px;
+  border-radius:4px;
+}
 
 /* 底部说明文字 */
 .footer-text{position:fixed;bottom:30px;width:90%;left:50%;transform:translateX(-50%);text-align:center;color:#fff;font-size:16px;text-shadow:0 0 12px #fff;z-index:2;line-height:1.5;word-wrap:break-word;}
@@ -84,6 +96,7 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
     <p>Through perception, moments are felt in their fullness: the past reverberates through memory, the body registers shifts in air and weight, and the smallest gestures unfold into awareness. Time’s flow becomes tangible as perception gathers the ephemeral and the persistent, creating a bridge between what is and what was. It is in this attentiveness — to the textures, sounds, scents, and quiet movements around and within — that life quietly reveals its delicate choreography.</p>
   </div>
   <img id="perceptionImg" src="Perception01.jpg.jpg" alt="Perception">
+  <div id="caption">Window, Installation</div>
   <span id="perceptionPrev">&#10094;</span>
   <span id="perceptionNext">&#10095;</span>
 </div>
@@ -102,141 +115,4 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
       <div>
         <audio controls src="deep01.mp3.mp3"></audio><br>
         <audio controls src="deep02.mp3.mp3"></audio><br>
-        <audio controls src="deep03.mp3.mp3"></audio><br>
-        <audio controls src="deep04.mp3.mp3"></audio><br>
-        <audio controls src="deep05.mp3.mp3"></audio><br>
-        <audio controls src="deep06.mp3.mp3"></audio>
-      </div>
-      <p style="margin-top:16px; font-size:14px;">These tracks can be played individually or simultaneously, allowing the audience to freely combine sounds.</p>
-    </div>
-  </div>
-</div>
-
-<div class="footer-text" id="footerText">
-By means of sound, photography, and sculpture, they probe the unknown,<br>
-perceiving fragility, grace, and resilience; all is inscribed, all is traceable.
-</div>
-
-<script>
-// ---------- 星空背景 ----------
-const canvas = document.getElementById('bgCanvas');
-const ctx = canvas.getContext('2d');
-let W=0,H=0;
-function resize(){ W=canvas.clientWidth; H=canvas.clientHeight; canvas.width=W; canvas.height=H; }
-window.addEventListener('resize',resize); resize();
-const stars = Array.from({length:150},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.5+0.2,vx:(Math.random()-0.5)*0.0005,vy:(Math.random()-0.5)*0.0005}));
-function drawStars(){ ctx.clearRect(0,0,W,H); ctx.fillStyle='rgba(8,9,12,0.9)'; ctx.fillRect(0,0,W,H);
-  for(const s of stars){ s.x+=s.vx; s.y+=s.vy; if(s.x<0)s.x=1; if(s.x>1)s.x=0; if(s.y<0)s.y=1; if(s.y>1)s.y=0;
-    ctx.beginPath(); ctx.fillStyle='rgba(255,255,255,'+(0.6*Math.random()+0.2)+')'; ctx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2); ctx.fill();
-  } requestAnimationFrame(drawStars);
-}
-drawStars();
-
-// ---------- EndlessWorld ----------
-const categories = document.getElementById('categories');
-const workView = document.getElementById('workView');
-const currentImg = document.getElementById('currentImg');
-const footerText = document.getElementById('footerText');
-const homeBack = document.getElementById('homeBack');
-
-const endlessImgs = [
-  "EndlessWorld01.jpg.JPG",
-  "EndlessWorld02.jpg.JPG",
-  "EndlessWorld03.jpg.JPG",
-  "EndlessWorld04.jpg.JPG",
-  "EndlessWorld05.jpg.JPG"
-];
-let idx = 0;
-document.getElementById('endlessBtn').addEventListener('click', ()=>{
-  categories.style.display='none';
-  footerText.style.display='none';
-  homeBack.style.display='none';
-  workView.style.display='flex';
-  idx = 0;
-  currentImg.src = endlessImgs[idx];
-});
-function closeWork(){
-  workView.style.display='none';
-  categories.style.display='flex';
-  footerText.style.display='block';
-  homeBack.style.display='block';
-}
-document.getElementById('prevBtn').addEventListener('click', ()=>{ idx = (idx - 1 + endlessImgs.length) % endlessImgs.length; currentImg.src = endlessImgs[idx]; });
-document.getElementById('nextBtn').addEventListener('click', ()=>{ idx = (idx + 1) % endlessImgs.length; currentImg.src = endlessImgs[idx]; });
-
-// ---------- Perception ----------
-const perceptionView = document.getElementById('perceptionView');
-const perceptionBtn = document.getElementById('perceptionBtn');
-const perceptionImg = document.getElementById('perceptionImg');
-const perceptionPrev = document.getElementById('perceptionPrev');
-const perceptionNext = document.getElementById('perceptionNext');
-const perceptionImgs = [
-  "Perception01.jpg.jpg",
-  "Perception02.jpg.jpg",
-  "Perception03.jpg.jpg",
-  "Perception04.jpg.jpg",
-  "Perception05.jpg.jpg",
-  "Perception06.jpg.jpg"
-];
-let pIdx = 0;
-
-perceptionBtn.addEventListener('click', ()=>{
-  categories.style.display='none';
-  footerText.style.display='none';
-  homeBack.style.display='none';
-  perceptionView.style.display='flex';
-  pIdx = 0;
-  perceptionImg.src = perceptionImgs[pIdx];
-});
-function closePerception(){
-  perceptionView.style.display='none';
-  categories.style.display='flex';
-  footerText.style.display='block';
-  homeBack.style.display='block';
-}
-perceptionPrev.addEventListener('click', ()=>{ pIdx = (pIdx - 1 + perceptionImgs.length) % perceptionImgs.length; perceptionImg.src = perceptionImgs[pIdx]; });
-perceptionNext.addEventListener('click', ()=>{ pIdx = (pIdx + 1) % perceptionImgs.length; perceptionImg.src = perceptionImgs[pIdx]; });
-
-// ---------- DeepListening ----------
-const deepPage = document.getElementById('deepPage');
-const deepBtn = document.getElementById('deepBtn');
-const deepBack = document.getElementById('deepBack');
-const deepCanvas = document.getElementById('deepCanvas');
-const dctx = deepCanvas.getContext('2d');
-function resizeDeep(){ deepCanvas.width = deepCanvas.clientWidth; deepCanvas.height = deepCanvas.clientHeight; }
-window.addEventListener('resize', resizeDeep); resizeDeep();
-const deepStars = Array.from({length:60},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.2+0.3}));
-function drawDeepStars(){
-  dctx.clearRect(0,0,deepCanvas.width,deepCanvas.height);
-  dctx.fillStyle = '#000';
-  dctx.fillRect(0,0,deepCanvas.width,deepCanvas.height);
-  for(const s of deepStars){
-    dctx.beginPath();
-    dctx.fillStyle = 'rgba(255,255,255,'+(0.45*Math.random()+0.08)+')';
-    dctx.arc(s.x*deepCanvas.width, s.y*deepCanvas.height, s.r, 0, Math.PI*2);
-    dctx.fill();
-  }
-  requestAnimationFrame(drawDeepStars);
-}
-drawDeepStars();
-
-deepBtn.addEventListener('click', ()=>{
-  categories.style.display='none';
-  footerText.style.display='none';
-  homeBack.style.display='none';
-  deepPage.style.display='block';
-});
-deepBack.addEventListener('click', ()=>{
-  deepPage.style.display='none';
-  categories.style.display='flex';
-  footerText.style.display='block';
-  homeBack.style.display='block';
-});
-
-// ---------- Home -> index ----------
-document.getElementById('reshapeBtn').addEventListener('click', ()=>{});
-function goHome(){ window.location.href = "index.html"; }
-</script>
-
-</body>
-</html>
+        <audio controls src="deep03.mp
