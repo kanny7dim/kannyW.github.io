@@ -27,84 +27,90 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 #homeBack{position:absolute;top:20px;right:22px;font-size:32px;color:#fff;text-shadow:0 0 12px #fff;cursor:pointer;z-index:3;transition:transform .18s;}
 #homeBack:hover{transform:scale(1.12);text-shadow:0 0 20px #fff,0 0 35px #fff;}
 
-/* 图片查看页 */
+/* 图片查看页基础样式 */
 #workView, #perceptionView{display:none;position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;justify-content:center;align-items:center;flex-direction:column;}
 #workView img, #perceptionView img{max-width:90%;max-height:80%;cursor:zoom-in;}
+.back-btn{position:fixed;top:18px;right:18px;font-size:32px;color:#000;cursor:pointer;z-index:3;font-weight:700;}
 
-/* EndlessWorld 切换箭头 */
+/* EndlessWorld 切换按钮白色发光 */
 #prevBtn, #nextBtn{position:absolute;bottom:36px;font-size:28px;color:#fff;text-shadow:0 0 12px #fff;cursor:pointer;z-index:3;user-select:none;transition:transform .15s;}
-#prevBtn:hover,#nextBtn:hover{transform:scale(1.1);text-shadow:0 0 25px #fff;}
+#prevBtn:hover,#nextBtn:hover{transform:scale(1.1);text-shadow:0 0 20px #fff, 0 0 30px #fff;}
 #prevBtn{left:36px;}#nextBtn{right:36px;}
-.back-btn{position:fixed;top:18px;right:18px;font-size:32px;color:#fff;cursor:pointer;z-index:3;font-weight:700;}
 
 /* Perception 页面样式 */
-#perceptionView{background:transparent;color:#fff;overflow:hidden;}
-.perception-text{
+#perceptionView{
+  display:none;
   position:absolute;
-  top:40px;
-  left:40px;
-  max-width:40%;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:#fff;
+  color:#000;
+  overflow:hidden;
+  z-index:2;
+}
+.perception-content{
+  position:absolute;
+  top:12%;
+  left:6%;
+  width:30%;
+  text-align:left;
+  z-index:3;
   font-size:18px;
   line-height:1.8;
-  color:#fff;
-  z-index:3;
-  text-shadow:0 0 12px rgba(255,255,255,0.9);
 }
-.perception-img-wrap{
+.perception-content h2{margin-bottom:18px;}
+.perception-image-wrapper{
   position:absolute;
-  top:0;left:0;
-  width:100%;height:100%;
+  right:0;
+  top:0;
+  width:65%;
+  height:100%;
   display:flex;
   justify-content:center;
   align-items:center;
 }
-#perceptionImg{
-  max-width:80%;
+.perception-image-wrapper img{
+  max-width:85%;
   max-height:85%;
+  object-fit:contain;
 }
-#perceptionPrev,#perceptionNext{
+#perceptionPrev, #perceptionNext{
   position:absolute;
   bottom:40px;
   font-size:32px;
-  color:#fff;
+  color:rgba(0,0,0,0.85);
   cursor:pointer;
-  z-index:4;
-  text-shadow:0 0 18px #fff;
+  z-index:3;
   user-select:none;
-  transition:transform .15s;
+  transition:transform .15s,text-shadow .15s;
 }
-#perceptionPrev:hover,#perceptionNext:hover{transform:scale(1.1);text-shadow:0 0 30px #fff;}
-#perceptionPrev{left:40px;}
-#perceptionNext{right:40px;}
-#caption{
-  position:absolute;
-  bottom:20px;
-  right:40px;
-  font-size:16px;
-  color:#fff;
-  background:rgba(0,0,0,0.4);
-  padding:4px 8px;
-  border-radius:4px;
-  text-shadow:0 0 8px #fff;
-}
+#perceptionPrev{left:36px;}
+#perceptionNext{right:36px;}
+#perceptionPrev:hover,#perceptionNext:hover{transform:scale(1.1);text-shadow:0 0 12px #000,0 0 20px #000;}
+.back-btn{color:rgba(0,0,0,0.85); text-shadow:0 0 12px #000;}
 
 /* DeepListening */
 #deepPage{display:none;position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 30% 30%, rgba(30,30,40,0.28), #000 90%);color:#fff;z-index:2;overflow:auto;}
 #deepCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;}
-.deep-content{position:relative;z-index:1;max-width:900px;margin:80px 0 120px 5%;padding:0 28px;line-height:1.8;font-size:18px;text-align:left;color:#fff;text-shadow:0 0 12px rgba(255,255,255,0.9);}
+#deepBack{position:fixed;top:18px;right:18px;font-size:32px;color:#fff;cursor:pointer;z-index:3;text-shadow:0 0 12px #fff;transition:transform .15s;}
+#deepBack:hover{transform:scale(1.08);}
+.deep-content{position:relative;z-index:1;max-width:900px;margin:80px 0 120px 5%;padding:0 28px;line-height:1.8;font-size:18px;text-shadow:0 0 12px rgba(255,255,255,0.9);text-align:left;color:#fff;}
 
-/* 底部文字 */
-.footer-text{position:fixed;bottom:30px;width:90%;left:50%;transform:translateX(-50%);text-align:center;color:#fff;font-size:16px;text-shadow:0 0 12px #fff;z-index:2;}
+/* 底部说明 */
+.footer-text{position:fixed;bottom:30px;width:90%;left:50%;transform:translateX(-50%);text-align:center;color:#fff;font-size:16px;text-shadow:0 0 12px #fff;z-index:2;line-height:1.5;word-wrap:break-word;}
 
-/* responsive */
+/* 响应式 */
 @media(max-width:900px){.title-wrap{gap:36px;font-size:26px}}
-@media(max-width:600px){.title-wrap{flex-direction:column;top:40%}.perception-text{max-width:85%;font-size:16px;}}
+@media(max-width:600px){.title-wrap{flex-direction:column;top:40%}.deep-content,.perception-content{font-size:16px;padding:0 16px;margin-left:6%;}}
 </style>
 </head>
 <body>
 
 <canvas id="bgCanvas"></canvas>
-<div id="homeBack" onclick="goHome()">&#10094;</div>
+
+<div id="homeBack" title="Back to homepage" onclick="goHome()">&#10094;</div>
 
 <div class="title-wrap" id="categories">
   <div id="endlessBtn">EndlessWorld</div>
@@ -124,26 +130,35 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 <!-- Perception -->
 <div id="perceptionView">
   <span class="back-btn" onclick="closePerception()">&larr;</span>
-  <div class="perception-text">
+  <div class="perception-content">
     <h2>Perception</h2>
-    <p>Perception is the way we inhabit and respond to the world, a continuous dialogue with time, memory, and matter. It arises not only from sight and hearing, but also from the subtle textures of touch, the traces of scent, the echoes within the body, and the rhythms of breath. Even a body carrying a lesion can reveal unexpected layers of sensitivity, connecting fragility, endurance, and presence.</p>
-    <p>Through perception, moments are felt in their fullness: the past reverberates through memory, the body registers shifts in air and weight, and the smallest gestures unfold into awareness. Time’s flow becomes tangible as perception gathers the ephemeral and the persistent, creating a bridge between what is and what was. It is in this attentiveness — to the textures, sounds, scents, and quiet movements around and within — that life quietly reveals its delicate choreography.</p>
   </div>
-  <div class="perception-img-wrap">
-    <img id="perceptionImg" src="Perception01.jpg.jpg" alt="Perception Image">
+  <div class="perception-image-wrapper">
+    <img id="perceptionImg" src="Perception01.jpg.jpg" alt="Perception">
     <span id="perceptionPrev">&#10094;</span>
     <span id="perceptionNext">&#10095;</span>
-    <div id="caption">Window, Installation</div>
   </div>
 </div>
 
 <!-- DeepListening -->
 <div id="deepPage">
   <canvas id="deepCanvas"></canvas>
-  <span class="back-btn" onclick="closeDeep()">&larr;</span>
+  <span id="deepBack">&larr;</span>
   <div class="deep-content">
-    <h2>Deep Listening</h2>
+    <h2 style="margin-top:0;">Deep Listening</h2>
     <p>Deep listening unfolds as a sensorial practice — a way of attuning to the fragile boundaries between body, matter, and the world...</p>
+    <div style="margin-top:32px;">
+      <h3 style="margin-bottom:16px;">Audio Tracks</h3>
+      <div>
+        <audio controls src="deep01.mp3.mp3"></audio><br>
+        <audio controls src="deep02.mp3.mp3"></audio><br>
+        <audio controls src="deep03.mp3.mp3"></audio><br>
+        <audio controls src="deep04.mp3.mp3"></audio><br>
+        <audio controls src="deep05.mp3.mp3"></audio><br>
+        <audio controls src="deep06.mp3.mp3"></audio>
+      </div>
+      <p style="margin-top:16px; font-size:14px;">These tracks can be played individually or simultaneously, allowing the audience to freely combine sounds.</p>
+    </div>
   </div>
 </div>
 
@@ -153,48 +168,42 @@ perceiving fragility, grace, and resilience; all is inscribed, all is traceable.
 </div>
 
 <script>
-// 星空背景
-const canvas = document.getElementById('bgCanvas');
-const ctx = canvas.getContext('2d');
-let W,H;
-function resize(){W=canvas.clientWidth;H=canvas.clientHeight;canvas.width=W;canvas.height=H;}
+/* 星空背景 */
+const canvas=document.getElementById('bgCanvas');const ctx=canvas.getContext('2d');
+let W=0,H=0;function resize(){W=canvas.clientWidth;H=canvas.clientHeight;canvas.width=W;canvas.height=H;}
 window.addEventListener('resize',resize);resize();
-const stars = Array.from({length:150},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.5+0.2,vx:(Math.random()-0.5)*0.0005,vy:(Math.random()-0.5)*0.0005}));
+const stars=Array.from({length:150},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.5+0.2,vx:(Math.random()-0.5)*0.0005,vy:(Math.random()-0.5)*0.0005}));
 function drawStars(){ctx.clearRect(0,0,W,H);ctx.fillStyle='rgba(8,9,12,0.9)';ctx.fillRect(0,0,W,H);
 for(const s of stars){s.x+=s.vx;s.y+=s.vy;if(s.x<0)s.x=1;if(s.x>1)s.x=0;if(s.y<0)s.y=1;if(s.y>1)s.y=0;
 ctx.beginPath();ctx.fillStyle='rgba(255,255,255,'+(0.6*Math.random()+0.2)+')';ctx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);ctx.fill();}
 requestAnimationFrame(drawStars);}drawStars();
 
-// EndlessWorld
+/* EndlessWorld */
 const endlessImgs=["EndlessWorld01.jpg.JPG","EndlessWorld02.jpg.JPG","EndlessWorld03.jpg.JPG","EndlessWorld04.jpg.JPG","EndlessWorld05.jpg.JPG"];
 let idx=0;
-document.getElementById('endlessBtn').onclick=()=>{showGallery('workView');idx=0;currentImg.src=endlessImgs[idx];};
-document.getElementById('prevBtn').onclick=()=>{idx=(idx-1+endlessImgs.length)%endlessImgs.length;currentImg.src=endlessImgs[idx];};
-document.getElementById('nextBtn').onclick=()=>{idx=(idx+1)%endlessImgs.length;currentImg.src=endlessImgs[idx];};
-function closeWork(){hideGallery('workView');}
+document.getElementById('endlessBtn').onclick=()=>{showView('workView');idx=0;updateWork();}
+document.getElementById('prevBtn').onclick=()=>{idx=(idx-1+endlessImgs.length)%endlessImgs.length;updateWork();}
+document.getElementById('nextBtn').onclick=()=>{idx=(idx+1)%endlessImgs.length;updateWork();}
+function updateWork(){document.getElementById('currentImg').src=endlessImgs[idx];}
+function closeWork(){hideView('workView');}
 
-// Perception
+/* Perception */
 const perceptionImgs=["Perception01.jpg.jpg","Perception02.jpg.jpg","Perception03.jpg.jpg","Perception04.jpg.jpg","Perception05.jpg.jpg","Perception06.jpg.jpg"];
-const perceptionCaptions=["Window, Installation","Window, Installation","Grandmother's Memory, Installation","Fibromatosis and Me, 2016–Present","A Part, 2024","Light House"];
 let pIdx=0;
-document.getElementById('perceptionBtn').onclick=()=>{showGallery('perceptionView');pIdx=0;updatePerception();};
-document.getElementById('perceptionPrev').onclick=()=>{pIdx=(pIdx-1+perceptionImgs.length)%perceptionImgs.length;updatePerception();};
-document.getElementById('perceptionNext').onclick=()=>{pIdx=(pIdx+1)%perceptionImgs.length;updatePerception();};
-function updatePerception(){perceptionImg.src=perceptionImgs[pIdx];caption.innerText=perceptionCaptions[pIdx];}
-function closePerception(){hideGallery('perceptionView');}
+document.getElementById('perceptionBtn').onclick=()=>{showView('perceptionView');pIdx=0;updatePerception();}
+document.getElementById('perceptionPrev').onclick=()=>{pIdx=(pIdx-1+perceptionImgs.length)%perceptionImgs.length;updatePerception();}
+document.getElementById('perceptionNext').onclick=()=>{pIdx=(pIdx+1)%perceptionImgs.length;updatePerception();}
+function updatePerception(){document.getElementById('perceptionImg').src=perceptionImgs[pIdx];}
+function closePerception(){hideView('perceptionView');}
 
-// DeepListening
-document.getElementById('deepBtn').onclick=()=>{showGallery('deepPage');};
-function closeDeep(){hideGallery('deepPage');}
+/* DeepListening */
+document.getElementById('deepBtn').onclick=()=>{showView('deepPage');}
+document.getElementById('deepBack').onclick=()=>{hideView('deepPage');}
 
-// 显示/隐藏切换
-const categories=document.getElementById('categories');
-const footerText=document.getElementById('footerText');
-const homeBack=document.getElementById('homeBack');
-function showGallery(id){categories.style.display='none';footerText.style.display='none';homeBack.style.display='block';document.getElementById(id).style.display='flex';}
-function hideGallery(id){document.getElementById(id).style.display='none';categories.style.display='flex';footerText.style.display='block';homeBack.style.display='block';}
+/* 通用函数 */
+function showView(id){document.getElementById('categories').style.display='none';document.getElementById('footerText').style.display='none';document.getElementById('homeBack').style.display='none';document.getElementById(id).style.display='flex';}
+function hideView(id){document.getElementById(id).style.display='none';document.getElementById('categories').style.display='flex';document.getElementById('footerText').style.display='block';document.getElementById('homeBack').style.display='block';}
 function goHome(){window.location.href="index.html";}
 </script>
-
 </body>
 </html>
