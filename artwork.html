@@ -23,21 +23,27 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 .title-wrap div:hover{text-shadow:0 0 35px rgba(0,255,127,1);transform:translateY(-2px);}
 @keyframes glowMove{0%{text-shadow:0 0 10px rgba(0,255,127,0.7);transform:translateY(0);}100%{text-shadow:0 0 20px rgba(0,255,127,0.5);transform:translateY(2px);}}
 
-/* 首页返回主页箭头 */
-#homeBack{position:absolute;top:20px;right:22px;font-size:32px;color:#fff;text-shadow:0 0 12px #fff;cursor:pointer;z-index:3;transition:transform .18s;}
-#homeBack:hover{transform:scale(1.12);text-shadow:0 0 20px #fff,0 0 35px #fff;}
+/* 首页返回主页箭头 (默认白色发光) */
+#homeBack{position:absolute;top:20px;right:22px;font-size:32px;color:#fff;text-shadow:0 0 12px #fff;cursor:pointer;z-index:6;transition:transform .18s;}
+#homeBack.white-glow{color:#fff;text-shadow:0 0 20px #fff,0 0 35px #fff;}
+#homeBack:hover{transform:scale(1.12);}
 
 /* 图片查看页基础样式 */
-#workView, #perceptionView{display:none;position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;justify-content:center;align-items:center;flex-direction:column;}
+#workView, #perceptionView{display:none;position:absolute;top:0;left:0;width:100%;height:100%;z-index:4;justify-content:center;align-items:center;flex-direction:column;}
 #workView img, #perceptionView img{max-width:90%;max-height:80%;cursor:zoom-in;}
-.back-btn{position:fixed;top:18px;right:18px;font-size:32px;color:#000;cursor:pointer;z-index:3;font-weight:700;}
+.back-btn{position:fixed;top:18px;right:18px;font-size:32px;color:#000;cursor:pointer;z-index:7;font-weight:700;}
 
-/* EndlessWorld 切换按钮白色发光 */
-#prevBtn, #nextBtn{position:absolute;bottom:36px;font-size:28px;color:#fff;text-shadow:0 0 12px #fff;cursor:pointer;z-index:3;user-select:none;transition:transform .15s;}
-#prevBtn:hover,#nextBtn:hover{transform:scale(1.1);text-shadow:0 0 20px #fff, 0 0 30px #fff;}
+/* EndlessWorld 切换按钮白色发光（明显可见） */
+#prevBtn, #nextBtn{position:absolute;bottom:36px;font-size:28px;color:#fff;text-shadow:0 0 12px #fff;cursor:pointer;z-index:7;user-select:none;transition:transform .12s;}
+#prevBtn:hover,#nextBtn:hover{transform:scale(1.08);text-shadow:0 0 20px #fff, 0 0 30px #fff;}
 #prevBtn{left:36px;}#nextBtn{right:36px;}
 
-/* Perception 页面样式 */
+/* Perception 页面样式
+   - 左侧叙述文字（固定）
+   - 右侧图片独立显示
+   - 右下角 caption
+   - 切换按钮黑色发光并拉开距离
+*/
 #perceptionView{
   display:none;
   position:absolute;
@@ -48,68 +54,91 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
   background:#fff;
   color:#000;
   overflow:hidden;
-  z-index:2;
+  z-index:5;
 }
 .perception-content{
   position:absolute;
-  top:12%;
-  left:6%;
+  top:6%;
+  left:4%;
   width:30%;
   text-align:left;
-  z-index:3;
+  z-index:8;
   font-size:18px;
-  line-height:1.8;
+  line-height:1.9;
+  color:#000;
 }
-.perception-content h2{margin-bottom:18px;}
+.perception-content h2{margin-top:0;margin-bottom:14px;}
 .perception-image-wrapper{
   position:absolute;
   right:0;
   top:0;
-  width:65%;
+  width:66%;
   height:100%;
   display:flex;
   justify-content:center;
   align-items:center;
+  z-index:6;
 }
 .perception-image-wrapper img{
-  max-width:85%;
-  max-height:85%;
+  max-width:86%;
+  max-height:86%;
   object-fit:contain;
+  display:block;
 }
+
+/* caption (每张图右下角英文说明) */
+#caption{
+  position:absolute;
+  bottom:18px;
+  right:18px;
+  font-size:16px;
+  color:#000;
+  background:rgba(255,255,255,0.8);
+  padding:6px 10px;
+  border-radius:4px;
+  z-index:9;
+  box-shadow:0 1px 6px rgba(0,0,0,0.08);
+}
+
+/* Perception 切换箭头 黑色发光，拉开 */
 #perceptionPrev, #perceptionNext{
   position:absolute;
   bottom:40px;
-  font-size:32px;
-  color:rgba(0,0,0,0.85);
+  font-size:34px;
+  color:rgba(0,0,0,0.9);
   cursor:pointer;
-  z-index:3;
+  z-index:9;
   user-select:none;
-  transition:transform .15s,text-shadow .15s;
+  transition:transform .08s,text-shadow .12s;
 }
 #perceptionPrev{left:36px;}
 #perceptionNext{right:36px;}
-#perceptionPrev:hover,#perceptionNext:hover{transform:scale(1.1);text-shadow:0 0 12px #000,0 0 20px #000;}
-.back-btn{color:rgba(0,0,0,0.85); text-shadow:0 0 12px #000;}
+#perceptionPrev:hover,#perceptionNext:hover{transform:scale(1.08);text-shadow:0 0 14px rgba(0,0,0,0.6);}
 
-/* DeepListening */
-#deepPage{display:none;position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 30% 30%, rgba(30,30,40,0.28), #000 90%);color:#fff;z-index:2;overflow:auto;}
+/* DeepListening 文字页（恢复完整段落样式） */
+#deepPage{display:none;position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 30% 30%, rgba(30,30,40,0.28), #000 90%);color:#fff;z-index:4;overflow:auto;}
 #deepCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;}
-#deepBack{position:fixed;top:18px;right:18px;font-size:32px;color:#fff;cursor:pointer;z-index:3;text-shadow:0 0 12px #fff;transition:transform .15s;}
+#deepBack{position:fixed;top:18px;right:18px;font-size:32px;color:#fff;cursor:pointer;z-index:7;text-shadow:0 0 12px #fff;transition:transform .15s;}
 #deepBack:hover{transform:scale(1.08);}
-.deep-content{position:relative;z-index:1;max-width:900px;margin:80px 0 120px 5%;padding:0 28px;line-height:1.8;font-size:18px;text-shadow:0 0 12px rgba(255,255,255,0.9);text-align:left;color:#fff;}
+.deep-content{position:relative;z-index:8;max-width:900px;margin:80px 0 120px 5%;padding:0 28px;line-height:1.8;font-size:18px;text-shadow:0 0 12px rgba(255,255,255,0.9);text-align:left;color:#fff;}
 
-/* 底部说明 */
-.footer-text{position:fixed;bottom:30px;width:90%;left:50%;transform:translateX(-50%);text-align:center;color:#fff;font-size:16px;text-shadow:0 0 12px #fff;z-index:2;line-height:1.5;word-wrap:break-word;}
+/* 底部说明文字 */
+.footer-text{position:fixed;bottom:30px;width:90%;left:50%;transform:translateX(-50%);text-align:center;color:#fff;font-size:16px;text-shadow:0 0 12px #fff;z-index:3;line-height:1.5;word-wrap:break-word;}
 
-/* 响应式 */
-@media(max-width:900px){.title-wrap{gap:36px;font-size:26px}}
-@media(max-width:600px){.title-wrap{flex-direction:column;top:40%}.deep-content,.perception-content{font-size:16px;padding:0 16px;margin-left:6%;}}
+/* responsive */
+@media(max-width:900px){
+  .title-wrap{gap:36px;font-size:26px}
+  .perception-content{display:block;position:relative;width:100%;left:0;top:0;padding:18px;background:#fff;}
+  .perception-image-wrapper{position:relative;width:100%;height:auto;padding:18px;}
+  .perception-image-wrapper img{max-width:100%;}
+}
 </style>
 </head>
 <body>
 
 <canvas id="bgCanvas"></canvas>
 
+<!-- 主页返回（右上） -->
 <div id="homeBack" title="Back to homepage" onclick="goHome()">&#10094;</div>
 
 <div class="title-wrap" id="categories">
@@ -130,11 +159,18 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 <!-- Perception -->
 <div id="perceptionView">
   <span class="back-btn" onclick="closePerception()">&larr;</span>
+
+  <!-- 左上角完整叙述文字（两段，固定） -->
   <div class="perception-content">
     <h2>Perception</h2>
+    <p>Perception is the way we inhabit and respond to the world, a continuous dialogue with time, memory, and matter. It arises not only from sight and hearing, but also from the subtle textures of touch, the traces of scent, the echoes within the body, and the rhythms of breath. Even a body carrying a lesion can reveal unexpected layers of sensitivity, connecting fragility, endurance, and presence.</p>
+    <p>Through perception, moments are felt in their fullness: the past reverberates through memory, the body registers shifts in air and weight, and the smallest gestures unfold into awareness. Time’s flow becomes tangible as perception gathers the ephemeral and the persistent, creating a bridge between what is and what was. It is in this attentiveness — to the textures, sounds, scents, and quiet movements around and within — that life quietly reveals its delicate choreography.</p>
   </div>
+
+  <!-- 右侧图片区（图片独立显示，右下角 caption） -->
   <div class="perception-image-wrapper">
     <img id="perceptionImg" src="Perception01.jpg.jpg" alt="Perception">
+    <div id="caption">Window, Installation</div>
     <span id="perceptionPrev">&#10094;</span>
     <span id="perceptionNext">&#10095;</span>
   </div>
@@ -146,7 +182,10 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
   <span id="deepBack">&larr;</span>
   <div class="deep-content">
     <h2 style="margin-top:0;">Deep Listening</h2>
-    <p>Deep listening unfolds as a sensorial practice — a way of attuning to the fragile boundaries between body, matter, and the world...</p>
+    <p>Deep listening unfolds as a sensorial practice — a way of attuning to the fragile boundaries between body, matter, and the world. Sound is not only perceived by the ear but moves through the body, through the quiet resonances of materials and the subtle rhythms of breath. Each vibration carries memory; even silence holds the pulse of life.</p>
+    <p>For Kanny, listening is not a method but a condition of being — like breathing, it exists within us, often unnoticed. It accompanies moments of calm and of panic, tracing the intervals between tension and release. To listen deeply is to give time back to perception, to dwell within the small shifts that shape presence.</p>
+    <p>Deep listening is not about transcendence, but about remaining — staying close to what trembles, what changes, and what continues to breathe within the world.</p>
+
     <div style="margin-top:32px;">
       <h3 style="margin-bottom:16px;">Audio Tracks</h3>
       <div>
@@ -168,42 +207,139 @@ perceiving fragility, grace, and resilience; all is inscribed, all is traceable.
 </div>
 
 <script>
-/* 星空背景 */
-const canvas=document.getElementById('bgCanvas');const ctx=canvas.getContext('2d');
-let W=0,H=0;function resize(){W=canvas.clientWidth;H=canvas.clientHeight;canvas.width=W;canvas.height=H;}
-window.addEventListener('resize',resize);resize();
-const stars=Array.from({length:150},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.5+0.2,vx:(Math.random()-0.5)*0.0005,vy:(Math.random()-0.5)*0.0005}));
-function drawStars(){ctx.clearRect(0,0,W,H);ctx.fillStyle='rgba(8,9,12,0.9)';ctx.fillRect(0,0,W,H);
-for(const s of stars){s.x+=s.vx;s.y+=s.vy;if(s.x<0)s.x=1;if(s.x>1)s.x=0;if(s.y<0)s.y=1;if(s.y>1)s.y=0;
-ctx.beginPath();ctx.fillStyle='rgba(255,255,255,'+(0.6*Math.random()+0.2)+')';ctx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);ctx.fill();}
-requestAnimationFrame(drawStars);}drawStars();
+/* ---------- 星空背景 ---------- */
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+let W=0,H=0;
+function resize(){ W=canvas.clientWidth; H=canvas.clientHeight; canvas.width=W; canvas.height=H; }
+window.addEventListener('resize', resize); resize();
+const stars = Array.from({length:150},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.5+0.2,vx:(Math.random()-0.5)*0.0005,vy:(Math.random()-0.5)*0.0005}));
+function drawStars(){
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='rgba(8,9,12,0.9)';
+  ctx.fillRect(0,0,W,H);
+  for(const s of stars){
+    s.x += s.vx; s.y += s.vy;
+    if(s.x<0) s.x=1; if(s.x>1) s.x=0;
+    if(s.y<0) s.y=1; if(s.y>1) s.y=0;
+    ctx.beginPath();
+    ctx.fillStyle='rgba(255,255,255,'+(0.6*Math.random()+0.2)+')';
+    ctx.arc(s.x*W, s.y*H, s.r, 0, Math.PI*2);
+    ctx.fill();
+  }
+  requestAnimationFrame(drawStars);
+}
+drawStars();
 
-/* EndlessWorld */
-const endlessImgs=["EndlessWorld01.jpg.JPG","EndlessWorld02.jpg.JPG","EndlessWorld03.jpg.JPG","EndlessWorld04.jpg.JPG","EndlessWorld05.jpg.JPG"];
-let idx=0;
-document.getElementById('endlessBtn').onclick=()=>{showView('workView');idx=0;updateWork();}
-document.getElementById('prevBtn').onclick=()=>{idx=(idx-1+endlessImgs.length)%endlessImgs.length;updateWork();}
-document.getElementById('nextBtn').onclick=()=>{idx=(idx+1)%endlessImgs.length;updateWork();}
-function updateWork(){document.getElementById('currentImg').src=endlessImgs[idx];}
-function closeWork(){hideView('workView');}
+/* ---------- 全局元素 ---------- */
+const categories = document.getElementById('categories');
+const footerText = document.getElementById('footerText');
+const homeBack = document.getElementById('homeBack');
 
-/* Perception */
-const perceptionImgs=["Perception01.jpg.jpg","Perception02.jpg.jpg","Perception03.jpg.jpg","Perception04.jpg.jpg","Perception05.jpg.jpg","Perception06.jpg.jpg"];
-let pIdx=0;
-document.getElementById('perceptionBtn').onclick=()=>{showView('perceptionView');pIdx=0;updatePerception();}
-document.getElementById('perceptionPrev').onclick=()=>{pIdx=(pIdx-1+perceptionImgs.length)%perceptionImgs.length;updatePerception();}
-document.getElementById('perceptionNext').onclick=()=>{pIdx=(pIdx+1)%perceptionImgs.length;updatePerception();}
-function updatePerception(){document.getElementById('perceptionImg').src=perceptionImgs[pIdx];}
-function closePerception(){hideView('perceptionView');}
+/* ---------- EndlessWorld ---------- */
+const endlessImgs = [
+  "EndlessWorld01.jpg.JPG",
+  "EndlessWorld02.jpg.JPG",
+  "EndlessWorld03.jpg.JPG",
+  "EndlessWorld04.jpg.JPG",
+  "EndlessWorld05.jpg.JPG"
+];
+let idx = 0;
+const workView = document.getElementById('workView');
+const currentImg = document.getElementById('currentImg');
+document.getElementById('endlessBtn').addEventListener('click', ()=>{
+  showView('workView');
+  idx = 0;
+  updateWork();
+  // 在 EndlessWorld 保持白色发光的返回首页按钮可见
+  homeBack.classList.add('white-glow');
+  homeBack.style.display = 'block';
+});
+document.getElementById('prevBtn').addEventListener('click', ()=>{ idx = (idx - 1 + endlessImgs.length) % endlessImgs.length; updateWork(); });
+document.getElementById('nextBtn').addEventListener('click', ()=>{ idx = (idx + 1) % endlessImgs.length; updateWork(); });
+function updateWork(){ currentImg.src = endlessImgs[idx]; }
+function closeWork(){ hideView('workView'); homeBack.classList.remove('white-glow'); }
 
-/* DeepListening */
-document.getElementById('deepBtn').onclick=()=>{showView('deepPage');}
-document.getElementById('deepBack').onclick=()=>{hideView('deepPage');}
+/* ---------- Perception (只改这里的行为/显示) ---------- */
+const perceptionImgs = [
+  "Perception01.jpg.jpg",
+  "Perception02.jpg.jpg",
+  "Perception03.jpg.jpg",
+  "Perception04.jpg.jpg",
+  "Perception05.jpg.jpg",
+  "Perception06.jpg.jpg"
+];
 
-/* 通用函数 */
-function showView(id){document.getElementById('categories').style.display='none';document.getElementById('footerText').style.display='none';document.getElementById('homeBack').style.display='none';document.getElementById(id).style.display='flex';}
-function hideView(id){document.getElementById(id).style.display='none';document.getElementById('categories').style.display='flex';document.getElementById('footerText').style.display='block';document.getElementById('homeBack').style.display='block';}
-function goHome(){window.location.href="index.html";}
+/* 初始 caption（注意：第三、第四互换的要求前面已按你指示互换过——这里保持最终你要的顺序） */
+let perceptionCaptions = [
+  "Window, Installation",
+  "Window, Installation",
+  "Grandmother's Memory, Installation",       // swapped with 4
+  "Fibromatosis and Me, 2016–Present",        // swapped with 3
+  "A Part, 2024",
+  "Light House"
+];
+
+let pIdx = 0;
+const perceptionImg = document.getElementById('perceptionImg');
+const caption = document.getElementById('caption');
+
+document.getElementById('perceptionBtn').addEventListener('click', ()=>{
+  showView('perceptionView');
+  pIdx = 0;
+  updatePerception();
+  // Perception 页面：隐藏全局白 homeBack (你之前要不可见)，并把本页返回键样式为黑色（CSS 已设置）
+  homeBack.style.display = 'none';
+});
+
+document.getElementById('perceptionPrev').addEventListener('click', ()=>{
+  // 切换灵敏，直接更新索引与图片（无延迟）
+  pIdx = (pIdx - 1 + perceptionImgs.length) % perceptionImgs.length;
+  updatePerception();
+});
+document.getElementById('perceptionNext').addEventListener('click', ()=>{
+  pIdx = (pIdx + 1) % perceptionImgs.length;
+  updatePerception();
+});
+
+function updatePerception(){
+  perceptionImg.src = perceptionImgs[pIdx];
+  caption.innerText = perceptionCaptions[pIdx];
+}
+
+function closePerception(){
+  hideView('perceptionView');
+  homeBack.style.display = 'block';
+}
+
+/* ---------- DeepListening ---------- */
+document.getElementById('deepBtn').addEventListener('click', ()=>{
+  showView('deepPage');
+  homeBack.style.display = 'none';
+});
+document.getElementById('deepBack').addEventListener('click', ()=>{
+  hideView('deepPage');
+  homeBack.style.display = 'block';
+});
+
+/* ---------- 通用显示隐藏 ---------- */
+function showView(id){
+  categories.style.display = 'none';
+  footerText.style.display = 'none';
+  // 默认隐藏 global homeBack when entering most views; per-view code adjusts visibility/class
+  document.getElementById(id).style.display = 'flex';
+}
+function hideView(id){
+  document.getElementById(id).style.display = 'none';
+  categories.style.display = 'flex';
+  footerText.style.display = 'block';
+  // restore global homeBack default visible
+  homeBack.style.display = 'block';
+}
+
+/* ---------- Home跳转 ---------- */
+function goHome(){ window.location.href = "index.html"; }
 </script>
+
 </body>
 </html>
