@@ -190,15 +190,19 @@ canvas#bgCanvas, canvas#deepCanvas{
       <audio controls src="deep04.mp3.mp3"></audio>
       <audio controls src="deep05.mp3.mp3"></audio>
       <audio controls src="deep06.mp3.mp3"></audio>
+      <p style="margin-top:16px;font-size:clamp(12px,2vw,14px);">
+        The above tracks can be played individually or combined simultaneously, allowing the audience to freely mix sounds and experience unique combinations.
+      </p>
     </div>
+    <!-- 其他音乐作品跳转按钮 -->
     <div style="margin-top:24px;">
-      <span style="color:#fff;">Other audio works: </span>
-      <a href="https://on.soundcloud.com/NM5RNd3vtxo9LFg8LU" target="_blank" class="green-btn">Click here</a>
+      <a href="https://on.soundcloud.com/NM5RNd3vtxo9LFg8LU" target="_blank" class="green-btn">Other audio works</a>
     </div>
   </div>
 </div>
 
 <script>
+// 星空背景
 function initStars(canvas){
   const ctx=canvas.getContext('2d');
   let W=canvas.clientWidth,H=canvas.clientHeight;
@@ -224,6 +228,7 @@ function initStars(canvas){
 initStars(document.getElementById('bgCanvas'));
 initStars(document.getElementById('deepCanvas'));
 
+// 返回主页/历史记录
 document.getElementById('homeBack').onclick = function(){
     if (document.referrer) {
         window.history.back();
@@ -232,6 +237,7 @@ document.getElementById('homeBack').onclick = function(){
     }
 };
 
+// 打开作品页
 document.getElementById('endlessBtn').onclick=()=>openView('endlessView');
 document.getElementById('perceptionBtn').onclick=()=>openView('perceptionView');
 document.getElementById('reshapeBtn').onclick=()=>openView('reshapeView');
@@ -249,6 +255,7 @@ function closeView(id){
   document.getElementById('homeBack').style.display='block';
 }
 
+// 图片切换
 const endlessImgs=["EndlessWorld01.jpg.JPG","EndlessWorld02.jpg.JPG","EndlessWorld03.jpg.JPG","EndlessWorld04.jpg.JPG","EndlessWorld05.jpg.JPG"];
 let endlessIndex=0;
 const perceptionImgs=["Perceptionnew01.jpg.JPG","Perceptionnew02.jpg.JPG","Perceptionnew03.jpg.JPG","Perceptionnew04.jpg.JPG","Perceptionnew05.jpg.JPG","Perceptionnew06.jpg.JPG","Perceptionnew07.jpg.JPG"];
