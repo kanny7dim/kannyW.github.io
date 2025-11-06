@@ -22,25 +22,23 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 .title-wrap{
   position:absolute;top:45%;left:50%;transform:translate(-50%,-50%);
   z-index:2;display:flex;flex-wrap:nowrap;justify-content:center;
-  gap:40px;font-size:clamp(18px,4vw,32px);font-weight:700;
-  text-shadow:0 0 8px rgba(255,255,255,0.8);
+  gap:50px;font-size:clamp(20px,4vw,32px);font-weight:700;
+  text-shadow:0 0 12px rgba(255,255,255,0.8);
 }
 .title-wrap div{
   cursor:pointer;transition:text-shadow .3s,transform .3s;
-  animation:glowMove 2s infinite alternate;
-  color:#fff;
+  animation:glowShake 2s infinite alternate;
+  color:white;
 }
-.title-wrap div:hover{
-  text-shadow:0 0 35px rgba(0,255,127,1);
-  transform:translateY(-2px);
-}
-@keyframes glowMove{
-  0%{text-shadow:0 0 5px rgba(0,255,127,0.5);}
-  50%{text-shadow:0 0 12px rgba(0,255,127,0.8);}
-  100%{text-shadow:0 0 20px rgba(0,255,127,0.5);}
+@keyframes glowShake{
+  0%{text-shadow:0 0 8px rgba(0,255,127,0.6); transform:translateY(0);}
+  25%{text-shadow:0 0 12px rgba(0,255,127,0.7); transform:translateY(-1px);}
+  50%{text-shadow:0 0 16px rgba(0,255,127,0.8); transform:translateY(1px);}
+  75%{text-shadow:0 0 12px rgba(0,255,127,0.7); transform:translateY(-1px);}
+  100%{text-shadow:0 0 8px rgba(0,255,127,0.6); transform:translateY(0);}
 }
 
-/* 白色主页返回箭头 */
+/* 首页返回按钮 */
 #homeBack{
   position:absolute;top:18px;right:18px;font-size:clamp(22px,4vw,32px);
   color:#fff;text-shadow:0 0 12px #fff;cursor:pointer;
@@ -60,31 +58,29 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 .viewPage img{
   max-width:95%;max-height:80%;cursor:zoom-in;
   object-fit:contain;
-  transition: transform 0.3s;
 }
 
-/* 黑色或白色返回按钮（作品页） */
+/* 返回按钮 */
 .back-btn{
   position:fixed;top:18px;right:18px;font-size:clamp(22px,4vw,32px);
-  cursor:pointer;z-index:3;font-weight:700;
-  text-shadow:0 0 12px;
-  transition: transform .15s;
+  cursor:pointer;z-index:3;font-weight:700;text-shadow:0 0 12px;
 }
+.back-btn.white{color:#fff;text-shadow:0 0 12px #fff;}
+.back-btn.black{color:#000;text-shadow:0 0 12px #000;}
 .back-btn:hover{transform:scale(1.08);}
-.back-white{color:#fff;text-shadow:0 0 20px #fff;}
-.back-black{color:#000;text-shadow:0 0 20px #000;}
 
 /* 左右箭头 */
 .nav-btn{
-  position:absolute;bottom:36px;font-size:clamp(28px,4vw,42px);
-  cursor:pointer;z-index:3;user-select:none;
-  transition: transform .15s;
+  position:absolute;bottom:36px;font-size:clamp(22px,4vw,32px);
+  cursor:pointer;z-index:3;user-select:none;text-shadow:0 0 12px;
 }
+.nav-btn.white{color:#fff;text-shadow:0 0 18px #fff;}
+.nav-btn.black{color:#000;text-shadow:0 0 18px #000;}
 .nav-btn:hover{transform:scale(1.1);}
-.left-btn{left:60px;}
-.right-btn{right:60px;}
-.nav-white{color:#fff;text-shadow:0 0 20px #fff;}
-.nav-black{color:#000;text-shadow:0 0 20px #000;}
+
+/* 页面背景 */
+#endlessView{background:#0b0b0f;}
+#perceptionView,#reshapeView{background:#fff;}
 
 /* Deep Listening 页面 */
 #deepPage{
@@ -134,30 +130,31 @@ audio{
   <div id="deepBtn">DeepListening</div>
   <div id="reshapeBtn">Reshaping</div>
 </div>
-<span id="homeBack" onclick="goHome()">&larr;</span>
+
+<span id="homeBack">&#x21a9;</span>
 
 <!-- EndlessWorld -->
-<div id="endlessView" class="viewPage" style="background:#0b0b0f;">
-  <span class="back-btn back-white" onclick="closeView('endlessView')">&larr;</span>
-  <img id="endlessImg" src="EndlessWorld01.jpg.JPG" alt="EndlessWorld" onclick="toggleZoom(this)">
-  <span class="nav-btn left-btn nav-white" onclick="changeImg('endless',-1)">&#10094;</span>
-  <span class="nav-btn right-btn nav-white" onclick="changeImg('endless',1)">&#10095;</span>
+<div id="endlessView" class="viewPage">
+  <span class="back-btn white" onclick="closeView('endlessView')">&larr;</span>
+  <img id="endlessImg" src="EndlessWorld01.jpg.JPG" alt="EndlessWorld">
+  <span class="nav-btn white left-btn" onclick="changeImg('endless',-1)" style="left:36px;">&#10094;</span>
+  <span class="nav-btn white right-btn" onclick="changeImg('endless',1)" style="right:36px;">&#10095;</span>
 </div>
 
 <!-- Perception -->
-<div id="perceptionView" class="viewPage" style="background:#fff;">
-  <span class="back-btn back-black" onclick="closeView('perceptionView')">&larr;</span>
-  <img id="perceptionImg" src="Perceptionnew01.jpg.JPG" alt="Perception" onclick="toggleZoom(this)">
-  <span class="nav-btn left-btn nav-black" onclick="changeImg('perception',-1)">&#10094;</span>
-  <span class="nav-btn right-btn nav-black" onclick="changeImg('perception',1)">&#10095;</span>
+<div id="perceptionView" class="viewPage">
+  <span class="back-btn black" onclick="closeView('perceptionView')">&larr;</span>
+  <img id="perceptionImg" src="Perceptionnew01.jpg.JPG" alt="Perception">
+  <span class="nav-btn black left-btn" onclick="changeImg('perception',-1)" style="left:24px;">&#10094;</span>
+  <span class="nav-btn black right-btn" onclick="changeImg('perception',1)" style="right:24px;">&#10095;</span>
 </div>
 
 <!-- Reshaping -->
-<div id="reshapeView" class="viewPage" style="background:#fff;">
-  <span class="back-btn back-black" onclick="closeView('reshapeView')">&larr;</span>
-  <img id="reshapeImg" src="Reshaping01.jpg.JPG" alt="Reshaping" onclick="toggleZoom(this)">
-  <span class="nav-btn left-btn nav-black" onclick="changeImg('reshape',-1)">&#10094;</span>
-  <span class="nav-btn right-btn nav-black" onclick="changeImg('reshape',1)">&#10095;</span>
+<div id="reshapeView" class="viewPage">
+  <span class="back-btn black" onclick="closeView('reshapeView')">&larr;</span>
+  <img id="reshapeImg" src="Reshaping01.jpg.JPG" alt="Reshaping">
+  <span class="nav-btn black left-btn" onclick="changeImg('reshape',-1)" style="left:24px;">&#10094;</span>
+  <span class="nav-btn black right-btn" onclick="changeImg('reshape',1)" style="right:24px;">&#10095;</span>
 </div>
 
 <!-- Deep Listening -->
@@ -166,7 +163,13 @@ audio{
   <span id="deepBack" onclick="closeView('deepPage')">&larr;</span>
   <div class="deep-content">
     <h2>Deep Listening</h2>
-    <p>Deep listening unfolds as a sensorial practice — a way of attuning to the fragile boundaries between body, matter, and the world. It enables a deeper perception of the micro-interactions between sound, space, and the listener's own body. This practice emphasizes patience, attention, and an openness to subtle variations, allowing the audience to explore resonance, silence, and hidden textures in the sonic environment.</p>
+    <p>
+      Deep listening unfolds as a sensorial practice — a way of attuning to the fragile boundaries 
+      between body, matter, and the world. It involves active perception of environmental sounds, 
+      internal bodily resonance, and the spatial qualities of material objects. Through these 
+      experiences, one cultivates a heightened sensitivity to subtle vibrations, rhythms, and 
+      textures, embracing the ephemeral and transient nature of sound and presence.
+    </p>
     <div style="margin-top:32px;">
       <h3>Audio Tracks</h3>
       <audio controls src="deep01.mp3.mp3"></audio>
@@ -203,36 +206,29 @@ requestAnimationFrame(drawStars);}drawStars();
 // 分类按钮
 const categories=document.getElementById('categories');
 const footerText=document.getElementById('footerText');
-function openView(id){
-  categories.style.display='none';
-  footerText.style.display='none';
-  document.getElementById(id).style.display='flex';
-  // reset to first image
-  if(id==='endlessView') endlessIndex=0;
-  if(id==='perceptionView') perceptionIndex=0;
-  if(id==='reshapeView') reshapeIndex=0;
-  updateImg(id);
-}
-function closeView(id){
-  document.getElementById(id).style.display='none';
+function openView(id){categories.style.display='none';footerText.style.display='none';document.getElementById(id).style.display='flex';}
+function closeView(id){document.getElementById(id).style.display='none';categories.style.display='flex';footerText.style.display='block';}
+
+// 首页返回按钮
+document.getElementById('homeBack').onclick = () => {
+  document.querySelectorAll('.viewPage').forEach(v => v.style.display = 'none');
+  document.getElementById('deepPage').style.display = 'none';
   categories.style.display='flex';
   footerText.style.display='block';
-}
-function goHome(){
-  categories.style.display='flex';
-  footerText.style.display='block';
-  document.getElementById('endlessView').style.display='none';
-  document.getElementById('perceptionView').style.display='none';
-  document.getElementById('reshapeView').style.display='none';
-  document.getElementById('deepPage').style.display='none';
-}
+  endlessIndex = 0;
+  perceptionIndex = 0;
+  reshapeIndex = 0;
+  document.getElementById('endlessImg').src = endlessImgs[endlessIndex];
+  document.getElementById('perceptionImg').src = perceptionImgs[perceptionIndex];
+  document.getElementById('reshapeImg').src = reshapeImgs[reshapeIndex];
+};
 
 document.getElementById('endlessBtn').onclick=()=>openView('endlessView');
 document.getElementById('perceptionBtn').onclick=()=>openView('perceptionView');
 document.getElementById('reshapeBtn').onclick=()=>openView('reshapeView');
-document.getElementById('deepBtn').onclick=()=>{categories.style.display='none';footerText.style.display='none';document.getElementById('deepPage').style.display='block';};
+document.getElementById('deepBtn').onclick=()=>openView('deepPage');
 
-// 图片列表
+// 图片数组
 const endlessImgs=["EndlessWorld01.jpg.JPG","EndlessWorld02.jpg.JPG","EndlessWorld03.jpg.JPG","EndlessWorld04.jpg.JPG","EndlessWorld05.jpg.JPG"];
 let endlessIndex=0;
 
@@ -242,23 +238,20 @@ let perceptionIndex=0;
 const reshapeImgs=["Reshaping01.jpg.JPG","Reshaping02.jpg.JPG","Reshaping03.jpg.JPG","Reshaping04.jpg.JPG","Reshaping05.jpg.JPG","Reshaping06.jpg.JPG","Reshaping07.jpg.JPG"];
 let reshapeIndex=0;
 
-// 切换图片
+// 图片切换
 function changeImg(type,dir){
-  if(type==='endless'){endlessIndex=(endlessIndex+dir+endlessImgs.length)%endlessImgs.length;}
-  if(type==='perception'){perceptionIndex=(perceptionIndex+dir+perceptionImgs.length)%perceptionImgs.length;}
-  if(type==='reshape'){reshapeIndex=(reshapeIndex+dir+reshapeImgs.length)%reshapeImgs.length;}
-  updateImg(type+'View');
-}
-function updateImg(view){
-  if(view==='endlessView') document.getElementById('endlessImg').src=endlessImgs[endlessIndex];
-  if(view==='perceptionView') document.getElementById('perceptionImg').src=perceptionImgs[perceptionIndex];
-  if(view==='reshapeView') document.getElementById('reshapeImg').src=reshapeImgs[reshapeIndex];
-}
-
-// 图片放大缩小
-function toggleZoom(img){
-  if(img.style.transform==='scale(2)'){img.style.transform='scale(1)';}
-  else{img.style.transform='scale(2)';}
+  if(type==='endless'){
+    endlessIndex=(endlessIndex+dir+endlessImgs.length)%endlessImgs.length;
+    document.getElementById('endlessImg').src=endlessImgs[endlessIndex];
+  }
+  if(type==='perception'){
+    perceptionIndex=(perceptionIndex+dir+perceptionImgs.length)%perceptionImgs.length;
+    document.getElementById('perceptionImg').src=perceptionImgs[perceptionIndex];
+  }
+  if(type==='reshape'){
+    reshapeIndex=(reshapeIndex+dir+reshapeImgs.length)%reshapeImgs.length;
+    document.getElementById('reshapeImg').src=reshapeImgs[reshapeIndex];
+  }
 }
 </script>
 </body>
