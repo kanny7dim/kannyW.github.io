@@ -56,6 +56,16 @@ html,body{
   text-shadow:0 0 35px var(--arrow-color);
   transform:translateY(-2px);
 }
+/* 底部文字 */
+#categoryFooter{
+  position:absolute;
+  bottom:20px;
+  width:100%;
+  text-align:center;
+  font-size:clamp(12px,3vw,16px);
+  color:var(--fg);
+  text-shadow:0 0 8px rgba(0,255,127,0.7);
+}
 
 /* 作品页通用 */
 .viewPage{
@@ -109,6 +119,11 @@ canvas#bgCanvas, canvas#deepCanvas{
   <div id="perceptionBtn">Perception</div>
   <div id="reshapeBtn">Reshaping</div>
   <div id="deepBtn">DeepListening</div>
+</div>
+
+<!-- 类别首页底部文字 -->
+<div id="categoryFooter">
+  Explore the artwork categories above. Tap on any title to view the collection.
 </div>
 
 <!-- EndlessWorld 5张作品 -->
