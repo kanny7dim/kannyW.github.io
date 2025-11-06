@@ -193,9 +193,13 @@ function initStars(canvas){
 initStars(document.getElementById('bgCanvas'));
 initStars(document.getElementById('deepCanvas'));
 
-// 首页返回上一级
-document.getElementById('homeBack').onclick=function(){
-  alert('返回上一级'); // 根据需求可替换成实际跳转
+// 类别首页返回上一级
+document.getElementById('homeBack').onclick = function(){
+    if (document.referrer) {
+        window.history.back();
+    } else {
+        window.location.href = 'https://kanny7dim.github.io/kannyW.github.io/艺术家主页';
+    }
 };
 
 // 类别按钮打开作品页
