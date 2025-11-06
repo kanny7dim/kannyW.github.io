@@ -13,7 +13,7 @@
 }
 html,body{
   margin:0;padding:0;height:100%;
-  font-family:Arial, sans-serif;
+  font-family:Arial, sans-serif; /* 保留原字体 */
   background:var(--bg);
   color:var(--fg);
   overflow:hidden;
@@ -101,6 +101,32 @@ audio{
   margin:8px 0;
 }
 
+/* 绿色按钮 */
+.green-btn{
+  display:inline-block;
+  padding:6px 12px;
+  color:#00ff7f;
+  font-weight:bold;
+  font-size:14px;
+  text-decoration:none;
+  text-shadow:0 0 6px #00ff7f,0 0 12px #00ff7f;
+  border:1px solid #00ff7f;
+  border-radius:6px;
+  transition:0.2s;
+}
+.green-btn:hover{
+  text-shadow:0 0 10px #00ff7f,0 0 18px #00ff7f;
+}
+
+/* 提示文字 */
+.audio-tip{
+  display:inline-block;
+  color:#fff;
+  font-size:14px;
+  margin-right:8px;
+  vertical-align:middle;
+}
+
 /* 星空背景 */
 canvas#bgCanvas, canvas#deepCanvas{
   position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
@@ -111,7 +137,6 @@ canvas#bgCanvas, canvas#deepCanvas{
 
 <canvas id="bgCanvas"></canvas>
 
-<!-- 类别首页返回上一级 -->
 <div id="homeBack" class="back-btn">&#8592;</div>
 
 <div id="categories">
@@ -121,12 +146,10 @@ canvas#bgCanvas, canvas#deepCanvas{
   <div id="deepBtn">DeepListening</div>
 </div>
 
-<!-- 类别首页底部文字 -->
 <div id="categoryFooter">
   Explore the artwork categories above. Tap on any title to view the collection.
 </div>
 
-<!-- EndlessWorld 5张作品 -->
 <div id="endlessView" class="viewPage">
   <span class="back-btn" onclick="closeView('endlessView')">&#8592;</span>
   <img id="endlessImg" src="EndlessWorld01.jpg.JPG" alt="EndlessWorld">
@@ -136,7 +159,6 @@ canvas#bgCanvas, canvas#deepCanvas{
   </div>
 </div>
 
-<!-- Perception 7张作品 -->
 <div id="perceptionView" class="viewPage">
   <span class="back-btn" onclick="closeView('perceptionView')">&#8592;</span>
   <img id="perceptionImg" src="Perceptionnew01.jpg.JPG" alt="Perception">
@@ -146,7 +168,6 @@ canvas#bgCanvas, canvas#deepCanvas{
   </div>
 </div>
 
-<!-- Reshaping 7张作品 -->
 <div id="reshapeView" class="viewPage">
   <span class="back-btn" onclick="closeView('reshapeView')">&#8592;</span>
   <img id="reshapeImg" src="Reshaping01.jpg.JPG" alt="Reshaping">
@@ -156,7 +177,6 @@ canvas#bgCanvas, canvas#deepCanvas{
   </div>
 </div>
 
-<!-- Deep Listening -->
 <div id="deepPage" class="viewPage" style="background:radial-gradient(circle at 30% 30%, rgba(30,30,40,0.28), #000 90%);color:#fff;">
   <canvas id="deepCanvas"></canvas>
   <span class="back-btn" onclick="closeView('deepPage')">&#8592;</span>
@@ -167,45 +187,14 @@ canvas#bgCanvas, canvas#deepCanvas{
       It emphasizes the intimate perception of subtle sounds and materials, exploring how listening can create a dialogue with space, memory, and sensation. 
       Each track provides textures that reveal hidden layers, allowing for personal interpretation and interaction.
     </p>
-    <p>
-      By layering and combining these soundscapes, the audience experiences a fluid, immersive environment. 
-      These recordings capture delicate resonances, the whispers of materials, and ambient moments that would otherwise remain unnoticed.
-    </p>
-    <div style="margin-top:32px;">
-      <h3>Audio Tracks</h3>
-      <audio controls src="deep01.mp3.mp3"></audio>
-      <audio controls src="deep02.mp3.mp3"></audio>
-      <audio controls src="deep03.mp3.mp3"></audio>
-      <audio controls src="deep04.mp3.mp3"></audio>
-      <audio controls src="deep05.mp3.mp3"></audio>
-      <audio controls src="deep06.mp3.mp3"></audio>
-      <p style="margin-top:16px;font-size:clamp(12px,2vw,14px);">
-        These tracks can be played individually or simultaneously, allowing the audience to freely combine sounds and experience unique combinations.
-      </p>
-    </div>
-    <!-- SoundCloud 链接按钮 -->
-    <div style="margin-top:24px;">
-      <a href="https://on.soundcloud.com/sTBZEjqs0jW3s4FqlE" target="_blank"
-         style="display:inline-block;padding:10px 18px;color:#fff;text-decoration:none;
-                font-weight:bold;text-shadow:0 0 10px #fff,0 0 20px #fff,0 0 30px #fff;
-                border:1px solid #fff;border-radius:6px;transition:0.2s;">
-        Listen on SoundCloud
-      </a>
-    </div>
-    <!-- 新增 Other audio works 链接 -->
     <div style="margin-top:16px;">
-      <a href="https://on.soundcloud.com/sTBZEjqs0jW3s4FqlE" target="_blank"
-         style="display:inline-block;padding:8px 14px;color:#00ff7f;text-decoration:none;
-                font-weight:bold;text-shadow:0 0 8px #00ff7f,0 0 16px #00ff7f,0 0 24px #00ff7f;
-                border:1px solid #00ff7f;border-radius:6px;transition:0.2s;">
-        Other audio works
-      </a>
+      <span class="audio-tip">Other audio works, click here:</span>
+      <a href="https://on.soundcloud.com/sTBZEjqs0jW3s4FqlE" target="_blank" class="green-btn">Click here</a>
     </div>
   </div>
 </div>
 
 <script>
-// 星空背景
 function initStars(canvas){
   const ctx=canvas.getContext('2d');
   let W=canvas.clientWidth,H=canvas.clientHeight;
@@ -231,7 +220,6 @@ function initStars(canvas){
 initStars(document.getElementById('bgCanvas'));
 initStars(document.getElementById('deepCanvas'));
 
-// 类别首页返回上一级
 document.getElementById('homeBack').onclick = function(){
     if (document.referrer) {
         window.history.back();
@@ -240,7 +228,6 @@ document.getElementById('homeBack').onclick = function(){
     }
 };
 
-// 类别按钮打开作品页
 document.getElementById('endlessBtn').onclick=()=>openView('endlessView');
 document.getElementById('perceptionBtn').onclick=()=>openView('perceptionView');
 document.getElementById('reshapeBtn').onclick=()=>openView('reshapeView');
@@ -258,7 +245,6 @@ function closeView(id){
   document.getElementById('homeBack').style.display='block';
 }
 
-// 图片切换
 const endlessImgs=["EndlessWorld01.jpg.JPG","EndlessWorld02.jpg.JPG","EndlessWorld03.jpg.JPG","EndlessWorld04.jpg.JPG","EndlessWorld05.jpg.JPG"];
 let endlessIndex=0;
 const perceptionImgs=["Perceptionnew01.jpg.JPG","Perceptionnew02.jpg.JPG","Perceptionnew03.jpg.JPG","Perceptionnew04.jpg.JPG","Perceptionnew05.jpg.JPG","Perceptionnew06.jpg.JPG","Perceptionnew07.jpg.JPG"];
