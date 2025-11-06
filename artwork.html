@@ -9,7 +9,6 @@
   --bg:#0b0b0f;
   --fg:#ffffff;
 }
-/* 页面全局 */
 html,body{
   height:100%;margin:0;padding:0;
   font-family:"Helvetica Neue", Arial, sans-serif;
@@ -21,50 +20,29 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 
 /* 首页类别 */
 .title-wrap{
-  position:absolute;
-  top:45%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  z-index:2;
-  display:flex;
-  flex-wrap:nowrap;
-  justify-content:center;
-  gap:20px;
-  font-size:clamp(18px,4vw,28px);
-  font-weight:700;
-  overflow-x:auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  z-index:2;display:flex;flex-wrap:nowrap;justify-content:center;
+  gap:30px;font-size:clamp(18px,4vw,28px);font-weight:700;
+  text-shadow:0 0 8px rgba(0,255,127,0.5);
 }
-.title-wrap::-webkit-scrollbar{display:none;}
 .title-wrap div{
-  flex:0 0 auto;
-  cursor:pointer;
-  transition:text-shadow .3s,transform .3s;
-  animation:glowMove 1.5s infinite alternate;
+  cursor:pointer;transition:text-shadow .3s,transform .3s;
+  animation:glowMove 2s infinite alternate;
   color:#fff;
-  text-align:center;
 }
 .title-wrap div:hover{
-  text-shadow:0 0 25px #00ff7f;
+  text-shadow:0 0 35px rgba(0,255,127,1);
   transform:translateY(-2px);
 }
 @keyframes glowMove{
-  0%{text-shadow:0 0 8px #00ff7f;}
-  100%{text-shadow:0 0 20px #00ff7f;}
+  0%{text-shadow:0 0 10px rgba(0,255,127,0.5);}
+  100%{text-shadow:0 0 20px rgba(0,255,127,0.8);}
 }
 
-/* 首页返回到艺术家主页 */
+/* 首页返回尖头 */
 #homeBack{
-  position:absolute;
-  top:18px;
-  right:18px;
-  font-size:clamp(22px,4vw,32px);
-  color:#fff;
-  cursor:pointer;
-  z-index:3;
-  text-shadow:0 0 12px #fff;
-  transition:transform .18s;
+  position:absolute;top:18px;right:18px;font-size:clamp(22px,4vw,32px);
+  color:#fff;cursor:pointer;z-index:3;text-shadow:0 0 12px #fff;
 }
 #homeBack:hover{
   transform:scale(1.12);
@@ -75,36 +53,30 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 .viewPage{
   display:none;position:absolute;top:0;left:0;width:100%;height:100%;
   z-index:2;justify-content:center;align-items:center;flex-direction:column;
-  overflow:hidden;
+  background:#fff;overflow:hidden;
 }
 .viewPage img{
   max-width:95%;max-height:80%;cursor:zoom-in;
   object-fit:contain;
-  transition:transform .3s;
-}
-.viewPage img:active{
-  transform:scale(2);
 }
 
-/* 返回尖头 */
+/* 黑色返回尖头（作品页） */
 .back-btn{
-  position:fixed;top:18px;right:18px;
-  font-size:clamp(22px,4vw,32px);
-  cursor:pointer;z-index:3;font-weight:700;
+  position:fixed;top:18px;right:18px;font-size:clamp(22px,4vw,32px);
+  color:#000;cursor:pointer;z-index:3;font-weight:700;
   text-shadow:0 0 12px #000;
 }
-.back-btn.white{color:#fff;text-shadow:0 0 20px #fff;}
 .back-btn:hover{transform:scale(1.08);}
 
 /* 左右箭头 */
 .nav-btn{
   position:absolute;bottom:36px;font-size:clamp(22px,4vw,32px);
+  color:#000;text-shadow:0 0 12px #000;
   cursor:pointer;z-index:3;user-select:none;
-  transition:transform .15s;
 }
-.nav-btn:hover{transform:scale(1.1);}
-.left-btn{left:24px;}
-.right-btn{right:24px;}
+.nav-btn:hover{transform:scale(1.1);text-shadow:0 0 25px #000;}
+.left-btn{left:50px;}
+.right-btn{right:50px;}
 
 /* Deep Listening 页面 */
 #deepPage{
@@ -148,8 +120,8 @@ audio{
 
 <canvas id="bgCanvas"></canvas>
 
-<!-- 首页返回到艺术家主页 -->
-<span id="homeBack" onclick="location.href='https://your-artist-homepage.com'">&larr;</span>
+<!-- 首页返回 -->
+<div id="homeBack" onclick="window.location.href='https://kanny7dim.github.io/kannyW.github.io/艺术家主页'">&#8592;</div>
 
 <div class="title-wrap" id="categories">
   <div id="endlessBtn">EndlessWorld</div>
@@ -160,26 +132,26 @@ audio{
 
 <!-- EndlessWorld -->
 <div id="endlessView" class="viewPage">
-  <span class="back-btn white" onclick="closeView('endlessView')">&larr;</span>
+  <span class="back-btn" onclick="closeView('endlessView')">&larr;</span>
   <img id="endlessImg" src="EndlessWorld01.jpg.JPG" alt="EndlessWorld">
-  <span class="nav-btn left-btn white" onclick="changeImg('endless',-1)">&#10094;</span>
-  <span class="nav-btn right-btn white" onclick="changeImg('endless',1)">&#10095;</span>
+  <span class="nav-btn left-btn" onclick="changeImg('endless',-1)">&#10094;</span>
+  <span class="nav-btn right-btn" onclick="changeImg('endless',1)">&#10095;</span>
 </div>
 
 <!-- Perception -->
 <div id="perceptionView" class="viewPage" style="background:#fff;">
   <span class="back-btn" onclick="closeView('perceptionView')">&larr;</span>
   <img id="perceptionImg" src="Perceptionnew01.jpg.JPG" alt="Perception">
-  <span class="nav-btn left-btn" style="color:#000;text-shadow:0 0 12px #000;" onclick="changeImg('perception',-1)">&#10094;</span>
-  <span class="nav-btn right-btn" style="color:#000;text-shadow:0 0 12px #000;" onclick="changeImg('perception',1)">&#10095;</span>
+  <span class="nav-btn left-btn" onclick="changeImg('perception',-1)">&#10094;</span>
+  <span class="nav-btn right-btn" onclick="changeImg('perception',1)">&#10095;</span>
 </div>
 
 <!-- Reshaping -->
 <div id="reshapeView" class="viewPage" style="background:#fff;">
   <span class="back-btn" onclick="closeView('reshapeView')">&larr;</span>
   <img id="reshapeImg" src="Reshaping01.jpg.JPG" alt="Reshaping">
-  <span class="nav-btn left-btn" style="color:#000;text-shadow:0 0 12px #000;" onclick="changeImg('reshape',-1)">&#10094;</span>
-  <span class="nav-btn right-btn" style="color:#000;text-shadow:0 0 12px #000;" onclick="changeImg('reshape',1)">&#10095;</span>
+  <span class="nav-btn left-btn" onclick="changeImg('reshape',-1)">&#10094;</span>
+  <span class="nav-btn right-btn" onclick="changeImg('reshape',1)">&#10095;</span>
 </div>
 
 <!-- Deep Listening -->
@@ -189,10 +161,7 @@ audio{
   <div class="deep-content">
     <h2>Deep Listening</h2>
     <p>
-      Deep listening unfolds as a sensorial practice — a way of attuning to the fragile boundaries between body, matter, and the world.
-      Through attentive perception, sound and environment resonate, allowing experiences to emerge as layered textures. 
-      Participants may listen individually or simultaneously to multiple audio tracks, engaging with subtle material vibrations, 
-      capturing ephemeral moments, and exploring the interdependence of sound, body, and space.
+      Deep listening unfolds as a sensorial practice — a way of attuning to the fragile boundaries between body, matter, and the world. It emphasizes the intimate perception of subtle sounds and materials, exploring how listening can create a dialogue with space, memory, and sensation. Each track provides textures that reveal hidden layers, allowing for personal interpretation and interaction.
     </p>
     <div style="margin-top:32px;">
       <h3>Audio Tracks</h3>
@@ -235,10 +204,10 @@ function closeView(id){
   document.getElementById(id).style.display='none';
   categories.style.display='flex';
   footerText.style.display='block';
-  // 返回每个类别第一页
-  if(id==='endlessView'){endlessIndex=0;document.getElementById('endlessImg').src=endlessImgs[0];}
-  if(id==='perceptionView'){perceptionIndex=0;document.getElementById('perceptionImg').src=perceptionImgs[0];}
-  if(id==='reshapeView'){reshapeIndex=0;document.getElementById('reshapeImg').src=reshapeImgs[0];}
+  // 重置图片为第一页
+  if(id==='endlessView') endlessIndex=0,document.getElementById('endlessImg').src=endlessImgs[0];
+  if(id==='perceptionView') perceptionIndex=0,document.getElementById('perceptionImg').src=perceptionImgs[0];
+  if(id==='reshapeView') reshapeIndex=0,document.getElementById('reshapeImg').src=reshapeImgs[0];
 }
 
 document.getElementById('endlessBtn').onclick=()=>openView('endlessView');
