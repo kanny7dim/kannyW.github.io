@@ -8,7 +8,6 @@
 :root{
   --bg:#0b0b0f;
   --fg:#ffffff;
-  --highlight:#00ff7f;
 }
 html,body{
   height:100%;margin:0;padding:0;
@@ -19,52 +18,40 @@ html,body{
 /* 星空背景 */
 canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;}
 
-/* 首页类别 横排一行 */
+/* 首页类别 */
 .title-wrap{
   position:absolute;top:45%;left:50%;transform:translate(-50%,-50%);
-  z-index:2;display:flex;justify-content:center;flex-wrap:nowrap;
-  gap:50px;font-size:clamp(20px,4vw,32px);font-weight:700;
+  z-index:2;display:flex;flex-wrap:nowrap;justify-content:center;
+  gap:40px;font-size:clamp(18px,4vw,32px);font-weight:700;
+  text-shadow:0 0 8px rgba(255,255,255,0.8);
 }
 .title-wrap div{
   cursor:pointer;transition:text-shadow .3s,transform .3s;
+  animation:glowMove 2s infinite alternate;
   color:#fff;
-  animation:glowMove 2s infinite alternate, jitter 0.5s infinite;
 }
 .title-wrap div:hover{
-  text-shadow:0 0 35px var(--highlight);
+  text-shadow:0 0 35px rgba(0,255,127,1);
   transform:translateY(-2px);
 }
 @keyframes glowMove{
-  0%{text-shadow:0 0 10px var(--highlight);}
-  100%{text-shadow:0 0 20px var(--highlight);}
-}
-@keyframes jitter{
-  0%,100%{transform:translateY(0);}
-  50%{transform:translateY(-1px);}
+  0%{text-shadow:0 0 5px rgba(0,255,127,0.5);}
+  50%{text-shadow:0 0 12px rgba(0,255,127,0.8);}
+  100%{text-shadow:0 0 20px rgba(0,255,127,0.5);}
 }
 
-/* 返回按钮 */
-.back-btn{
-  position:fixed;top:18px;font-size:clamp(22px,4vw,32px);
-  cursor:pointer;z-index:3;font-weight:700;
-  text-shadow:0 0 12px;
+/* 白色主页返回箭头 */
+#homeBack{
+  position:absolute;top:18px;right:18px;font-size:clamp(22px,4vw,32px);
+  color:#fff;text-shadow:0 0 12px #fff;cursor:pointer;
+  z-index:3;transition:transform .18s;
 }
-.back-white{color:#fff;text-shadow:0 0 12px #fff;}
-.back-black{color:#000;text-shadow:0 0 12px #000;}
-.back-btn:hover{transform:scale(1.08);text-shadow:0 0 25px currentColor;}
-
-/* 左右箭头 */
-.nav-btn{
-  position:absolute;bottom:36px;font-size:clamp(22px,4vw,32px);
-  cursor:pointer;z-index:3;user-select:none;
+#homeBack:hover{
+  transform:scale(1.12);
+  text-shadow:0 0 25px #fff,0 0 35px #fff;
 }
-.nav-white{color:#fff;text-shadow:0 0 12px #fff;}
-.nav-black{color:#000;text-shadow:0 0 12px #000;}
-.nav-btn:hover{transform:scale(1.1);text-shadow:0 0 25px currentColor;}
-.left-btn{left:60px;}
-.right-btn{right:60px;}
 
-/* 作品页通用 */
+/* 通用作品页 */
 .viewPage{
   display:none;position:absolute;top:0;left:0;width:100%;height:100%;
   z-index:2;justify-content:center;align-items:center;flex-direction:column;
@@ -73,21 +60,33 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 .viewPage img{
   max-width:95%;max-height:80%;cursor:zoom-in;
   object-fit:contain;
-  transition:transform .2s;
-}
-.viewPage img:active{
-  transform:scale(2);
+  transition: transform 0.3s;
 }
 
-/* EndlessWorld 星空背景 */
-#endlessView{background:transparent;}
-
-/* Perception / Reshaping 白色背景 */
-#perceptionView,#reshapeView{
-  background:#fff;
+/* 黑色或白色返回按钮（作品页） */
+.back-btn{
+  position:fixed;top:18px;right:18px;font-size:clamp(22px,4vw,32px);
+  cursor:pointer;z-index:3;font-weight:700;
+  text-shadow:0 0 12px;
+  transition: transform .15s;
 }
+.back-btn:hover{transform:scale(1.08);}
+.back-white{color:#fff;text-shadow:0 0 20px #fff;}
+.back-black{color:#000;text-shadow:0 0 20px #000;}
 
-/* Deep Listening */
+/* 左右箭头 */
+.nav-btn{
+  position:absolute;bottom:36px;font-size:clamp(28px,4vw,42px);
+  cursor:pointer;z-index:3;user-select:none;
+  transition: transform .15s;
+}
+.nav-btn:hover{transform:scale(1.1);}
+.left-btn{left:60px;}
+.right-btn{right:60px;}
+.nav-white{color:#fff;text-shadow:0 0 20px #fff;}
+.nav-black{color:#000;text-shadow:0 0 20px #000;}
+
+/* Deep Listening 页面 */
 #deepPage{
   display:none;position:absolute;top:0;left:0;width:100%;height:100%;
   background:radial-gradient(circle at 30% 30%, rgba(30,30,40,0.28), #000 90%);
@@ -108,7 +107,11 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 }
 
 /* 音频响应式 */
-audio{width:100%;max-width:700px;margin:8px 0;}
+audio{
+  width:100%;
+  max-width:700px;
+  margin:8px 0;
+}
 
 /* 底部文字 */
 .footer-text{
@@ -131,29 +134,30 @@ audio{width:100%;max-width:700px;margin:8px 0;}
   <div id="deepBtn">DeepListening</div>
   <div id="reshapeBtn">Reshaping</div>
 </div>
+<span id="homeBack" onclick="goHome()">&larr;</span>
 
 <!-- EndlessWorld -->
-<div id="endlessView" class="viewPage">
+<div id="endlessView" class="viewPage" style="background:#0b0b0f;">
   <span class="back-btn back-white" onclick="closeView('endlessView')">&larr;</span>
-  <img id="endlessImg" src="EndlessWorld01.jpg.JPG" alt="EndlessWorld">
-  <span class="nav-btn nav-white left-btn" onclick="changeImg('endless',-1)">&#10094;</span>
-  <span class="nav-btn nav-white right-btn" onclick="changeImg('endless',1)">&#10095;</span>
+  <img id="endlessImg" src="EndlessWorld01.jpg.JPG" alt="EndlessWorld" onclick="toggleZoom(this)">
+  <span class="nav-btn left-btn nav-white" onclick="changeImg('endless',-1)">&#10094;</span>
+  <span class="nav-btn right-btn nav-white" onclick="changeImg('endless',1)">&#10095;</span>
 </div>
 
 <!-- Perception -->
-<div id="perceptionView" class="viewPage">
+<div id="perceptionView" class="viewPage" style="background:#fff;">
   <span class="back-btn back-black" onclick="closeView('perceptionView')">&larr;</span>
-  <img id="perceptionImg" src="Perceptionnew01.jpg.JPG" alt="Perception">
-  <span class="nav-btn nav-black left-btn" onclick="changeImg('perception',-1)">&#10094;</span>
-  <span class="nav-btn nav-black right-btn" onclick="changeImg('perception',1)">&#10095;</span>
+  <img id="perceptionImg" src="Perceptionnew01.jpg.JPG" alt="Perception" onclick="toggleZoom(this)">
+  <span class="nav-btn left-btn nav-black" onclick="changeImg('perception',-1)">&#10094;</span>
+  <span class="nav-btn right-btn nav-black" onclick="changeImg('perception',1)">&#10095;</span>
 </div>
 
 <!-- Reshaping -->
-<div id="reshapeView" class="viewPage">
+<div id="reshapeView" class="viewPage" style="background:#fff;">
   <span class="back-btn back-black" onclick="closeView('reshapeView')">&larr;</span>
-  <img id="reshapeImg" src="Reshaping01.jpg.JPG" alt="Reshaping">
-  <span class="nav-btn nav-black left-btn" onclick="changeImg('reshape',-1)">&#10094;</span>
-  <span class="nav-btn nav-black right-btn" onclick="changeImg('reshape',1)">&#10095;</span>
+  <img id="reshapeImg" src="Reshaping01.jpg.JPG" alt="Reshaping" onclick="toggleZoom(this)">
+  <span class="nav-btn left-btn nav-black" onclick="changeImg('reshape',-1)">&#10094;</span>
+  <span class="nav-btn right-btn nav-black" onclick="changeImg('reshape',1)">&#10095;</span>
 </div>
 
 <!-- Deep Listening -->
@@ -162,11 +166,7 @@ audio{width:100%;max-width:700px;margin:8px 0;}
   <span id="deepBack" onclick="closeView('deepPage')">&larr;</span>
   <div class="deep-content">
     <h2>Deep Listening</h2>
-    <p>
-      Deep listening unfolds as a sensorial practice — a way of attuning to the fragile boundaries between body, matter, and the world.
-      It invites the audience to slow down, perceive subtle vibrations, and explore resonances that often go unnoticed.
-      This approach emphasizes attentiveness, empathy, and a sensitive engagement with the environment, the self, and other beings.
-    </p>
+    <p>Deep listening unfolds as a sensorial practice — a way of attuning to the fragile boundaries between body, matter, and the world. It enables a deeper perception of the micro-interactions between sound, space, and the listener's own body. This practice emphasizes patience, attention, and an openness to subtle variations, allowing the audience to explore resonance, silence, and hidden textures in the sonic environment.</p>
     <div style="margin-top:32px;">
       <h3>Audio Tracks</h3>
       <audio controls src="deep01.mp3.mp3"></audio>
@@ -203,15 +203,28 @@ requestAnimationFrame(drawStars);}drawStars();
 // 分类按钮
 const categories=document.getElementById('categories');
 const footerText=document.getElementById('footerText');
-function openView(id){categories.style.display='none';footerText.style.display='none';document.getElementById(id).style.display='flex';}
+function openView(id){
+  categories.style.display='none';
+  footerText.style.display='none';
+  document.getElementById(id).style.display='flex';
+  // reset to first image
+  if(id==='endlessView') endlessIndex=0;
+  if(id==='perceptionView') perceptionIndex=0;
+  if(id==='reshapeView') reshapeIndex=0;
+  updateImg(id);
+}
 function closeView(id){
   document.getElementById(id).style.display='none';
   categories.style.display='flex';
   footerText.style.display='block';
-  // 回到第一页
-  if(id==='endlessView'){ endlessIndex=0; document.getElementById('endlessImg').src=endlessImgs[0]; }
-  if(id==='perceptionView'){ perceptionIndex=0; document.getElementById('perceptionImg').src=perceptionImgs[0]; }
-  if(id==='reshapeView'){ reshapeIndex=0; document.getElementById('reshapeImg').src=reshapeImgs[0]; }
+}
+function goHome(){
+  categories.style.display='flex';
+  footerText.style.display='block';
+  document.getElementById('endlessView').style.display='none';
+  document.getElementById('perceptionView').style.display='none';
+  document.getElementById('reshapeView').style.display='none';
+  document.getElementById('deepPage').style.display='none';
 }
 
 document.getElementById('endlessBtn').onclick=()=>openView('endlessView');
@@ -219,7 +232,7 @@ document.getElementById('perceptionBtn').onclick=()=>openView('perceptionView');
 document.getElementById('reshapeBtn').onclick=()=>openView('reshapeView');
 document.getElementById('deepBtn').onclick=()=>{categories.style.display='none';footerText.style.display='none';document.getElementById('deepPage').style.display='block';};
 
-// 图片数组
+// 图片列表
 const endlessImgs=["EndlessWorld01.jpg.JPG","EndlessWorld02.jpg.JPG","EndlessWorld03.jpg.JPG","EndlessWorld04.jpg.JPG","EndlessWorld05.jpg.JPG"];
 let endlessIndex=0;
 
@@ -229,20 +242,23 @@ let perceptionIndex=0;
 const reshapeImgs=["Reshaping01.jpg.JPG","Reshaping02.jpg.JPG","Reshaping03.jpg.JPG","Reshaping04.jpg.JPG","Reshaping05.jpg.JPG","Reshaping06.jpg.JPG","Reshaping07.jpg.JPG"];
 let reshapeIndex=0;
 
-// 图片切换
+// 切换图片
 function changeImg(type,dir){
-  if(type==='endless'){
-    endlessIndex=(endlessIndex+dir+endlessImgs.length)%endlessImgs.length;
-    document.getElementById('endlessImg').src=endlessImgs[endlessIndex];
-  }
-  if(type==='perception'){
-    perceptionIndex=(perceptionIndex+dir+perceptionImgs.length)%perceptionImgs.length;
-    document.getElementById('perceptionImg').src=perceptionImgs[perceptionIndex];
-  }
-  if(type==='reshape'){
-    reshapeIndex=(reshapeIndex+dir+reshapeImgs.length)%reshapeImgs.length;
-    document.getElementById('reshapeImg').src=reshapeImgs[reshapeIndex];
-  }
+  if(type==='endless'){endlessIndex=(endlessIndex+dir+endlessImgs.length)%endlessImgs.length;}
+  if(type==='perception'){perceptionIndex=(perceptionIndex+dir+perceptionImgs.length)%perceptionImgs.length;}
+  if(type==='reshape'){reshapeIndex=(reshapeIndex+dir+reshapeImgs.length)%reshapeImgs.length;}
+  updateImg(type+'View');
+}
+function updateImg(view){
+  if(view==='endlessView') document.getElementById('endlessImg').src=endlessImgs[endlessIndex];
+  if(view==='perceptionView') document.getElementById('perceptionImg').src=perceptionImgs[perceptionIndex];
+  if(view==='reshapeView') document.getElementById('reshapeImg').src=reshapeImgs[reshapeIndex];
+}
+
+// 图片放大缩小
+function toggleZoom(img){
+  if(img.style.transform==='scale(2)'){img.style.transform='scale(1)';}
+  else{img.style.transform='scale(2)';}
 }
 </script>
 </body>
