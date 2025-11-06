@@ -9,6 +9,7 @@
   --bg:#0b0b0f;
   --fg:#ffffff;
 }
+/* 页面全局 */
 html,body{
   height:100%;margin:0;padding:0;
   font-family:"Helvetica Neue", Arial, sans-serif;
@@ -20,35 +21,55 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 
 /* 首页类别 */
 .title-wrap{
-  position:absolute;top:45%;left:50%;transform:translate(-50%,-50%);
-  z-index:2;display:flex;flex-wrap:nowrap;justify-content:center;
-  gap:30px;font-size:clamp(18px,4vw,28px);font-weight:700;
-  text-shadow:0 0 10px rgba(255,255,255,0.8);
+  position:absolute;
+  top:45%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  z-index:2;
+  display:flex;
+  flex-wrap:nowrap;
+  justify-content:center;
+  gap:20px;
+  font-size:clamp(18px,4vw,28px);
+  font-weight:700;
   overflow-x:auto;
-  -webkit-overflow-scrolling:touch;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
 .title-wrap::-webkit-scrollbar{display:none;}
 .title-wrap div{
-  cursor:pointer;transition:text-shadow .3s,transform .3s;
-  animation:glowMove 2s infinite alternate;
-  white-space:nowrap;
+  flex:0 0 auto;
+  cursor:pointer;
+  transition:text-shadow .3s,transform .3s;
+  animation:glowMove 1.5s infinite alternate;
+  color:#fff;
+  text-align:center;
 }
 .title-wrap div:hover{
-  text-shadow:0 0 35px rgba(0,255,127,1);
+  text-shadow:0 0 25px #00ff7f;
   transform:translateY(-2px);
 }
 @keyframes glowMove{
-  0%{text-shadow:0 0 10px rgba(0,255,127,0.7);}
-  100%{text-shadow:0 0 20px rgba(0,255,127,0.5);}
+  0%{text-shadow:0 0 8px #00ff7f;}
+  100%{text-shadow:0 0 20px #00ff7f;}
 }
 
-/* 首页返回尖头 */
+/* 首页返回到艺术家主页 */
 #homeBack{
-  position:absolute;top:18px;right:18px;font-size:clamp(22px,4vw,32px);
-  color:#fff;cursor:pointer;z-index:3;text-shadow:0 0 15px #fff;
+  position:absolute;
+  top:18px;
+  right:18px;
+  font-size:clamp(22px,4vw,32px);
+  color:#fff;
+  cursor:pointer;
+  z-index:3;
+  text-shadow:0 0 12px #fff;
   transition:transform .18s;
 }
-#homeBack:hover{transform:scale(1.12);text-shadow:0 0 25px #fff,0 0 35px #fff;}
+#homeBack:hover{
+  transform:scale(1.12);
+  text-shadow:0 0 25px #fff,0 0 35px #fff;
+}
 
 /* 通用作品页 */
 .viewPage{
@@ -61,24 +82,29 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
   object-fit:contain;
   transition:transform .3s;
 }
-.viewPage img:active{transform:scale(1.5);}
+.viewPage img:active{
+  transform:scale(2);
+}
 
-/* 返回按钮和箭头样式 */
+/* 返回尖头 */
 .back-btn{
   position:fixed;top:18px;right:18px;
   font-size:clamp(22px,4vw,32px);
   cursor:pointer;z-index:3;font-weight:700;
-  transition:transform .15s;
+  text-shadow:0 0 12px #000;
 }
+.back-btn.white{color:#fff;text-shadow:0 0 20px #fff;}
 .back-btn:hover{transform:scale(1.08);}
+
+/* 左右箭头 */
 .nav-btn{
-  position:absolute;bottom:40px;font-size:clamp(24px,5vw,38px);
+  position:absolute;bottom:36px;font-size:clamp(22px,4vw,32px);
   cursor:pointer;z-index:3;user-select:none;
   transition:transform .15s;
 }
 .nav-btn:hover{transform:scale(1.1);}
-.left-btn{left:50px;}
-.right-btn{right:50px;}
+.left-btn{left:24px;}
+.right-btn{right:24px;}
 
 /* Deep Listening 页面 */
 #deepPage{
@@ -87,13 +113,25 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
   color:#fff;z-index:2;overflow:auto;
 }
 #deepCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;}
+#deepBack{
+  position:fixed;top:18px;right:18px;font-size:clamp(22px,4vw,32px);
+  color:#fff;cursor:pointer;z-index:3;text-shadow:0 0 12px #fff;
+  transition:transform .15s;
+}
+#deepBack:hover{transform:scale(1.08);}
 .deep-content{
   position:relative;z-index:1;max-width:900px;margin:80px auto 120px;
   padding:0 5%;line-height:1.8;font-size:clamp(14px,2vw,18px);
   text-shadow:0 0 12px rgba(255,255,255,0.9);
   text-align:left;color:#fff;
 }
-audio{width:100%;max-width:700px;margin:8px 0;}
+
+/* 音频响应式 */
+audio{
+  width:100%;
+  max-width:700px;
+  margin:8px 0;
+}
 
 /* 底部文字 */
 .footer-text{
@@ -104,16 +142,14 @@ audio{width:100%;max-width:700px;margin:8px 0;}
   text-shadow:0 0 12px #fff;
   z-index:2;line-height:1.5;
 }
-
-/* 白色背景作品页 */
-.whiteBg{background:#fff;}
 </style>
 </head>
 <body>
 
 <canvas id="bgCanvas"></canvas>
 
-<div id="homeBack">&#8592;</div>
+<!-- 首页返回到艺术家主页 -->
+<span id="homeBack" onclick="location.href='https://your-artist-homepage.com'">&larr;</span>
 
 <div class="title-wrap" id="categories">
   <div id="endlessBtn">EndlessWorld</div>
@@ -124,24 +160,23 @@ audio{width:100%;max-width:700px;margin:8px 0;}
 
 <!-- EndlessWorld -->
 <div id="endlessView" class="viewPage">
-  <span class="back-btn" onclick="closeView('endlessView')">&#8592;</span>
-  <canvas id="endlessCanvas" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;"></canvas>
+  <span class="back-btn white" onclick="closeView('endlessView')">&larr;</span>
   <img id="endlessImg" src="EndlessWorld01.jpg.JPG" alt="EndlessWorld">
-  <span class="nav-btn left-btn" onclick="changeImg('endless',-1)">&#10094;</span>
-  <span class="nav-btn right-btn" onclick="changeImg('endless',1)">&#10095;</span>
+  <span class="nav-btn left-btn white" onclick="changeImg('endless',-1)">&#10094;</span>
+  <span class="nav-btn right-btn white" onclick="changeImg('endless',1)">&#10095;</span>
 </div>
 
 <!-- Perception -->
-<div id="perceptionView" class="viewPage whiteBg">
-  <span class="back-btn" onclick="closeView('perceptionView')">&#8592;</span>
+<div id="perceptionView" class="viewPage" style="background:#fff;">
+  <span class="back-btn" onclick="closeView('perceptionView')">&larr;</span>
   <img id="perceptionImg" src="Perceptionnew01.jpg.JPG" alt="Perception">
   <span class="nav-btn left-btn" style="color:#000;text-shadow:0 0 12px #000;" onclick="changeImg('perception',-1)">&#10094;</span>
   <span class="nav-btn right-btn" style="color:#000;text-shadow:0 0 12px #000;" onclick="changeImg('perception',1)">&#10095;</span>
 </div>
 
 <!-- Reshaping -->
-<div id="reshapeView" class="viewPage whiteBg">
-  <span class="back-btn" onclick="closeView('reshapeView')">&#8592;</span>
+<div id="reshapeView" class="viewPage" style="background:#fff;">
+  <span class="back-btn" onclick="closeView('reshapeView')">&larr;</span>
   <img id="reshapeImg" src="Reshaping01.jpg.JPG" alt="Reshaping">
   <span class="nav-btn left-btn" style="color:#000;text-shadow:0 0 12px #000;" onclick="changeImg('reshape',-1)">&#10094;</span>
   <span class="nav-btn right-btn" style="color:#000;text-shadow:0 0 12px #000;" onclick="changeImg('reshape',1)">&#10095;</span>
@@ -150,10 +185,15 @@ audio{width:100%;max-width:700px;margin:8px 0;}
 <!-- Deep Listening -->
 <div id="deepPage">
   <canvas id="deepCanvas"></canvas>
-  <span class="back-btn" onclick="closeView('deepPage')">&#8592;</span>
+  <span id="deepBack" onclick="closeView('deepPage')">&larr;</span>
   <div class="deep-content">
     <h2>Deep Listening</h2>
-    <p>Deep listening unfolds as a sensorial practice — a way of attuning to the fragile boundaries between body, matter, and the world. It emphasizes the awareness of subtle sounds, textures, and vibrations in everyday environments. By immersing oneself in this attentive listening, one discovers new relationships between space, material, and perception, allowing the audience to experience the interplay between silence and sound, presence and absence.</p>
+    <p>
+      Deep listening unfolds as a sensorial practice — a way of attuning to the fragile boundaries between body, matter, and the world.
+      Through attentive perception, sound and environment resonate, allowing experiences to emerge as layered textures. 
+      Participants may listen individually or simultaneously to multiple audio tracks, engaging with subtle material vibrations, 
+      capturing ephemeral moments, and exploring the interdependence of sound, body, and space.
+    </p>
     <div style="margin-top:32px;">
       <h3>Audio Tracks</h3>
       <audio controls src="deep01.mp3.mp3"></audio>
@@ -187,43 +227,34 @@ for(const s of stars){s.x+=s.vx;s.y+=s.vy;if(s.x<0)s.x=1;if(s.x>1)s.x=0;if(s.y<0
 ctx.beginPath();ctx.fillStyle='rgba(255,255,255,'+(0.6*Math.random()+0.2)+')';ctx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);ctx.fill();}
 requestAnimationFrame(drawStars);}drawStars();
 
-// EndlessWorld 星空画布
-const endlessCanvas=document.getElementById('endlessCanvas');
-const endlessCtx=endlessCanvas.getContext('2d');
-function resizeEndless(){endlessCanvas.width=W;endlessCanvas.height=H;}
-window.addEventListener('resize',resizeEndless);resizeEndless();
-const endlessStars=Array.from({length:120},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.2+0.2,vx:(Math.random()-0.5)*0.0006,vy:(Math.random()-0.5)*0.0006}));
-function drawEndlessStars(){endlessCtx.clearRect(0,0,W,H);endlessCtx.fillStyle='rgba(8,9,12,0.9)';endlessCtx.fillRect(0,0,W,H);
-for(const s of endlessStars){s.x+=s.vx;s.y+=s.vy;if(s.x<0)s.x=1;if(s.x>1)s.x=0;if(s.y<0)s.y=1;if(s.y>1)s.y=0;
-endlessCtx.beginPath();endlessCtx.fillStyle='rgba(255,255,255,'+(0.6*Math.random()+0.2)+')';endlessCtx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);endlessCtx.fill();}
-requestAnimationFrame(drawEndlessStars);}drawEndlessStars();
-
 // 分类按钮
 const categories=document.getElementById('categories');
 const footerText=document.getElementById('footerText');
-const homeBack=document.getElementById('homeBack');
 function openView(id){categories.style.display='none';footerText.style.display='none';document.getElementById(id).style.display='flex';}
 function closeView(id){
   document.getElementById(id).style.display='none';
-  categories.style.display='flex';footerText.style.display='block';
-  // reset index to first image
+  categories.style.display='flex';
+  footerText.style.display='block';
+  // 返回每个类别第一页
   if(id==='endlessView'){endlessIndex=0;document.getElementById('endlessImg').src=endlessImgs[0];}
   if(id==='perceptionView'){perceptionIndex=0;document.getElementById('perceptionImg').src=perceptionImgs[0];}
   if(id==='reshapeView'){reshapeIndex=0;document.getElementById('reshapeImg').src=reshapeImgs[0];}
 }
+
 document.getElementById('endlessBtn').onclick=()=>openView('endlessView');
 document.getElementById('perceptionBtn').onclick=()=>openView('perceptionView');
 document.getElementById('reshapeBtn').onclick=()=>openView('reshapeView');
-document.getElementById('deepBtn').onclick=()=>openView('deepPage');
-homeBack.onclick=()=>window.location.href="https://your-artist-homepage.com"; // 替换为艺术家主页链接
+document.getElementById('deepBtn').onclick=()=>{categories.style.display='none';footerText.style.display='none';document.getElementById('deepPage').style.display='block';};
 
-// 图片数组
+// EndlessWorld
 const endlessImgs=["EndlessWorld01.jpg.JPG","EndlessWorld02.jpg.JPG","EndlessWorld03.jpg.JPG","EndlessWorld04.jpg.JPG","EndlessWorld05.jpg.JPG"];
 let endlessIndex=0;
 
+// Perception
 const perceptionImgs=["Perceptionnew01.jpg.JPG","Perceptionnew02.jpg.JPG","Perceptionnew03.jpg.JPG","Perceptionnew04.jpg.JPG","Perceptionnew05.jpg.JPG","Perceptionnew06.jpg.JPG","Perceptionnew07.jpg.JPG"];
 let perceptionIndex=0;
 
+// Reshaping
 const reshapeImgs=["Reshaping01.jpg.JPG","Reshaping02.jpg.JPG","Reshaping03.jpg.JPG","Reshaping04.jpg.JPG","Reshaping05.jpg.JPG","Reshaping06.jpg.JPG","Reshaping07.jpg.JPG"];
 let reshapeIndex=0;
 
