@@ -28,7 +28,12 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 .title-wrap div:hover{text-shadow:0 0 35px rgba(0,255,127,1);transform:translateY(-2px);}
 @keyframes glowMove{0%{text-shadow:0 0 10px rgba(0,255,127,0.7);}100%{text-shadow:0 0 20px rgba(0,255,127,0.5);}}
 
-/* 首页返回主页箭头 */
+/* 返回键 */
+.back-btn{
+  position:fixed;top:18px;right:18px;font-size:32px;color:#000;cursor:pointer;
+  z-index:5;font-weight:700;text-shadow:0 0 12px #000;transition:transform .15s;
+}
+.back-btn:hover{transform:scale(1.12);text-shadow:0 0 20px #000,0 0 30px #000;}
 #homeBack{
   position:absolute;top:20px;right:22px;font-size:32px;
   color:#fff;text-shadow:0 0 12px #fff;cursor:pointer;z-index:3;
@@ -36,7 +41,7 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 }
 #homeBack:hover{transform:scale(1.12);text-shadow:0 0 20px #fff,0 0 35px #fff;}
 
-/* 通用图片查看页基础样式 */
+/* 通用图片查看页 */
 .viewPage{
   display:none;position:absolute;top:0;left:0;width:100%;height:100%;
   z-index:2;justify-content:center;align-items:center;flex-direction:column;
@@ -44,10 +49,6 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 }
 .viewPage img{
   max-width:90%;max-height:80%;cursor:zoom-in;
-}
-.back-btn{
-  position:fixed;top:18px;right:18px;font-size:32px;color:#000;cursor:pointer;
-  z-index:3;font-weight:700;text-shadow:0 0 12px #000;
 }
 #prevBtn,#nextBtn,#perceptionPrev,#perceptionNext,#reshapePrev,#reshapeNext{
   position:absolute;bottom:36px;font-size:28px;color:#000;
@@ -63,9 +64,9 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 /* Perception文字 */
 .perception-content{
   position:absolute;top:20px;left:20px;max-width:36%;line-height:1.6;
-  font-size:16px;text-align:left;z-index:3;color:#000;
+  font-size:14px;text-align:left;z-index:3;color:#000;
 }
-.perception-content h2{margin-top:0;margin-bottom:10px;font-size:20px;}
+.perception-content h2{margin-top:0;margin-bottom:10px;font-size:18px;}
 .perception-content p{margin:0 0 8px 0;}
 #caption{position:absolute;bottom:16px;right:16px;font-size:16px;color:#000;
 background:rgba(255,255,255,0.5);padding:4px 8px;border-radius:4px;z-index:3;}
@@ -77,18 +78,13 @@ background:rgba(255,255,255,0.5);padding:4px 8px;border-radius:4px;z-index:3;}
   color:#fff;z-index:2;overflow:auto;
 }
 #deepCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;}
-#deepBack{
-  position:fixed;top:18px;right:18px;font-size:32px;color:#fff;cursor:pointer;
-  z-index:3;text-shadow:0 0 12px #fff;transition:transform .15s;
-}
-#deepBack:hover{transform:scale(1.08);}
 .deep-content{
   position:relative;z-index:1;max-width:900px;margin:80px 0 120px 5%;
   padding:0 28px;line-height:1.8;font-size:18px;text-shadow:0 0 12px rgba(255,255,255,0.9);
   text-align:left;color:#fff;
 }
 
-/* 底部说明文字 */
+/* 底部文字 */
 .footer-text{
   position:fixed;bottom:30px;width:90%;left:50%;transform:translateX(-50%);
   text-align:center;color:#fff;font-size:16px;text-shadow:0 0 12px #fff;
@@ -98,11 +94,11 @@ background:rgba(255,255,255,0.5);padding:4px 8px;border-radius:4px;z-index:3;}
 /* responsive */
 @media(max-width:900px){
   .title-wrap{gap:36px;font-size:26px}
-  .perception-content{max-width:90%;font-size:14px;top:10px;left:10px;}
+  .perception-content{max-width:90%;font-size:13px;top:10px;left:10px;}
 }
 @media(max-width:600px){
   .title-wrap{flex-direction:column;top:40%}
-  .deep-content,.perception-content{font-size:14px;padding:0 16px;margin-left:6%;}
+  .deep-content,.perception-content{font-size:13px;padding:0 16px;margin-left:6%;}
 }
 </style>
 </head>
@@ -150,7 +146,7 @@ background:rgba(255,255,255,0.5);padding:4px 8px;border-radius:4px;z-index:3;}
 <!-- DeepListening -->
 <div id="deepPage">
   <canvas id="deepCanvas"></canvas>
-  <span id="deepBack">&larr;</span>
+  <span class="back-btn" onclick="closeDeep()">&larr;</span>
   <div class="deep-content">
     <h2>Deep Listening</h2>
     <p>Deep listening unfolds as a sensorial practice — a way of attuning to the fragile boundaries between body, matter, and the world. Sound is not only perceived by the ear but moves through the body, through the quiet resonances of materials and the subtle rhythms of breath. Each vibration carries memory; even silence holds the pulse of life.</p>
@@ -187,7 +183,6 @@ requestAnimationFrame(drawStars);}drawStars();
 
 const categories=document.getElementById('categories');
 const footerText=document.getElementById('footerText');
-const homeBack=document.getElementById('homeBack');
 
 // EndlessWorld
 const workView=document.getElementById('workView');
@@ -222,10 +217,8 @@ document.getElementById('reshapeNext').onclick=()=>{rIdx=(rIdx+1)%reshapeImgs.le
 
 // Deep Listening
 const deepPage=document.getElementById('deepPage');
-const deepBtn=document.getElementById('deepBtn');
-const deepBack=document.getElementById('deepBack');
-deepBtn.onclick=()=>{categories.style.display='none';footerText.style.display='none';deepPage.style.display='block';};
-deepBack.onclick=()=>{deepPage.style.display='none';categories.style.display='flex';footerText.style.display='block';};
+document.getElementById('deepBtn').onclick=()=>{categories.style.display='none';footerText.style.display='none';deepPage.style.display='block';};
+function closeDeep(){deepPage.style.display='none';categories.style.display='flex';footerText.style.display='block';}
 
 // 返回首页
 function goHome(){window.location.href="index.html";}
