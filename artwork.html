@@ -9,7 +9,6 @@
   --bg:#0b0b0f;
   --fg:#ffffff;
 }
-/* 通用样式 */
 html,body{
   height:100%;margin:0;padding:0;
   font-family:"Helvetica Neue", Arial, sans-serif;
@@ -22,14 +21,13 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 /* 首页类别横排 */
 .title-wrap{
   position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  z-index:2;display:flex;flex-wrap:nowrap;justify-content:flex-start;
-  gap:30px;font-size:clamp(18px,4vw,28px);font-weight:700;
-  overflow-x:auto;
+  z-index:2;display:flex;flex-wrap:nowrap;justify-content:center;
+  gap:40px;font-size:clamp(18px,4vw,28px);font-weight:700;
 }
 .title-wrap div{
   cursor:pointer;transition:text-shadow .3s,transform .3s;
   animation:glowShake 2s infinite alternate;
-  color:#fff;white-space:nowrap;padding:0 5px;
+  color:#fff;
 }
 .title-wrap div:hover{
   text-shadow:0 0 35px rgba(0,255,127,1);
@@ -41,7 +39,7 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
   100%{text-shadow:0 0 10px rgba(0,255,127,0.5);}
 }
 
-/* 首页返回尖头 */
+/* 首页返回按钮 */
 #homeBack{
   position:absolute;top:18px;right:18px;font-size:clamp(22px,4vw,32px);
   color:#fff;cursor:pointer;z-index:3;text-shadow:0 0 12px #fff;
@@ -60,7 +58,6 @@ canvas#bgCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
 .viewPage img{
   max-width:95%;max-height:80%;cursor:zoom-in;
   object-fit:contain;
-  transition: transform 0.25s ease;
 }
 
 /* 黑色返回尖头（作品页） */
@@ -124,7 +121,7 @@ audio{
 <canvas id="bgCanvas"></canvas>
 
 <!-- 首页返回 -->
-<div id="homeBack" onclick="goHome()">&larr;</div>
+<div id="homeBack" onclick="window.location.href='https://kanny7dim.github.io/kannyW.github.io/艺术家主页'">&#8592;</div>
 
 <div class="title-wrap" id="categories">
   <div id="endlessBtn">EndlessWorld</div>
@@ -135,7 +132,7 @@ audio{
 
 <!-- EndlessWorld -->
 <div id="endlessView" class="viewPage">
-  <span class="back-btn" onclick="goHome()">&larr;</span>
+  <span class="back-btn" onclick="closeView('endlessView')">&larr;</span>
   <img id="endlessImg" src="EndlessWorld01.jpg.JPG" alt="EndlessWorld">
   <span class="nav-btn left-btn" onclick="changeImg('endless',-1)">&#10094;</span>
   <span class="nav-btn right-btn" onclick="changeImg('endless',1)">&#10095;</span>
@@ -143,7 +140,7 @@ audio{
 
 <!-- Perception -->
 <div id="perceptionView" class="viewPage">
-  <span class="back-btn" onclick="goHome()">&larr;</span>
+  <span class="back-btn" onclick="closeView('perceptionView')">&larr;</span>
   <img id="perceptionImg" src="Perceptionnew01.jpg.JPG" alt="Perception">
   <span class="nav-btn left-btn" onclick="changeImg('perception',-1)">&#10094;</span>
   <span class="nav-btn right-btn" onclick="changeImg('perception',1)">&#10095;</span>
@@ -151,7 +148,7 @@ audio{
 
 <!-- Reshaping -->
 <div id="reshapeView" class="viewPage">
-  <span class="back-btn" onclick="goHome()">&larr;</span>
+  <span class="back-btn" onclick="closeView('reshapeView')">&larr;</span>
   <img id="reshapeImg" src="Reshaping01.jpg.JPG" alt="Reshaping">
   <span class="nav-btn left-btn" onclick="changeImg('reshape',-1)">&#10094;</span>
   <span class="nav-btn right-btn" onclick="changeImg('reshape',1)">&#10095;</span>
@@ -160,11 +157,11 @@ audio{
 <!-- Deep Listening -->
 <div id="deepPage">
   <canvas id="deepCanvas"></canvas>
-  <span id="deepBack" onclick="goHome()">&larr;</span>
+  <span id="deepBack" onclick="closeView('deepPage')">&larr;</span>
   <div class="deep-content">
     <h2>Deep Listening</h2>
     <p>
-      Deep listening unfolds as a sensorial practice — a way of attuning to the fragile boundaries between body, matter, and the world. It emphasizes the intimate perception of subtle sounds and materials, exploring how listening can create a dialogue with space, memory, and sensation. Each track provides textures that reveal hidden layers, allowing for personal interpretation and interaction.
+      Deep listening unfolds as a sensorial practice — a way of attuning to the fragile boundaries between body, matter, and the world. Each track provides textures that reveal hidden layers, allowing for personal interpretation and interaction.
     </p>
     <div style="margin-top:32px;">
       <h3>Audio Tracks</h3>
@@ -202,30 +199,21 @@ requestAnimationFrame(drawStars);}drawStars();
 // 分类按钮与返回逻辑
 const categories=document.getElementById('categories');
 const footerText=document.getElementById('footerText');
-
-function goHome(){
-  // 隐藏所有作品页
-  document.querySelectorAll('.viewPage').forEach(v=>v.style.display='none');
-  document.getElementById('deepPage').style.display='none';
-  // 显示首页类别
+function openView(id){categories.style.display='none';footerText.style.display='none';document.getElementById(id).style.display='flex';}
+function closeView(id){
+  document.getElementById(id).style.display='none';
   categories.style.display='flex';
   footerText.style.display='block';
-  // 重置图片到第一页
-  endlessIndex=0; document.getElementById('endlessImg').src=endlessImgs[0];
-  perceptionIndex=0; document.getElementById('perceptionImg').src=perceptionImgs[0];
-  reshapeIndex=0; document.getElementById('reshapeImg').src=reshapeImgs[0];
+  // 重置图片为第一页
+  if(id==='endlessView') endlessIndex=0,document.getElementById('endlessImg').src=endlessImgs[0];
+  if(id==='perceptionView') perceptionIndex=0,document.getElementById('perceptionImg').src=perceptionImgs[0];
+  if(id==='reshapeView') reshapeIndex=0,document.getElementById('reshapeImg').src=reshapeImgs[0];
 }
 
 document.getElementById('endlessBtn').onclick=()=>openView('endlessView');
 document.getElementById('perceptionBtn').onclick=()=>openView('perceptionView');
 document.getElementById('reshapeBtn').onclick=()=>openView('reshapeView');
 document.getElementById('deepBtn').onclick=()=>openView('deepPage');
-
-function openView(id){
-  categories.style.display='none';
-  footerText.style.display='none';
-  document.getElementById(id).style.display='flex';
-}
 
 // 图片切换
 const endlessImgs=["EndlessWorld01.jpg.JPG","EndlessWorld02.jpg.JPG","EndlessWorld03.jpg.JPG","EndlessWorld04.jpg.JPG","EndlessWorld05.jpg.JPG"];
@@ -246,9 +234,10 @@ function changeImg(type,dir){
 
 // 图片缩放
 document.querySelectorAll('img').forEach(img=>{
+  img.style.transition='transform 0.25s ease';
   let scale=1;
   img.addEventListener('click',()=>{
-    scale=scale===1?2:1;
+    scale = scale===1 ? 2 : 1;
     img.style.transform=`scale(${scale})`;
   });
 });
